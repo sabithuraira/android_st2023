@@ -28,7 +28,7 @@ data class Datas(
 	val perPage: Int? = null,
 
 	@field:SerializedName("data")
-	val data: List<SlsItem?>? = null,
+	val data: List<SlsItem>? = null,
 
 	@field:SerializedName("last_page")
 	val lastPage: Int? = null,

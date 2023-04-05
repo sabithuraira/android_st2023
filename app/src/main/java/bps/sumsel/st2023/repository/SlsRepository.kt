@@ -2,62 +2,92 @@ package bps.sumsel.st2023.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 import bps.sumsel.st2023.api.ApiInterface
+import bps.sumsel.st2023.response.ResponseSls
+import bps.sumsel.st2023.room.dao.SlsDao
+import bps.sumsel.st2023.room.entity.SlsEntity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SlsRepository  private constructor(
     private val apiService: ApiInterface,
-    private val newsDao: NewsDao,
-    private val appExecutors: AppExecutors
+    private val slsDao: SlsDao
 ) {
-    private val result = MediatorLiveData<Result<List<NewsEntity>>>()
+//    private val result = MediatorLiveData<Result<List<SlsEntity>>>()
 
-    fun getHeadlineNews(): LiveData<Result<List<NewsEntity>>> {
-        result.value = Result.Loading
-        val client = apiService.getNews(BuildConfig.API_KEY)
-        client.enqueue(object : Callback<NewsResponse> {
-            override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+    fun syncSls(): LiveData<List<SlsEntity>> {
+//        result.value = Result.Loading
+        val client = apiService.listSls()
+        client.enqueue(object : Callback<ResponseSls> {
+            override fun onResponse(call: Call<ResponseSls>, response: Response<ResponseSls>) {
                 if (response.isSuccessful) {
-                    val articles = response.body()?.articles
-                    val newsList = ArrayList<NewsEntity>()
-                    appExecutors.diskIO.execute {
-                        articles?.forEach { article ->
-                            val isBookmarked = newsDao.isNewsBookmarked(article.title)
-                            val news = NewsEntity(
-                                article.title,
-                                article.publishedAt,
-                                article.urlToImage,
-                                article.url,
-                                isBookmarked
-                            )
-                            newsList.add(news)
-                        }
-                        newsDao.deleteAll()
-                        newsDao.insertNews(newsList)
+                    val sls = response.body()?.datas?.data
+                    val slsList = sls?.map { curData ->
+                        SlsEntity(
+                            curData.id ?: 0,
+                            curData.kodeProv ?: "",
+                            curData.kodeKab ?: "",
+                            curData.kodeKec ?: "",
+                            curData.kodeDesa ?: "",
+                            curData.idSls ?: "",
+                            curData.idSubSls ?: "",
+                            curData.namaSls ?: "",
+                            curData.slsOp ?: 0,
+                            curData.jenisSls ?: 0,
+                            curData.jmlArtTani ?: 0,
+                            curData.jmlKeluargaTani ?: 0,
+                            curData.sektor1 ?: 0,
+                            curData.sektor2 ?: 0,
+                            curData.sektor3 ?: 0,
+                            curData.sektor4 ?: 0,
+                            curData.sektor5 ?: 0,
+                            curData.sektor6 ?: 0,
+                            curData.jmlKeluargaTaniSt2023 ?: 0,
+                            curData.jmlNr ?: 0,
+                            curData.jmlDokKePml ?: 0,
+                            curData.jmlDokKeKoseka ?: 0,
+                            curData.jmlDokKeBps ?: 0,
+                            curData.statusSelesaiPcl ?: 0,
+                            curData.kodePcl ?: "",
+                            curData.kodePml ?: "",
+                            curData.kodeKoseka ?: "",
+                            curData.statusSls ?: 0
+                        )
                     }
+
+                    slsDao.deleteAll()
+                    slsDao.insert(slsList!!)
                 }
             }
 
-            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
-                result.value = Result.Error(t.message.toString())
+            override fun onFailure(call: Call<ResponseSls>, t: Throwable) {
+//                result.value = Result.Error(t.message.toString())
             }
         })
-        val localData = newsDao.getNews()
-        result.addSource(localData) { newData: List<NewsEntity> ->
-            result.value = Result.Success(newData)
-        }
-        return result
+
+//        val localData = slsDao.findAll()
+//        result.addSource(localData) { newData: List<SlsEntity> ->
+//            result.value = Result.Success(newData)
+//        }
+        return slsDao.findAll()
+    }
+    fun getSls(): LiveData<List<SlsEntity>> {
+        return slsDao.findAll()
     }
 
-    companion object {
-        @Volatile
-        private var instance: SlsRepository? = null
-        fun getInstance(
-            apiService: ApiInterface,
-            newsDao: NewsDao,
-            appExecutors: AppExecutors
-        ): SlsRepository =
-            instance ?: synchronized(this) {
-                instance ?: NewsRepository(apiService, newsDao, appExecutors)
-            }.also { instance = it }
-    }
+//    companion object {
+//        @Volatile
+//        private var instance: SlsRepository? = null
+//        fun getInstance(
+//            apiService: ApiInterface,
+//            newsDao: NewsDao,
+//            appExecutors: AppExecutors
+//        ): SlsRepository =
+//            instance ?: synchronized(this) {
+//                instance ?: NewsRepository(apiService, newsDao, appExecutors)
+//            }.also { instance = it }
+//    }
 }

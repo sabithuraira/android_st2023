@@ -22,4 +22,9 @@
         android:name="bps.sumsel.st2023.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_sls"
+        android:name="bps.sumsel.st2023.ui.sls.SlsFragment"
+        android:label="fragment_sls"
+        tools:layout="@layout/fragment_sls" />
 </navigation>
