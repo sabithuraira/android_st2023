@@ -7,13 +7,13 @@ import bps.sumsel.st2023.room.entity.SlsEntity
 @Dao
 interface SlsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(data: List<SlsEntity>)
+    suspend fun insert(data: List<SlsEntity>)
 
     @Update
-    fun update(data: SlsEntity)
+    suspend fun update(data: SlsEntity)
 
     @Delete
-    fun delete(data: SlsEntity)
+    suspend fun delete(data: SlsEntity)
 
     @Query("SELECT * from sls ORDER BY id ASC")
     fun findAll(): LiveData<List<SlsEntity>>
@@ -22,5 +22,5 @@ interface SlsDao {
     fun findByPetugas(kode: String): LiveData<List<SlsEntity>>
 
     @Query("DELETE FROM sls")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

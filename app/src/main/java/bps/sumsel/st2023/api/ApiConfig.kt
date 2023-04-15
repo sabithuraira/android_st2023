@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiConfig {
     companion object{
-        const val baseUrl = "http://192.168.5.127/laravel-app/public/api/"
+        const val baseUrl = "http://192.168.1.11/mon_st2023/public/api/"
 
         fun getApiService(): ApiInterface{
             val retrofit = Retrofit.Builder()

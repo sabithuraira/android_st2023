@@ -2,15 +2,18 @@ package bps.sumsel.st2023.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.liveData
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import bps.sumsel.st2023.api.ApiInterface
 import bps.sumsel.st2023.response.ResponseSls
 import bps.sumsel.st2023.room.dao.SlsDao
 import bps.sumsel.st2023.room.entity.SlsEntity
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.Result
 
 class SlsRepository  private constructor(
     private val apiService: ApiInterface,
@@ -18,9 +21,10 @@ class SlsRepository  private constructor(
 ) {
 //    private val result = MediatorLiveData<Result<List<SlsEntity>>>()
 
-    fun syncSls(): LiveData<List<SlsEntity>> {
+    fun syncSls(): LiveData<List<SlsEntity>> = liveData {
 //        result.value = Result.Loading
         val client = apiService.listSls()
+
         client.enqueue(object : Callback<ResponseSls> {
             override fun onResponse(call: Call<ResponseSls>, response: Response<ResponseSls>) {
                 if (response.isSuccessful) {
@@ -58,8 +62,10 @@ class SlsRepository  private constructor(
                         )
                     }
 
-                    slsDao.deleteAll()
-                    slsDao.insert(slsList!!)
+                    runBlocking {
+                        slsDao.deleteAll()
+                        slsDao.insert(slsList!!)
+                    }
                 }
             }
 
@@ -72,22 +78,25 @@ class SlsRepository  private constructor(
 //        result.addSource(localData) { newData: List<SlsEntity> ->
 //            result.value = Result.Success(newData)
 //        }
-        return slsDao.findAll()
+//        return slsDao.findAll()
+
+        val localData: LiveData<List<SlsEntity>> = slsDao.findAll()
+        emitSource(localData)
     }
+
     fun getSls(): LiveData<List<SlsEntity>> {
         return slsDao.findAll()
     }
 
-//    companion object {
-//        @Volatile
-//        private var instance: SlsRepository? = null
-//        fun getInstance(
-//            apiService: ApiInterface,
-//            newsDao: NewsDao,
-//            appExecutors: AppExecutors
-//        ): SlsRepository =
-//            instance ?: synchronized(this) {
-//                instance ?: NewsRepository(apiService, newsDao, appExecutors)
-//            }.also { instance = it }
-//    }
+    companion object {
+        @Volatile
+        private var instance: SlsRepository? = null
+        fun getInstance(
+            apiService: ApiInterface,
+            slsDao: SlsDao,
+        ): SlsRepository =
+            instance ?: synchronized(this) {
+                instance ?: SlsRepository(apiService, slsDao)
+            }.also { instance = it }
+    }
 }

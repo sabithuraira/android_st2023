@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -15,6 +16,7 @@ import bps.sumsel.st2023.MainViewModel
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentNotificationsBinding
 import bps.sumsel.st2023.databinding.FragmentSlsBinding
+import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.SlsEntity
 import bps.sumsel.st2023.ui.notifications.NotificationsViewModel
 
@@ -23,7 +25,7 @@ class SlsFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val viewModel: MainViewModel by activityViewModels()
+//    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,19 +49,29 @@ class SlsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
+        val viewModel: SlsViewModel by viewModels {
+            factory
+        }
+
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvSls.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
         binding.rvSls.addItemDecoration(itemDecoration)
 
-        viewModel.getSls().observe(viewLifecycleOwner){
+        viewModel.syncSls().observe(viewLifecycleOwner){
             val slsAdapter = SlsAdapter(ArrayList(it))
             slsAdapter.setOnClickCallBack(object: SlsAdapter.onClickCallBack{
                 override fun onItemClicked(data: SlsEntity) {
                     editData(view, data)
                 }
             })
-            binding.rvSls.adapter = slsAdapter
+//
+//            binding.rvSls.adapter = slsAdapter
+
+            binding.rvSls.apply {
+                adapter = slsAdapter
+            }
         }
     }
 
