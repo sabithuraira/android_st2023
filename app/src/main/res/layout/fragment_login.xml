@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_vector"
     tools:context=".ui.login.LoginFragment">
     <ScrollView
         android:layout_width="match_parent"
@@ -11,6 +12,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:id="@+id/constrain_layout">
             <LinearLayout
                 android:id="@+id/logo_company"
@@ -52,14 +55,24 @@
                 app:layout_constraintTop_toBottomOf="@id/logo_company"
                 android:textColor="@color/black_300"
                 android:text="Selamat Datang" />
+
+            <TextView
+                android:id="@+id/txt_halo_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/txt_halo"
+                android:textColor="@color/black_200"
+                android:text="Silahkan login terlebih dahulu" />
+
             <TextView
                 android:id="@+id/txt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:textColor="@color/black_300"
-                android:layout_marginTop="30dp"
-                app:layout_constraintTop_toBottomOf="@id/txt_halo"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/txt_halo_desc"
                 android:text="Email anda" />
 
             <RelativeLayout
@@ -105,6 +118,7 @@
                     android:layout_height="45dp"
                     android:inputType="textPassword"
                     android:paddingRight="40dp"
+                    android:hint="Masukkan kata sandi"
                     android:background="@drawable/bg_edittext"
                     android:text=""
                     android:maxLines="1"
@@ -146,19 +160,6 @@
                 android:fontFamily="@font/noto_sans_bold"
                 app:layout_constraintTop_toBottomOf="@id/txt_lupa_sandi"
                 android:text="Masuk" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"
-                android:layout_gravity = "center"
-                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>
