@@ -23,8 +23,8 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>): RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
         val curTodo = listData[position]
-        holder.binding.txtTitle.text = curTodo.id_sls
-        holder.binding.txtDescription.text = curTodo.nama_sls
+        holder.binding.txtTitle.text = curTodo.id_sls + curTodo.nama_sls
+//        holder.binding.txtDescription.text = curTodo.nama_sls
 
 //        holder.txtName.setOnClickListener {
 //            Toast.makeText(holder.txtName.context, "I click txtName", Toast.LENGTH_SHORT).show()

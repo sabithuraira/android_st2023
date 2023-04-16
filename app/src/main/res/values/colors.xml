@@ -10,4 +10,25 @@
 
     <color name="gray">#F0F0F0F0</color>
     <color name="red">#F44336</color>
+
+
+    <color name="black_200">#495057</color>
+    <color name="black_300">#333333</color>
+    <color name="black_3">#828282</color>
+    <color name="black_5">#E0E0E0</color>
+    <color name="light_gray">#F7F7F7</color>
+    <color name="gray_100">#BDBDBD</color>
+    <color name="gray_200">#D2D2D2</color>
+    <color name="gray_300">#F5F5F5</color>
+    <color name="gray_splash">#F5F5F5</color>
+    <color name="background_windows">#FAFAFA</color>
+    <color name="blue_light">#DADCF1</color>
+
+
+    <color name="green_100">#c0efc0</color>
+    <color name="green_200">#94e596</color>
+    <color name="green_300">#5cdc67</color>
+    <color name="green_500">#00c900</color>
+    <color name="green_700">#00a600</color>
+    <color name="green_900">#007400</color>
 </resources>

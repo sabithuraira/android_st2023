@@ -33,12 +33,11 @@ class SlsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSlsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
 //        notificationsViewModel.text.observe(viewLifecycleOwner) {
 //            textView.text = it
 //        }
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {
