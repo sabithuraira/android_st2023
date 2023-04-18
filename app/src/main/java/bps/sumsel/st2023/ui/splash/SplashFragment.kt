@@ -22,7 +22,9 @@ class SplashFragment : Fragment() {
 
         val handler = Handler()
         handler.postDelayed(Runnable {
-            Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_loginFragment)
+            Navigation.findNavController(view).navigate(
+                SplashFragmentDirections.actionSplashFragmentToLoginFragment()
+            )
         }, 2000)
     }
 }

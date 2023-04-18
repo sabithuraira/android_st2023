@@ -1,13 +1,28 @@
 package bps.sumsel.st2023.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import bps.sumsel.st2023.datastore.AuthDataStore
+import bps.sumsel.st2023.datastore.UserStore
+import bps.sumsel.st2023.repository.SlsRepository
 
-class HomeViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+class HomeViewModel(
+    private val pref: AuthDataStore,
+    private val slsRepository: SlsRepository
+) : ViewModel() {
+    fun getAuthUser(): LiveData<UserStore> {
+        return pref.getUser().asLiveData()
     }
-    val text: LiveData<String> = _text
+}
+
+class HomeViewModelFactory(
+    private val pref: AuthDataStore,
+    private val slsRepository: SlsRepository
+    ) : ViewModelProvider.NewInstanceFactory() {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            return HomeViewModel(pref, slsRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+    }
 }

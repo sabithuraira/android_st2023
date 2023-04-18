@@ -14,4 +14,6 @@
     <string name="label_password">Kata Sandi</string>
     <string name="label_saya_lupa_kata_sandi">Saya lupa kata sandi</string>
     <string name="label_st2023">Sensus Pertanian 2023</string>
+    <string name="label_halo">Halo</string>
+    <string name="label_laporkan_progres">Laporkan Progres</string>
 </resources>

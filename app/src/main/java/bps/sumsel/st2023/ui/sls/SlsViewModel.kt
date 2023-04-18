@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import bps.sumsel.st2023.repository.SlsRepository
 
 class SlsViewModel(private val slsRepository: SlsRepository) : ViewModel() {
-
     private val _text = MutableLiveData<String>().apply {
         value = "This is notifications Fragment"
     }
