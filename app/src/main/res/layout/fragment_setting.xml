@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.setting.SettingFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:id="@+id/header_cover_image"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:background="@color/light_gray"/>
+            <ImageButton
+                android:id="@+id/user_profile_photo"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_below="@+id/header_cover_image"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-60dp"
+                android:background="@drawable/profile_circular"
+                android:elevation="5dp"
+                android:padding="20dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user" />
+
+            <RelativeLayout
+                android:id="@+id/profile_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:layout_below="@+id/header_cover_image"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:text="Joko Warsito"
+                    android:textColor="@color/black_300"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_layout"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_300"
+                    android:clickable="true"
+                    android:padding="8dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:text="Data" />
+
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="9dp"
+                        android:paddingStart="16dp"
+                        android:src="@drawable/ic_baseline_backup_24"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/black_300"
+                        android:paddingRight="50dp"
+                        android:paddingLeft="50dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="Backup" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:alpha=".5"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_baseline_navigate_next_24" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_300"
+                    android:clickable="true"
+                    android:padding="8dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:text="Tentang Aplikasi" />
+
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="9dp"
+                        android:paddingStart="16dp"
+                        android:src="@drawable/ic_baseline_logo_dev_24"/>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="50dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="50dp"
+                        android:paddingBottom="8dp"
+                        android:text="Tentang Pengembang"
+                        android:textColor="@color/black_300" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:alpha=".5"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_baseline_navigate_next_24" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="9dp"
+                        android:paddingStart="16dp"
+                        android:src="@drawable/ic_baseline_thumb_up_24"/>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="50dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="50dp"
+                        android:paddingBottom="8dp"
+                        android:text="Review Aplikasi"
+                        android:textColor="@color/black_300" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:alpha=".5"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_baseline_navigate_next_24" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_300"
+                    android:clickable="true"
+                    android:padding="8dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:text="Keamanan" />
+
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingStart="16dp"
+                        android:src="@drawable/ic_baseline_lock_24"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/black_300"
+                        android:paddingRight="50dp"
+                        android:paddingLeft="50dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="Ubah Kata Sandi" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:alpha=".5"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_baseline_navigate_next_24" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relative_logout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="9dp"
+                        android:paddingStart="16dp"
+                        android:src="@drawable/ic_baseline_logout_24"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/black_300"
+                        android:paddingRight="50dp"
+                        android:paddingLeft="50dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="Logout" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:alpha=".5"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_baseline_navigate_next_24" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</FrameLayout>

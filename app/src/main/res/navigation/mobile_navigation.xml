@@ -29,11 +29,6 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="bps.sumsel.st2023.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-    <fragment
         android:id="@+id/navigation_notifications"
         android:name="bps.sumsel.st2023.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
@@ -43,4 +38,13 @@
         android:name="bps.sumsel.st2023.ui.sls.SlsFragment"
         android:label="fragment_sls"
         tools:layout="@layout/fragment_sls" />
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="bps.sumsel.st2023.ui.setting.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_navigation_setting_to_navigation_login"
+            app:destination="@id/navigation_login" />
+    </fragment>
 </navigation>
