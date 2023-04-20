@@ -45,11 +45,15 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_home, R.id.navigation_dashboard,
+                R.id.navigation_home, R.id.navigation_setting,
                 R.id.navigation_notifications, R.id.navigation_sls
                 -> binding.navView.visibility = View.VISIBLE
                 else -> binding.navView.visibility = View.GONE
             }
         }
+    }
+
+    fun setLoading(data: Boolean) {
+        binding.progressBar.visibility = if (data) View.VISIBLE else View.GONE
     }
 }

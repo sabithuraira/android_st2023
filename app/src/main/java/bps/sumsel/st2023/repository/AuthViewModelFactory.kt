@@ -15,7 +15,7 @@ class AuthViewModelFactory(private val pref: AuthDataStore) : ViewModelProvider.
 
         when{
             modelClass.isAssignableFrom(SettingViewModel::class.java) -> return SettingViewModel(pref) as T
-            modelClass.isAssignableFrom(LoginViewModel::class.java) -> return LoginViewModel(pref) as T
+//            modelClass.isAssignableFrom(LoginViewModel::class.java) -> return LoginViewModel(pref) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

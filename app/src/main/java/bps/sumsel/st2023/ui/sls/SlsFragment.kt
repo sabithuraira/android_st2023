@@ -6,26 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.MainViewModel
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentNotificationsBinding
 import bps.sumsel.st2023.databinding.FragmentSlsBinding
+import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.SlsEntity
 import bps.sumsel.st2023.ui.notifications.NotificationsViewModel
 
 class SlsFragment : Fragment() {
     private var _binding: FragmentSlsBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-//    private val viewModel: MainViewModel by activityViewModels()
+    private lateinit var parentActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +49,7 @@ class SlsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentActivity = requireActivity() as MainActivity
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
         val viewModel: SlsViewModel by viewModels {
             factory
@@ -58,18 +60,33 @@ class SlsFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
         binding.rvSls.addItemDecoration(itemDecoration)
 
-        viewModel.syncSls().observe(viewLifecycleOwner){
-            val slsAdapter = SlsAdapter(ArrayList(it))
-            slsAdapter.setOnClickCallBack(object: SlsAdapter.onClickCallBack{
-                override fun onItemClicked(data: SlsEntity) {
-                    editData(view, data)
-                }
-            })
-//
-//            binding.rvSls.adapter = slsAdapter
+        viewModel.syncSls().observe(viewLifecycleOwner){ result ->
+            if (result != null) {
+                when (result) {
+                    is ResultData.Loading -> {
+                        parentActivity.setLoading(true)
+                    }
+                    is ResultData.Success -> {
+                        parentActivity.setLoading(false)
+                        val data = result.data
+//                        newsAdapter.submitList(newsData)
 
-            binding.rvSls.apply {
-                adapter = slsAdapter
+                        val slsAdapter = SlsAdapter(ArrayList(data))
+                        slsAdapter.setOnClickCallBack(object : SlsAdapter.onClickCallBack {
+                            override fun onItemClicked(data: SlsEntity) {
+                                editData(view, data)
+                            }
+                        })
+
+                        binding.rvSls.apply {
+                            adapter = slsAdapter
+                        }
+                    }
+                    is ResultData.Error -> {
+                        parentActivity.setLoading(false)
+                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
