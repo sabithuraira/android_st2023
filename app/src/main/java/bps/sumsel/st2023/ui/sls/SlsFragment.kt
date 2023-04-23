@@ -35,9 +35,6 @@ class SlsFragment : Fragment() {
     ): View {
         _binding = FragmentSlsBinding.inflate(inflater, container, false)
 
-//        notificationsViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
         return binding.root
     }
 
@@ -60,7 +57,9 @@ class SlsFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
         binding.rvSls.addItemDecoration(itemDecoration)
 
-        viewModel.syncSls().observe(viewLifecycleOwner){ result ->
+        viewModel.getSls()
+
+        viewModel.resultData.observe(viewLifecycleOwner){ result ->
             if (result != null) {
                 when (result) {
                     is ResultData.Loading -> {

@@ -1,27 +1,22 @@
 package bps.sumsel.st2023.ui.setting
 
-import android.content.Context
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentSettingBinding
-import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.datastore.UserStore
-import bps.sumsel.st2023.repository.AuthViewModelFactory
-
-private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name = "auth")
 
 class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
+    private lateinit var parentActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +29,12 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pref = AuthDataStore.getInstance(requireContext().dataStore)
-        val viewModel: SettingViewModel by viewModels { AuthViewModelFactory(pref) }
+        val factory: SettingViewModelFactory = SettingViewModelFactory.getInstance(requireActivity())
+        val viewModel: SettingViewModel by viewModels {
+            factory
+        }
+
+        parentActivity = requireActivity() as MainActivity
 
         viewModel.getAuthUser().observe(this) { user: UserStore ->
             if (user.token=="") {
@@ -44,9 +43,21 @@ class SettingFragment : Fragment() {
         }
 
         binding.relativeLogout.setOnClickListener {
-            viewModel.saveUser(
-                UserStore("", "", "")
-            )
+            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
+
+            builder.setTitle("Confirm")
+            builder.setMessage("Anda yakin ingin melakukan logout?")
+
+            builder.setPositiveButton("Ya") { _, _ ->
+                viewModel.logout()
+            }
+
+            builder.setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val alert: AlertDialog = builder.create()
+            alert.show()
         }
     }
 

@@ -16,6 +16,8 @@ class SlsViewModel(private val slsRepository: SlsRepository) : ViewModel() {
 
     fun syncSls() = slsRepository.syncSls()
 
+    val resultData = slsRepository.resultData
+
 //    private fun synsSls(){
 //
 //    }

@@ -12,6 +12,12 @@ class HomeViewModel(
     fun getAuthUser(): LiveData<UserStore> {
         return pref.getUser().asLiveData()
     }
+
+    fun getSls() = slsRepository.getSls()
+
+    fun syncSls() = slsRepository.syncSls()
+
+    val resultData = slsRepository.resultData
 }
 
 class HomeViewModelFactory(

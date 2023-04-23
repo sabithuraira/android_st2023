@@ -16,4 +16,7 @@
     <string name="label_st2023">Sensus Pertanian 2023</string>
     <string name="label_halo">Halo</string>
     <string name="label_laporkan_progres">Laporkan Progres</string>
+    <string name="title_setting">Setting</string>
+    <string name="label_sinkronisasi">Sinkronisasi</string>
+    <string name="label_lakukan_sinkronisasi">Lakukan Sinkronisasi</string>
 </resources>

@@ -27,47 +27,40 @@
                 android:textColor="@color/black_300"
                 android:text="@string/label_halo" />
 
+
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_profile"
+                android:id="@+id/card_sync"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                app:cardCornerRadius="8dp"
-                app:layout_constraintTop_toBottomOf="@id/txt_halo">
-
+                android:layout_marginBottom="6dp"
+                app:cardCornerRadius="8dp">
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="6dp"
+                        android:text="@string/label_sinkronisasi"
+                        android:textColor="@color/black_300" />
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="14sp"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/verifikasi_data"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:textSize="18sp"
-                            android:layout_marginBottom="6dp"
-                            android:text="@string/label_laporkan_progres"
-                            android:textColor="@color/black_300" />
-
-                        <TextView
-                            android:id="@+id/laporkan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="Untuk memudahkan monitoring lapangan ST2023, anda wajib melaporkan setiap progres pendataan lapangan pada setiap SLS/Non SLS"
-                            android:textColor="@color/black_3" />
-                    </LinearLayout>
-
+                        android:text="Untuk mengunduh data SLS tugas anda, lakukan sinkronisasi. Hati-hati dalam melakukan sinkronisasi karena akan menghapus data pencacahan progres anda, pastikan telah melakukan upload data sebelum menjalankan proses ini."
+                        android:textColor="@color/black_3" />
                     <LinearLayout
-                        android:id="@+id/linear_verifikasi"
+                        android:id="@+id/linear_sync"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/green_900"
@@ -76,19 +69,76 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:layout_marginStart="8dp"
                             android:padding="6dp"
-                            android:text="@string/label_laporkan_progres"
+                            android:text="@string/label_lakukan_sinkronisasi"
                             android:textColor="@color/white" />
 
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:gravity="right"
+                            android:layout_marginEnd="8dp"
                             android:padding="6dp"
                             android:text=">"
                             android:textColor="@color/white" />
                     </LinearLayout>
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:cardCornerRadius="8dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="@string/label_laporkan_progres"
+                            android:textColor="@color/black_300" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="Untuk memudahkan monitoring lapangan ST2023, anda wajib melaporkan setiap progres pendataan lapangan pada setiap SLS/Non SLS"
+                            android:textColor="@color/black_3" />
+                        <LinearLayout
+                            android:id="@+id/linear_progres"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/green_900"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:padding="6dp"
+                                android:text="@string/label_laporkan_progres"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:padding="6dp"
+                                android:text=">"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+                    </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -210,7 +260,7 @@
                         android:textColor="@color/green_900" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcProgresSls"
+                            android:id="@+id/rvProgresSls"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:listitem="@layout/row_sls_dashboard" />
