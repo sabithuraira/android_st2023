@@ -43,6 +43,9 @@ data class User(
 	@field:SerializedName("id")
 	val id: Int? = null,
 
+	@field:SerializedName("jabatan")
+	val jabatan: Int? = null,
+
 	@field:SerializedName("kode_kec")
 	val kodeKec: String? = null,
 

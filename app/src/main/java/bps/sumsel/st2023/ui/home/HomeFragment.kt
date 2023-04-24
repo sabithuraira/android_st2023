@@ -53,7 +53,6 @@ class HomeFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
         binding.rvProgresSls.addItemDecoration(itemDecoration)
 
-
         viewModel.getAuthUser().observe(this) { user: UserStore ->
             if (user.name!="") {
                 binding.txtHalo.text = "Halo ${user.name}"
@@ -85,8 +84,9 @@ class HomeFragment : Fragment() {
             builder.setTitle("Sinkronisasi")
             builder.setMessage("Anda yakin ingin melakukan sinkronisasi? Semua data yang belum diunggah akan hilang.")
 
-            builder.setPositiveButton("Ya") { _, _ ->
+            builder.setPositiveButton("Ya") { dialog, _ ->
                 viewModel.syncSls()
+                dialog.dismiss()
             }
 
             builder.setNegativeButton("Batal") { dialog, _ ->
@@ -99,15 +99,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadSls(view: View, data: List<SlsEntity>?){
-        val slsAdapter = SlsHomeAdapter(ArrayList(data))
-        slsAdapter.setOnClickCallBack(object : SlsHomeAdapter.onClickCallBack {
-            override fun onItemClicked(data: SlsEntity) {
-                editData(view, data)
-            }
-        })
+        data?.let {
+            val slsAdapter = SlsHomeAdapter(ArrayList(data))
+            slsAdapter.setOnClickCallBack(object : SlsHomeAdapter.onClickCallBack {
+                override fun onItemClicked(data: SlsEntity) {
+                    editData(view, data)
+                }
+            })
 
-        binding.rvProgresSls.apply {
-            adapter = slsAdapter
+            binding.rvProgresSls.apply {
+                adapter = slsAdapter
+            }
         }
     }
 
@@ -116,24 +118,6 @@ class HomeFragment : Fragment() {
 //            TodosFragmentDirections.actionTodosFragmentToFormFragment(data)
 //        )
     }
-
-//    private fun syncSls(){
-//        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
-//
-//        builder.setTitle("Sinkronisasi")
-//        builder.setMessage("Anda yakin ingin melakukan sinkronisasi? Semua data yang belum diunggah akan hilang.")
-//
-//        builder.setPositiveButton("Ya") { _, _ ->
-//            viewModel.syncSls()
-//        }
-//
-//        builder.setNegativeButton("Batal") { dialog, _ ->
-//            dialog.dismiss()
-//        }
-//
-//        val alert: AlertDialog = builder.create()
-//        alert.show()
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -52,7 +52,8 @@ class AuthRepository  private constructor(
                         val userStore = UserStore(
                             response.body()?.data?.accessToken ?: "",
                             user?.email ?: "",
-                            user?.name ?: ""
+                            user?.name ?: "",
+                            user?.jabatan ?: 0,
                         )
 
                         _resultData.value = ResultData.Success(userStore)
@@ -72,7 +73,7 @@ class AuthRepository  private constructor(
 
     fun logout(){
         saveUser(
-            UserStore("","","")
+            UserStore("","","", 0)
         )
     }
 
@@ -84,9 +85,6 @@ class AuthRepository  private constructor(
         runBlocking {
             pref.saveUser(user)
         }
-//        viewModelScope.launch {
-//            pref.saveUser(user)
-//        }
     }
 
     companion object {

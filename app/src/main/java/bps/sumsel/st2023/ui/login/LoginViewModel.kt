@@ -27,9 +27,7 @@ class LoginViewModel(
     private val authRepository: AuthRepository
     ) : ViewModel() {
     fun getAuthUser() = authRepository.getAuthUser()
-    fun setEmptyUser() = authRepository.saveUser(
-        UserStore("", "", "")
-    )
+    fun setEmptyUser() = authRepository.logout()
 
     fun login(username: String, password: String) = authRepository.login(username, password)
 

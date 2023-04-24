@@ -23,6 +23,15 @@ data class ResponseSingleSls(
 ) : Parcelable
 
 @Parcelize
+data class ResponseSlsPetugas(
+	@field:SerializedName("datas")
+	val datas: List<SlsItem>? = null,
+
+	@field:SerializedName("status")
+	val status: String? = null
+) : Parcelable
+
+@Parcelize
 data class Datas(
 	@field:SerializedName("per_page")
 	val perPage: Int? = null,

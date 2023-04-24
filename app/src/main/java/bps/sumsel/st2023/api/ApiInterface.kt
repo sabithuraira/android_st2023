@@ -1,9 +1,6 @@
 package bps.sumsel.st2023.api
 
-import bps.sumsel.st2023.response.ResponseStringData
-import bps.sumsel.st2023.response.ResponseLogin
-import bps.sumsel.st2023.response.ResponseSingleSls
-import bps.sumsel.st2023.response.ResponseSls
+import bps.sumsel.st2023.response.*
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -14,8 +11,11 @@ interface ApiInterface {
     fun login(@Body params: RequestBody): Call<ResponseLogin>
 
     //SLS
-    @GET("sls")
-    fun listSls(): Call<ResponseSls>
+    @GET("sls/{jenis}/{kode_petugas}/petugas")
+    fun listSlsPetugas(
+        @Path("jenis") jenis: Int,
+        @Path("kode_petugas") kode_petugas: String,
+    ): Call<ResponseSlsPetugas>
 
     @POST("sls")
     fun storeSls(@Body params: RequestBody): Call<ResponseSingleSls>
@@ -25,5 +25,4 @@ interface ApiInterface {
 
     @DELETE("sls/{id}")
     fun deleteSls(@Path("id") id: String): Call<ResponseStringData>
-
 }

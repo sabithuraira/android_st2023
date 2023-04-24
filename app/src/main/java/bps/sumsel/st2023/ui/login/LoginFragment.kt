@@ -18,8 +18,6 @@ import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.room.entity.SlsEntity
 import bps.sumsel.st2023.ui.sls.SlsAdapter
 
-//private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name = "auth")
-
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
