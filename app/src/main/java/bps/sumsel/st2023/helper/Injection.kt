@@ -16,8 +16,9 @@ object Injection {
         val apiService = ApiConfig.getApiService()
         val database = St2023Database.getInstance(context)
         val dao = database.slsDao()
+        val daoRutas = database.rutasDao()
         val pref = AuthDataStore.getInstance(context.dataStore)
-        return SlsRepository.getInstance(apiService, dao, pref)
+        return SlsRepository.getInstance(apiService, dao, daoRutas, pref)
     }
 
     fun authRepository(context: Context): AuthRepository {

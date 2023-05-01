@@ -2,6 +2,7 @@ package bps.sumsel.st2023.room.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
@@ -12,6 +13,7 @@ data class SlsEntity(
     @PrimaryKey
     @ColumnInfo(name="id") var id: Int = 0,
 
+    @ColumnInfo(name="encId") var encId: String = "",
     @ColumnInfo(name="kode_prov") var kode_prov: String = "",
     @ColumnInfo(name="kode_kab") var kode_kab: String = "",
     @ColumnInfo(name="kode_kec") var kode_kec: String = "",

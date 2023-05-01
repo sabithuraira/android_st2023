@@ -1,12 +1,14 @@
-package bps.sumsel.st2023.ui.sls
+package bps.sumsel.st2023.ui.detail_sls
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import bps.sumsel.st2023.databinding.RowRutaBinding
 import bps.sumsel.st2023.databinding.RowSlsBinding
+import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 
-class SlsAdapter(private val listData: ArrayList<SlsEntity>): RecyclerView.Adapter<SlsAdapter.DataViewHolder>() {
+class RutaAdapter(private val listData: ArrayList<RutaEntity>): RecyclerView.Adapter<RutaAdapter.DataViewHolder>() {
     private lateinit var OnClickCallBack: onClickCallBack
 
     fun setOnClickCallBack(data: onClickCallBack){
@@ -14,23 +16,18 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>): RecyclerView.Adapt
     }
 
     interface onClickCallBack{
-        fun onItemClicked(data: SlsEntity)
+        fun onItemClicked(data: RutaEntity)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
-        return DataViewHolder(RowSlsBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return DataViewHolder(RowRutaBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
         val curTodo = listData[position]
-        holder.binding.txtTitle.text = curTodo.id_sls + curTodo.nama_sls
-//        holder.binding.txtDescription.text = curTodo.nama_sls
+        holder.binding.txtName.text = curTodo.id_sls + curTodo.kepala_ruta
 
-//        holder.txtName.setOnClickListener {
-//            Toast.makeText(holder.txtName.context, "I click txtName", Toast.LENGTH_SHORT).show()
-//        }
-
-        holder.binding.btnPilih.setOnClickListener {
+        holder.itemView.setOnClickListener {
             OnClickCallBack.onItemClicked(listData[holder.adapterPosition])
         }
     }
@@ -39,5 +36,5 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>): RecyclerView.Adapt
         return listData.count()
     }
 
-    class DataViewHolder(val binding: RowSlsBinding) : RecyclerView.ViewHolder(binding.root)
+    class DataViewHolder(val binding: RowRutaBinding) : RecyclerView.ViewHolder(binding.root)
 }

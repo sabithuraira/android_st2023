@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.sls.SlsFragment">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,10 +15,13 @@
             android:layout_height="wrap_content"
             android:text="@string/add_sls"
             android:layout_gravity="right"
+            android:backgroundTint="@color/green_900"
+            android:drawableLeft="@drawable/ic_baseline_add_24"
             android:layout_marginBottom="4dp" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSls"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/row_sls" />
     </LinearLayout>
 </FrameLayout>

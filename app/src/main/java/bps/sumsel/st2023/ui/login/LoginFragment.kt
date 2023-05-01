@@ -36,15 +36,13 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         parentActivity = requireActivity() as MainActivity
-//        val pref = AuthDataStore.getInstance(requireContext().dataStore)
-//        val viewModel: LoginViewModel by viewModels { AuthViewModelFactory(pref) }
 
         val factory: LoginViewModelFactory = LoginViewModelFactory.getInstance(requireActivity())
         val viewModel: LoginViewModel by viewModels {
             factory
         }
 
-        viewModel.setEmptyUser()
+//        viewModel.setEmptyUser()
 
         binding.btnLogin.setOnClickListener {
             val email = binding.edtUsername.text.toString()

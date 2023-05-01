@@ -34,7 +34,6 @@ class SlsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSlsBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -91,8 +90,8 @@ class SlsFragment : Fragment() {
     }
 
     private fun editData(view: View, data: SlsEntity){
-//        view.findNavController().navigate(
-//            TodosFragmentDirections.actionTodosFragmentToFormFragment(data)
-//        )
+        view.findNavController().navigate(
+            SlsFragmentDirections.actionNavigationSlsToDetailSlsFragment(data)
+        )
     }
 }

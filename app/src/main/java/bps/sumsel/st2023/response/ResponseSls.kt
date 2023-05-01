@@ -173,7 +173,10 @@ data class SlsItem(
 	val jmlDokKeBps: Int? = null,
 
 	@field:SerializedName("kode_koseka")
-	val kodeKoseka: String? = null
+	val kodeKoseka: String? = null,
+
+	@field:SerializedName("daftar_ruta")
+	val daftar_ruta: List<ResponseRuta>? = null,
 ) : Parcelable
 
 @Parcelize

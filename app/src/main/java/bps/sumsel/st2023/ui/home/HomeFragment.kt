@@ -28,10 +28,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var parentActivity: MainActivity
-//    private lateinit var viewModel: HomeViewModel
-
-//    private val pref = AuthDataStore.getInstance(requireContext().dataStore)
-//    private val viewModel: HomeViewModel by viewModels { HomeViewModelFactory(pref, Injection.slsRepository(requireContext())) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,6 +92,8 @@ class HomeFragment : Fragment() {
             val alert: AlertDialog = builder.create()
             alert.show()
         }
+
+        viewModel.getSls()
     }
 
     private fun loadSls(view: View, data: List<SlsEntity>?){

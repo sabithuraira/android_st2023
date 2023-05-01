@@ -14,11 +14,6 @@ class SlsViewModel(private val slsRepository: SlsRepository) : ViewModel() {
 
     fun getSls() = slsRepository.getSls()
 
-    fun syncSls() = slsRepository.syncSls()
 
     val resultData = slsRepository.resultData
-
-//    private fun synsSls(){
-//
-//    }
 }

@@ -37,7 +37,11 @@
         android:id="@+id/navigation_sls"
         android:name="bps.sumsel.st2023.ui.sls.SlsFragment"
         android:label="fragment_sls"
-        tools:layout="@layout/fragment_sls" />
+        tools:layout="@layout/fragment_sls" >
+        <action
+            android:id="@+id/action_navigation_sls_to_detailSlsFragment"
+            app:destination="@id/detailSlsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_setting"
         android:name="bps.sumsel.st2023.ui.setting.SettingFragment"
@@ -46,5 +50,29 @@
         <action
             android:id="@+id/action_navigation_setting_to_navigation_login"
             app:destination="@id/navigation_login" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailSlsFragment"
+        android:name="bps.sumsel.st2023.ui.detail_sls.DetailSlsFragment"
+        android:label="fragment_detail_sls"
+        tools:layout="@layout/fragment_detail_sls" >
+        <action
+            android:id="@+id/action_detailSlsFragment_to_rumahTanggaFragment"
+            app:destination="@id/rumahTanggaFragment" />
+        <action
+            android:id="@+id/action_detailSlsFragment_to_navigation_sls"
+            app:destination="@id/navigation_sls" />
+        <argument
+            android:name="sls"
+            app:argType="bps.sumsel.st2023.room.entity.SlsEntity" />
+    </fragment>
+    <fragment
+        android:id="@+id/rumahTanggaFragment"
+        android:name="bps.sumsel.st2023.ui.rumah_tangga.RumahTanggaFragment"
+        android:label="fragment_rumah_tangga"
+        tools:layout="@layout/fragment_rumah_tangga" >
+        <action
+            android:id="@+id/action_rumahTanggaFragment_to_detailSlsFragment"
+            app:destination="@id/detailSlsFragment" />
     </fragment>
 </navigation>

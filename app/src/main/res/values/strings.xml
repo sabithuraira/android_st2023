@@ -19,4 +19,7 @@
     <string name="title_setting">Setting</string>
     <string name="label_sinkronisasi">Sinkronisasi</string>
     <string name="label_lakukan_sinkronisasi">Lakukan Sinkronisasi</string>
+    <string name="add_ruta">Tambah Ruta</string>
+    <string name="label_nama_kk">Nama Kepala Keluarga</string>
+    <string name="label_edit_ruta">Edit</string>
 </resources>
