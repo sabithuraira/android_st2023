@@ -46,8 +46,6 @@ class HomeFragment : Fragment() {
 
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvProgresSls.layoutManager = layoutManager
-        val itemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
-        binding.rvProgresSls.addItemDecoration(itemDecoration)
 
         viewModel.getAuthUser().observe(this) { user: UserStore ->
             if (user.name!="") {

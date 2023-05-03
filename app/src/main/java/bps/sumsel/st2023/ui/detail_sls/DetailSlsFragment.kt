@@ -38,6 +38,7 @@ class DetailSlsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         parentActivity = requireActivity() as MainActivity
+
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
         val viewModel: DetailSlsViewModel by viewModels {
             factory
@@ -47,10 +48,11 @@ class DetailSlsFragment : Fragment() {
 
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvRuta.layoutManager = layoutManager
-        val itemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
-        binding.rvRuta.addItemDecoration(itemDecoration)
 
-        sls?.let { viewModel.getRuta(sls!!) }
+        sls?.let {
+            parentActivity.setActionBarTitle(it.nama_sls)
+            viewModel.getRuta(it)
+        }
 
         viewModel.resultDataRuta.observe(viewLifecycleOwner){ result ->
             if (result != null) {
@@ -82,6 +84,13 @@ class DetailSlsFragment : Fragment() {
                 }
             }
         }
+
+        binding.btnAdd.setOnClickListener {
+            view.findNavController().navigate(
+                //in case need to create, insert data with 0 id
+                DetailSlsFragmentDirections.actionDetailSlsFragmentToRumahTanggaFragment(sls!!, RutaEntity(0))
+            )
+        }
     }
 
     override fun onDestroyView() {
@@ -90,8 +99,8 @@ class DetailSlsFragment : Fragment() {
     }
 
     private fun editData(view: View, data: RutaEntity){
-//        view.findNavController().navigate(
-//            SlsFragmentDirections.actionNavigationSlsToDetailSlsFragment(data)
-//        )
+        view.findNavController().navigate(
+            DetailSlsFragmentDirections.actionDetailSlsFragmentToRumahTanggaFragment(sls!!, data)
+        )
     }
 }

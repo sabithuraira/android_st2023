@@ -53,8 +53,6 @@ class SlsFragment : Fragment() {
 
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvSls.layoutManager = layoutManager
-        val itemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
-        binding.rvSls.addItemDecoration(itemDecoration)
 
         viewModel.getSls()
 
@@ -67,7 +65,6 @@ class SlsFragment : Fragment() {
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
                         val data = result.data
-//                        newsAdapter.submitList(newsData)
 
                         val slsAdapter = SlsAdapter(ArrayList(data))
                         slsAdapter.setOnClickCallBack(object : SlsAdapter.onClickCallBack {

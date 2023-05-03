@@ -22,4 +22,9 @@
     <string name="add_ruta">Tambah Ruta</string>
     <string name="label_nama_kk">Nama Kepala Keluarga</string>
     <string name="label_edit_ruta">Edit</string>
+    <string name="label_info_ruta">Informasi Rumah Tangga</string>
+    <string name="label_identitas_ruta">Informasi Rumah Tangga</string>
+    <string name="label_info_usaha_tani">Informasi Usaha Pertanian</string>
+    <string name="label_save">Simpan</string>
+    <string name="label_delete">Hapus</string>
 </resources>

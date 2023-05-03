@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "ruta")
 @Parcelize
 data class RutaEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="id") var id: Int = 0,
 
     @ColumnInfo(name="encId") var encId: String = "",
@@ -31,8 +31,11 @@ data class RutaEntity(
     @ColumnInfo(name="start_longitude") var start_longitude: String = "",
     @ColumnInfo(name="end_longitude") var end_longitude: String = "",
 
+    @ColumnInfo(name="is_upload") var is_upload: Int = 0,
+
     @ColumnInfo(name="created_by") var created_by: Int = 0,
     @ColumnInfo(name="updated_by") var updated_by: Int = 0,
     @ColumnInfo(name="created_at") var created_at: String = "",
     @ColumnInfo(name="updated_at") var updated_at: String = "",
+
 ): Parcelable

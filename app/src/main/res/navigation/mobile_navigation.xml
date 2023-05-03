@@ -74,5 +74,11 @@
         <action
             android:id="@+id/action_rumahTanggaFragment_to_detailSlsFragment"
             app:destination="@id/detailSlsFragment" />
+        <argument
+            android:name="sls"
+            app:argType="bps.sumsel.st2023.room.entity.SlsEntity" />
+        <argument
+            android:name="ruta"
+            app:argType="bps.sumsel.st2023.room.entity.RutaEntity" />
     </fragment>
 </navigation>

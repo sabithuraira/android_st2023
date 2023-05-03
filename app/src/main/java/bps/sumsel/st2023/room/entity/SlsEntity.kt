@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "sls")
 @Parcelize
 data class SlsEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="id") var id: Int = 0,
 
     @ColumnInfo(name="encId") var encId: String = "",

@@ -109,7 +109,7 @@ class SlsRepository  private constructor(
                                         itemRuta.endLatitude ?: "",
                                         itemRuta.startLongitude ?: "",
                                         itemRuta.endLongitude ?: "",
-
+                                        1,
                                         itemRuta.createdBy ?: 0,
                                         itemRuta.updatedBy ?: 0,
                                         itemRuta.createdAt ?: "",
@@ -152,7 +152,6 @@ class SlsRepository  private constructor(
         }
     }
 
-
     private val _resultDataRuta = MutableLiveData<ResultData<List<RutaEntity>?>>()
     val resultDataRuta: LiveData<ResultData<List<RutaEntity>?>> = _resultDataRuta
     fun getRuta(data: SlsEntity){
@@ -164,6 +163,44 @@ class SlsRepository  private constructor(
             )
 
             _resultDataRuta.postValue(ResultData.Success(localData))
+        }
+    }
+
+    private val _resultSingleRuta = MutableLiveData<ResultData<RutaEntity?>>()
+    val resultSingleRuta: LiveData<ResultData<RutaEntity?>> = _resultSingleRuta
+
+    fun setSingleRuta(data: RutaEntity?){
+        _resultSingleRuta.postValue(ResultData.Success(data))
+    }
+
+    fun updateRuta(data: RutaEntity){
+        _resultSingleRuta.value = ResultData.Loading
+
+        CoroutineScope(Dispatchers.IO).launch {
+            if(data.id==0){
+                rutaDao.insert(listOf(data))
+            }
+            else{
+                rutaDao.update(data)
+            }
+
+//            val localData = rutaDao.findDetail(
+//                data.kode_prov, data.kode_kab,
+//                data.kode_kec, data.kode_desa,
+//                data.id_sls, data.id_sub_sls,
+//                data.nurt
+//            )
+
+            _resultSingleRuta.postValue(ResultData.Success(null))
+        }
+    }
+
+    fun deleteRuta(data: RutaEntity){
+        _resultSingleRuta.value = ResultData.Loading
+
+        CoroutineScope(Dispatchers.IO).launch {
+            rutaDao.delete(data)
+            _resultSingleRuta.postValue(ResultData.Success(null))
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.room.Room
 import bps.sumsel.st2023.databinding.ActivityMainBinding
+//import bps.sumsel.st2023.room.MIGRATION_1_2
 import bps.sumsel.st2023.room.St2023Database
 
 class MainActivity : AppCompatActivity() {
@@ -21,8 +22,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.let {
+            it.hide()
+        }
+
         dbRoom = Room.databaseBuilder(this, St2023Database::class.java, "room_db")
-            .fallbackToDestructiveMigration().build()
+            .fallbackToDestructiveMigration()
+//            .addMigrations(MIGRATION_1_2)
+            .build()
 
         setContentView(binding.root)
         this.setupNav()
@@ -50,10 +57,21 @@ class MainActivity : AppCompatActivity() {
                 -> binding.navView.visibility = View.VISIBLE
                 else -> binding.navView.visibility = View.GONE
             }
+
+            when (destination.id) {
+                R.id.navigation_home, R.id.navigation_setting,
+                R.id.navigation_notifications, R.id.navigation_sls, R.id.navigation_splash
+                -> supportActionBar?.hide()
+                else -> supportActionBar?.show()
+            }
         }
     }
 
     fun setLoading(data: Boolean) {
         binding.progressBar.visibility = if (data) View.VISIBLE else View.GONE
+    }
+
+    fun setActionBarTitle(title: String){
+        supportActionBar?.title = title
     }
 }

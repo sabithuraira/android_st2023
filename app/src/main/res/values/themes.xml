@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Mon_st2023" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimary">@color/green_900</item>
         <item name="colorPrimaryVariant">@color/green_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -17,7 +17,7 @@
     <style name="Theme.Mon_st2023.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/background_windows</item>
 
-        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimary">@color/green_900</item>
         <item name="colorPrimaryVariant">@color/green_700</item>
         <item name="colorOnPrimary">@color/white</item>
 

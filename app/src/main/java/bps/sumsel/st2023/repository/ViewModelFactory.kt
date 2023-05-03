@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import bps.sumsel.st2023.helper.Injection
 import bps.sumsel.st2023.ui.detail_sls.DetailSlsViewModel
+import bps.sumsel.st2023.ui.rumah_tangga.RumahTanggaViewModel
 import bps.sumsel.st2023.ui.sls.SlsViewModel
 
 class ViewModelFactory private constructor(private val slsRepository: SlsRepository) :
@@ -14,6 +15,7 @@ class ViewModelFactory private constructor(private val slsRepository: SlsReposit
         when{
             modelClass.isAssignableFrom(SlsViewModel::class.java) -> return  SlsViewModel(slsRepository) as T
             modelClass.isAssignableFrom(DetailSlsViewModel::class.java) -> return  DetailSlsViewModel(slsRepository) as T
+            modelClass.isAssignableFrom(RumahTanggaViewModel::class.java) -> return  RumahTanggaViewModel(slsRepository) as T
         }
 //        if (modelClass.isAssignableFrom(SlsViewModel::class.java)) {
 //            return SlsViewModel(slsRepository) as T

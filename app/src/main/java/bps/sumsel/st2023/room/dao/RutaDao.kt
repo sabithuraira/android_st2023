@@ -35,5 +35,23 @@ interface RutaDao {
                   kode_kec: String,
                   kode_desa: String,
                   id_sls: String,
-                  id_sub_sls: String, ): List<RutaEntity>
+                  id_sub_sls: String): List<RutaEntity>
+
+
+    @Query("SELECT * from ruta " +
+            "WHERE kode_prov=:kode_prov" +
+            " AND kode_kab=:kode_kab" +
+            " AND kode_kec=:kode_kec" +
+            " AND kode_desa=:kode_desa" +
+            " AND id_sls=:id_sls" +
+            " AND id_sub_sls=:id_sub_sls" +
+            " AND nurt=:nurt" +
+            " ORDER BY id ASC LIMIT 1")
+    fun findDetail(kode_prov: String,
+                  kode_kab: String,
+                  kode_kec: String,
+                  kode_desa: String,
+                  id_sls: String,
+                  id_sub_sls: String,
+                    nurt: Int): RutaEntity
 }
