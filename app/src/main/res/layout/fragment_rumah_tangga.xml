@@ -20,23 +20,12 @@
             android:paddingEnd="16dp"
             android:layout_marginBottom="8dp">
 
-            <Button
-                android:id="@+id/btn_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:backgroundTint="@color/red_900"
-                android:layout_marginBottom="8dp"
-                android:padding="4dp"
-                android:textAllCaps="false"
-                android:text="@string/label_delete" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/txt_sls_name"
+                    android:id="@+id/txt_header_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
@@ -85,8 +74,7 @@
                     android:background="@drawable/bg_edittext"
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
-                    android:inputType="text"
-                    android:maxLines="1" />
+                    android:inputType="text" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -103,8 +91,7 @@
                     android:background="@drawable/bg_edittext"
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
-                    android:inputType="text"
-                    android:maxLines="1" />
+                    android:inputType="number" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -156,7 +143,6 @@
 
                 </com.google.android.material.chip.ChipGroup>
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -164,6 +150,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Lahan Sawah (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_sawah"
                     android:layout_width="match_parent"
@@ -172,6 +159,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -181,7 +169,6 @@
                     android:textColor="@color/black_200"
                     android:text="(Rincian 312 Total)" />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -189,6 +176,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Lahan Bukan Sawah/Lahan Kering (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_bukan_sawah"
                     android:layout_width="match_parent"
@@ -197,6 +185,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -206,7 +195,6 @@
                     android:textColor="@color/black_200"
                     android:text="(Rincian 313 Total)" />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -214,6 +202,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Padang Rumput Sementara (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_padang_rumput_sementara"
                     android:layout_width="match_parent"
@@ -222,6 +211,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -238,6 +228,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Padang Rumput Permanen (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_padang_rumput_permanen"
                     android:layout_width="match_parent"
@@ -246,6 +237,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -255,7 +247,6 @@
                     android:textColor="@color/black_200"
                     android:text="(Rincian 315 Total)" />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -263,6 +254,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Lahan Sementara Belum Ditanam (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_sementara_belum_tanam"
                     android:layout_width="match_parent"
@@ -271,6 +263,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -287,6 +280,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Tanaman Tahunan (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_tanaman_tahunan"
                     android:layout_width="match_parent"
@@ -295,6 +289,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -311,6 +306,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Kandang Ternak dan bangunan untuk pertanian lainnya (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_pertanian_lainnya"
                     android:layout_width="match_parent"
@@ -319,6 +315,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -328,7 +325,6 @@
                     android:textColor="@color/black_200"
                     android:text="(Rincian 318 Total)" />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -336,6 +332,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Kegiatan Kehutanan (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_kegiatan_kehutanan"
                     android:layout_width="match_parent"
@@ -344,6 +341,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -353,7 +351,6 @@
                     android:textColor="@color/black_200"
                     android:text="(Rincian 319 Total)" />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -361,6 +358,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Kegiatan Budidaya Perikanan (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_budidaya_perikanan"
                     android:layout_width="match_parent"
@@ -369,6 +367,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -378,7 +377,6 @@
                     android:textColor="@color/black_200"
                     android:text="(Rincian 320 Total)" />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -386,6 +384,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
                     android:text="Luas Lahan Lainnya (Bukan lahan pertanian dan bukan tempat tinggal) (m2)" />
+
                 <EditText
                     android:id="@+id/edt_luas_lainnya"
                     android:layout_width="match_parent"
@@ -394,6 +393,7 @@
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
                     android:inputType="number" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -404,14 +404,32 @@
                     android:text="(Rincian 321 Total)" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_save"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/green_900"
-                android:layout_marginTop="8dp"
-                android:textAllCaps="false"
-                android:text="@string/label_save" />
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/blue_900"
+                    android:padding="6dp"
+                    android:textAllCaps="false"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/label_save" />
+
+                <Button
+                    android:id="@+id/btn_finish"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/label_finish" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

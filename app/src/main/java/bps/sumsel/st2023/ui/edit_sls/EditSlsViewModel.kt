@@ -8,7 +8,7 @@ import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 
 class EditSlsViewModel(private val slsRepository: SlsRepository) : ViewModel() {
-    fun updateRuta(data: RutaEntity) = slsRepository.updateRuta(data)
+    fun updateRuta(data: RutaEntity, isFinish: Boolean) = slsRepository.updateRuta(data, isFinish)
 
     val resultSingleRuta = slsRepository.resultSingleRuta
 }

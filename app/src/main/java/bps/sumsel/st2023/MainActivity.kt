@@ -60,7 +60,8 @@ class MainActivity : AppCompatActivity() {
 
             when (destination.id) {
                 R.id.navigation_home, R.id.navigation_setting,
-                R.id.navigation_notifications, R.id.navigation_sls, R.id.navigation_splash
+                R.id.navigation_notifications, R.id.navigation_sls,
+                R.id.navigation_splash, R.id.navigation_login
                 -> supportActionBar?.hide()
                 else -> supportActionBar?.show()
             }

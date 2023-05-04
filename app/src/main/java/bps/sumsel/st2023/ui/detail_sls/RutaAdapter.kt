@@ -25,7 +25,7 @@ class RutaAdapter(private val listData: ArrayList<RutaEntity>): RecyclerView.Ada
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
         val curTodo = listData[position]
-        holder.binding.txtName.text = curTodo.id_sls + curTodo.kepala_ruta
+        holder.binding.txtName.text = "${get4digitRuta(curTodo.nurt)} - ${curTodo.kepala_ruta}"
 
         holder.itemView.setOnClickListener {
             OnClickCallBack.onItemClicked(listData[holder.adapterPosition])
@@ -34,6 +34,18 @@ class RutaAdapter(private val listData: ArrayList<RutaEntity>): RecyclerView.Ada
 
     override fun getItemCount(): Int {
         return listData.count()
+    }
+
+    fun get4digitRuta(data: Int): String{
+        var result = data.toString()
+
+        var lenData = result.length
+        while (lenData < 4) {
+            result = "0${result}"
+            lenData = result.length
+        }
+
+        return result
     }
 
     class DataViewHolder(val binding: RowRutaBinding) : RecyclerView.ViewHolder(binding.root)

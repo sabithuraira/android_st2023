@@ -173,25 +173,20 @@ class SlsRepository  private constructor(
         _resultSingleRuta.postValue(ResultData.Success(data))
     }
 
-    fun updateRuta(data: RutaEntity){
+    fun updateRuta(data: RutaEntity, isFinish: Boolean){
         _resultSingleRuta.value = ResultData.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
-            if(data.id==0){
-                rutaDao.insert(listOf(data))
-            }
-            else{
-                rutaDao.update(data)
-            }
+            if(data.id==0) rutaDao.insert(listOf(data))
+            else rutaDao.update(data)
 
-//            val localData = rutaDao.findDetail(
-//                data.kode_prov, data.kode_kab,
-//                data.kode_kec, data.kode_desa,
-//                data.id_sls, data.id_sub_sls,
-//                data.nurt
-//            )
+            val localData = rutaDao.findDetail(
+                data.kode_prov, data.kode_kab, data.kode_kec, data.kode_desa,
+                data.id_sls, data.id_sub_sls, data.nurt
+            )
 
-            _resultSingleRuta.postValue(ResultData.Success(null))
+            if(isFinish)_resultSingleRuta.postValue(ResultData.Success(null))
+            else _resultSingleRuta.postValue(ResultData.Success(localData))
         }
     }
 
