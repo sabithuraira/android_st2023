@@ -24,8 +24,9 @@ class RutaAdapter(private val listData: ArrayList<RutaEntity>): RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        val curTodo = listData[position]
-        holder.binding.txtName.text = "${get4digitRuta(curTodo.nurt)} - ${curTodo.kepala_ruta}"
+        val curData = listData[position]
+        holder.binding.txtName.text = "${get4digitRuta(curData.nurt)} - ${curData.kepala_ruta}"
+        holder.binding.txtStatus.text = getWawancaraStatus(curData.start_time, curData.end_time)
 
         holder.itemView.setOnClickListener {
             OnClickCallBack.onItemClicked(listData[holder.adapterPosition])
@@ -46,6 +47,15 @@ class RutaAdapter(private val listData: ArrayList<RutaEntity>): RecyclerView.Ada
         }
 
         return result
+    }
+
+    private fun getWawancaraStatus(startTime: String, endTime: String): String {
+        if (startTime != "") {
+            if (endTime == "") return "Sedang Wawancara"
+            else return "Sudah Wawancara"
+        } else {
+            return "Belum Wawancara"
+        }
     }
 
     class DataViewHolder(val binding: RowRutaBinding) : RecyclerView.ViewHolder(binding.root)
