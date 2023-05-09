@@ -128,8 +128,8 @@ class RumahTanggaFragment : Fragment() {
                 val currentTime: Date = Calendar.getInstance().time
 
                 it.start_time = currentTime.toString()
-                it.start_latitude = curLocation?.latitude.toString()
-                it.start_longitude = curLocation?.longitude.toString()
+                it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
+                it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
                 viewModel.updateRuta(it, false)
 
@@ -150,8 +150,8 @@ class RumahTanggaFragment : Fragment() {
                 val currentTime: Date = Calendar.getInstance().time
 
                 it.end_time = currentTime.toString()
-                it.end_latitude = curLocation?.latitude.toString()
-                it.end_longitude = curLocation?.longitude.toString()
+                it.end_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
+                it.end_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
                 viewModel.updateRuta(it, false)
 
@@ -176,11 +176,12 @@ class RumahTanggaFragment : Fragment() {
             builder.setPositiveButton("Ya") { dialog, _ ->
                 ruta?.let {
                     it.start_time = ""
-                    it.start_latitude = ""
-                    it.start_longitude = ""
+                    it.start_latitude = 0.0
+                    it.start_longitude = 0.0
+
                     it.end_time = ""
-                    it.end_latitude = ""
-                    it.end_longitude = ""
+                    it.end_latitude = 0.0
+                    it.end_longitude = 0.0
 
                     viewModel.updateRuta(it, false)
 
@@ -209,36 +210,37 @@ class RumahTanggaFragment : Fragment() {
     private fun save() {
         ruta?.let {
             if (it.id == 0) {
-                viewModel.updateRuta(
-                    RutaEntity(
-                        0, "",
-                        sls!!.kode_prov, sls!!.kode_kab, sls!!.kode_kec,
-                        sls!!.kode_desa, sls!!.id_sls, sls!!.id_sub_sls,
-                        binding.edtNurt.text.toString().toInt(), 0,
-                        binding.edtNamaKk.text.toString(),
-                        "", "",
-                        "", "",
-                        "", "",
-                        0
-                    ), false
-                )
-            } else {
-                it.kepala_ruta = binding.edtNamaKk.text.toString()
+                it.encId = ""
+                it.kode_prov = sls!!.kode_prov
+                it.kode_kab = sls!!.kode_kab
+                it.kode_kec = sls!!.kode_kec
+                it.kode_desa = sls!!.kode_desa
+                it.id_sls = sls!!.id_sls
+                it.id_sub_sls = sls!!.id_sub_sls
+
                 it.nurt = binding.edtNurt.text.toString().toInt()
+                it.kepala_ruta = binding.edtNamaKk.text.toString()
 
-//                    binding.edtLuasSawah.text.toString().toInt()
-//                    binding.edtLuasBukanSawah.text.toString().toInt()
-//                    binding.edtLuasPadangRumputSementara.text.toString().toInt()
-//                    binding.edtLuasPadangRumputPermanen.text.toString().toInt()
-//                    binding.edtLuasSementaraBelumTanam.text.toString().toInt()
-//                    binding.edtLuasTanamanTahunan.text.toString().toInt()
-//                    binding.edtLuasPertanianLainnya.text.toString().toInt()
-//                    binding.edtLuasKegiatanKehutanan.text.toString().toInt()
-//                    binding.edtLuasBudidayaPerikanan.text.toString().toInt()
-//                    binding.edtLuasLainnya.text.toString().toInt()
+                it.is_upload = 0
+            } else {
+                it.nurt = binding.edtNurt.text.toString().toInt()
+                it.kepala_ruta = binding.edtNamaKk.text.toString()
+                it.jumlah_art = binding.edtJmlArt.text.toString().toIntOrNull() ?: 0
+                it.jumlah_unit_usaha = binding.edtJmlUnitUsaha.text.toString().toIntOrNull() ?: 0
 
-                viewModel.updateRuta(it, false)
+                it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
+                it.jml_308_bukan_sawah = binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
+                it.jml_308_rumput_sementara = binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
+                it.jml_308_rumput_permanen = binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
+                it.jml_308_belum_tanam = binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
+//                it.jml_308_tanaman_tahunan = binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
+                it.jml_308_ternak_bangunan_lain = binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
+                it.jml_308_kehutanan = binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
+                it.jml_308_budidaya = binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
+                it.jml_308_lahan_lainnya = binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
             }
+
+            viewModel.updateRuta(it, false)
 
             Toast.makeText(context, "Data berhasil diperbarui", Toast.LENGTH_SHORT).show()
         } ?: run {
@@ -306,19 +308,40 @@ class RumahTanggaFragment : Fragment() {
                 binding.linearWawancara.visibility = View.GONE
                 binding.linearUsahaTani.visibility = View.GONE
 
+                binding.edtJmlArt.visibility = View.GONE
+                binding.lblJmlArt.visibility = View.GONE
+                binding.edtJmlUnitUsaha.visibility = View.GONE
+                binding.lblJmlUnitUsaha.visibility = View.GONE
+
                 binding.txtHeaderName.text = "Tambah Rumah Tangga"
             } else {
                 binding.linearWawancara.visibility = View.VISIBLE
                 binding.linearUsahaTani.visibility = View.VISIBLE
 
-                binding.txtHeaderName.text = "Perbaharui ${it.kepala_ruta}"
+                binding.edtJmlArt.visibility = View.VISIBLE
+                binding.lblJmlArt.visibility = View.VISIBLE
+                binding.edtJmlUnitUsaha.visibility = View.VISIBLE
+                binding.lblJmlUnitUsaha.visibility = View.VISIBLE
+
+                binding.txtHeaderName.text = "Perbarui ${it.kepala_ruta}"
 
                 checkWawancara(it.start_time, it.end_time)
 
-                binding.edtNurt.setText(it.nurt.toString())
+                binding.edtNurt.setText(if (it.nurt.toString() == "0") "" else it.nurt.toString())
                 binding.edtNamaKk.setText(it.kepala_ruta)
-                binding.edtJmlRuta.setText("")
-                binding.edtJmlUnitUsaha.setText("")
+                binding.edtJmlArt.setText(if (it.jumlah_art.toString() == "0") "" else it.jumlah_art.toString())
+                binding.edtJmlUnitUsaha.setText(if (it.jumlah_unit_usaha.toString() == "0") "" else it.jumlah_unit_usaha.toString())
+
+                binding.edtLuasSawah.setText(if (it.jml_308_sawah.toString() == "0") "" else it.jml_308_sawah.toString())
+                binding.edtLuasBukanSawah.setText(if (it.jml_308_bukan_sawah.toString() == "0") "" else it.jml_308_bukan_sawah.toString())
+                binding.edtLuasRumputSementara.setText(if (it.jml_308_rumput_sementara.toString() == "0") "" else it.jml_308_rumput_sementara.toString())
+                binding.edtLuasRumputPermanen.setText(if (it.jml_308_rumput_permanen.toString() == "0") "" else it.jml_308_rumput_permanen.toString())
+                binding.edtLuasBelumTanam.setText(if (it.jml_308_belum_tanam.toString() == "0") "" else it.jml_308_belum_tanam.toString())
+//                binding.edtLuasTanamanTahunan.setText(if (it.jml_308_tanaman_tahunan.toString() == "0") "" else it.jml_308_tanaman_tahunan.toString())
+                binding.edtLuasTernakBangunanLain.setText(if (it.jml_308_ternak_bangunan_lain.toString() == "0") "" else it.jml_308_ternak_bangunan_lain.toString())
+                binding.edtLuasKehutanan.setText(if (it.jml_308_kehutanan.toString() == "0") "" else it.jml_308_kehutanan.toString())
+                binding.edtLuasBudidaya.setText(if (it.jml_308_budidaya.toString() == "0") "" else it.jml_308_budidaya.toString())
+                binding.edtLuasLahanLainnya.setText(if (it.jml_308_lahan_lainnya.toString() == "0") "" else it.jml_308_lahan_lainnya.toString())
             }
         } ?: run {
             view.findNavController().navigate(

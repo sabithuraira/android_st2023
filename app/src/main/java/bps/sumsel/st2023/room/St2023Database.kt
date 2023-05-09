@@ -14,7 +14,7 @@ import bps.sumsel.st2023.room.entity.SlsEntity
 
 @Database(
     entities = [SlsEntity::class, RutaEntity::class],
-    version = 2,
+    version = 3,
 )
 abstract class St2023Database: RoomDatabase() {
     abstract fun slsDao(): SlsDao

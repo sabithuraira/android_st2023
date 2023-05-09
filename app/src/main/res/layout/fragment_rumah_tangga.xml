@@ -17,17 +17,18 @@
             android:paddingTop="8dp"
             android:paddingBottom="16dp"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginBottom="8dp">
+            android:paddingEnd="16dp">
 
             <LinearLayout
                 android:id="@+id/linear_wawancara"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/black_300"
@@ -53,6 +54,7 @@
                     android:id="@+id/btn_re_wawancara"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:backgroundTint="@color/black_200"
                     android:textAllCaps="false"
                     android:text="@string/label_re_wawancara" />
@@ -66,380 +68,381 @@
                     android:id="@+id/txt_header_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/black_300"
                     android:text="@string/label_info_ruta" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_marginTop="16dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black_300"
-                    android:text="@string/label_identitas_ruta" />
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black_300"
+                        android:text="@string/label_identitas_ruta" />
 
-                <TextView
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Nomor Urut Rumah Tangga" />
+
+                    <EditText
+                        android:id="@+id/edt_nurt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Nama Kepala Keluarga" />
+
+                    <EditText
+                        android:id="@+id/edt_nama_kk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="text" />
+
+                    <TextView
+                        android:id="@+id/lbl_jml_art"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Jumlah Anggota Rumah Tangga" />
+
+                    <EditText
+                        android:id="@+id/edt_jml_art"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
+
+                    <TextView
+                        android:id="@+id/lbl_jml_unit_usaha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Jumlah Unit Usaha" />
+
+                    <EditText
+                        android:id="@+id/edt_jml_unit_usaha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearUsahaTani"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Nomor Urut Rumah Tangga" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
+                    android:background="@color/white">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black_300"
+                        android:text="@string/label_info_usaha_tani" />
 
-                <EditText
-                    android:id="@+id/edt_nurt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Pilih Subsektor Usaha Tani yang dimiliki" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Nama Kepala Keluarga" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Lahan Sawah (m2)" />
 
-                <EditText
-                    android:id="@+id/edt_nama_kk"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="text" />
+                    <EditText
+                        android:id="@+id/edt_luas_sawah"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Jumlah Anggota Rumah Tangga" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 312 Total)" />
 
-                <EditText
-                    android:id="@+id/edt_jml_ruta"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Lahan Bukan Sawah/Lahan Kering (m2)" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Jumlah Unit Usaha" />
+                    <EditText
+                        android:id="@+id/edt_luas_bukan_sawah"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/edt_jml_unit_usaha"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number"/>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 313 Total)" />
 
-            <LinearLayout
-                android:id="@+id/linearUsahaTani"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:background="@color/white">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black_300"
-                    android:text="@string/label_info_usaha_tani" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Padang Rumput Sementara (m2)" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Pilih Subsektor Usaha Tani yang dimiliki" />
+                    <EditText
+                        android:id="@+id/edt_luas_rumput_sementara"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_subsektor"
-                    app:singleSelection="true"
-                    app:selectionRequired="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 314 Total)" />
 
-                </com.google.android.material.chip.ChipGroup>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Padang Rumput Permanen (m2)" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Lahan Sawah (m2)" />
+                    <EditText
+                        android:id="@+id/edt_luas_rumput_permanen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/edt_luas_sawah"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 315 Total)" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 312 Total)" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Lahan Sementara Belum Ditanam (m2)" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Lahan Bukan Sawah/Lahan Kering (m2)" />
+                    <EditText
+                        android:id="@+id/edt_luas_belum_tanam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/edt_luas_bukan_sawah"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 316 Total)" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 313 Total)" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Tanaman Tahunan (m2)" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Padang Rumput Sementara (m2)" />
+                    <EditText
+                        android:id="@+id/edt_luas_tanaman_tahunan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/edt_luas_padang_rumput_sementara"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 317 Total)" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 314 Total)" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Kandang Ternak dan bangunan untuk pertanian lainnya (m2)" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Padang Rumput Permanen (m2)" />
+                    <EditText
+                        android:id="@+id/edt_luas_ternak_bangunan_lain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/edt_luas_padang_rumput_permanen"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 318 Total)" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 315 Total)" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Kegiatan Kehutanan (m2)" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Lahan Sementara Belum Ditanam (m2)" />
+                    <EditText
+                        android:id="@+id/edt_luas_kehutanan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/edt_luas_sementara_belum_tanam"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 319 Total)" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 316 Total)" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Kegiatan Budidaya Perikanan (m2)" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Tanaman Tahunan (m2)" />
+                    <EditText
+                        android:id="@+id/edt_luas_budidaya"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/edt_luas_tanaman_tahunan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 320 Total)" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 317 Total)" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_300"
+                        android:text="Luas Lahan Lainnya (Bukan lahan pertanian dan bukan tempat tinggal) (m2)" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Kandang Ternak dan bangunan untuk pertanian lainnya (m2)" />
+                    <EditText
+                        android:id="@+id/edt_luas_lahan_lainnya"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black_300"
+                        android:textSize="14sp"
+                        android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/edt_luas_pertanian_lainnya"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 318 Total)" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Kegiatan Kehutanan (m2)" />
-
-                <EditText
-                    android:id="@+id/edt_luas_kegiatan_kehutanan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 319 Total)" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Kegiatan Budidaya Perikanan (m2)" />
-
-                <EditText
-                    android:id="@+id/edt_luas_budidaya_perikanan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 320 Total)" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/black_300"
-                    android:text="Luas Lahan Lainnya (Bukan lahan pertanian dan bukan tempat tinggal) (m2)" />
-
-                <EditText
-                    android:id="@+id/edt_luas_lainnya"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:textColor="@color/black_300"
-                    android:textSize="14sp"
-                    android:inputType="number" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:textStyle="italic"
-                    android:gravity="right"
-                    android:textColor="@color/black_200"
-                    android:text="(Rincian 321 Total)" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 321 Total)" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
