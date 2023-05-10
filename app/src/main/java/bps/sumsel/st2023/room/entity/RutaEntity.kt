@@ -61,7 +61,7 @@ data class RutaEntity(
     @ColumnInfo(name="start_longitude") var start_longitude: Double = 0.0,
     @ColumnInfo(name="end_longitude") var end_longitude: Double = 0.0,
 
-    @ColumnInfo(name="is_upload") var is_upload: Int = 0,
+    @ColumnInfo(name="status_upload") var status_upload: Int = 0,
 
     @ColumnInfo(name="created_by") var created_by: Int = 0,
     @ColumnInfo(name="updated_by") var updated_by: Int = 0,

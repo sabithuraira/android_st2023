@@ -8,6 +8,7 @@ import androidx.room.ColumnInfo
 import bps.sumsel.st2023.api.ApiInterface
 import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.datastore.UserStore
+import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.response.ResponseSls
 import bps.sumsel.st2023.response.ResponseSlsPetugas
 import bps.sumsel.st2023.response.ResponseStringData
@@ -140,7 +141,7 @@ class SlsRepository  private constructor(
                                         itemRuta.startLongitude ?: 0.0,
                                         itemRuta.endLongitude ?: 0.0,
 
-                                        1,
+                                        EnumStatusUpload.UPLOADED.kode,
 
                                         itemRuta.createdBy ?: 0,
                                         itemRuta.updatedBy ?: 0,

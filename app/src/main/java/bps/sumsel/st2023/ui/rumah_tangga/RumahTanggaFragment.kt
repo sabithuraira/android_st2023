@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentRumahTanggaBinding
+import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.RutaEntity
@@ -131,6 +132,8 @@ class RumahTanggaFragment : Fragment() {
                 it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
                 it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
+                it.status_upload = if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
+
                 viewModel.updateRuta(it, false)
 
                 wawancaraStarted()
@@ -152,6 +155,8 @@ class RumahTanggaFragment : Fragment() {
                 it.end_time = currentTime.toString()
                 it.end_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
                 it.end_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
+
+                it.status_upload = if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
 
                 viewModel.updateRuta(it, false)
 
@@ -182,6 +187,8 @@ class RumahTanggaFragment : Fragment() {
                     it.end_time = ""
                     it.end_latitude = 0.0
                     it.end_longitude = 0.0
+
+                    it.status_upload = if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
 
                     viewModel.updateRuta(it, false)
 
@@ -221,7 +228,7 @@ class RumahTanggaFragment : Fragment() {
                 it.nurt = binding.edtNurt.text.toString().toInt()
                 it.kepala_ruta = binding.edtNamaKk.text.toString()
 
-                it.is_upload = 0
+                it.status_upload = EnumStatusUpload.NOT_UPLOADED.kode
             } else {
                 it.nurt = binding.edtNurt.text.toString().toInt()
                 it.kepala_ruta = binding.edtNamaKk.text.toString()
@@ -238,6 +245,8 @@ class RumahTanggaFragment : Fragment() {
                 it.jml_308_kehutanan = binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
                 it.jml_308_budidaya = binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
                 it.jml_308_lahan_lainnya = binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
+
+                it.status_upload = if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
             }
 
             viewModel.updateRuta(it, false)
@@ -260,7 +269,13 @@ class RumahTanggaFragment : Fragment() {
 
         builder.setPositiveButton("Ya") { dialog, _ ->
             ruta?.let {
-                viewModel.delete(it)
+                if (it.status_upload == EnumStatusUpload.NOT_UPLOADED.kode) {
+                    viewModel.delete(it)
+                } else {
+                    it.status_upload = EnumStatusUpload.DELETED_AFTER_UPLOADED.kode
+
+                    viewModel.updateRuta(it, true)
+                }
             }
 
             dialog.dismiss()
