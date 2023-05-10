@@ -22,6 +22,9 @@ interface RutaDao {
     @Query("SELECT * from ruta ORDER BY id ASC")
     fun findAll(): List<RutaEntity>
 
+    @Query("SELECT * from ruta WHERE status_upload != 1 ORDER BY id ASC")
+    fun findAllToUpload(): List<RutaEntity>
+
     @Query("SELECT * from ruta " +
             "WHERE kode_prov=:kode_prov" +
             " AND kode_kab=:kode_kab" +

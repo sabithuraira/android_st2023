@@ -1,5 +1,6 @@
 package bps.sumsel.st2023.api
 
+import bps.sumsel.st2023.request.RequestRutaMany
 import bps.sumsel.st2023.response.*
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -25,4 +26,7 @@ interface ApiInterface {
 
     @DELETE("sls/{id}")
     fun deleteSls(@Path("id") id: String): Call<ResponseStringData>
+
+    @POST("ruta/many")
+    fun storeRutaMany(@Body params: RequestRutaMany): Call<ResponseStringStatus>
 }

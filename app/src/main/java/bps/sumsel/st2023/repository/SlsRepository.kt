@@ -1,15 +1,13 @@
 package bps.sumsel.st2023.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
-import androidx.room.ColumnInfo
 import bps.sumsel.st2023.api.ApiInterface
 import bps.sumsel.st2023.datastore.AuthDataStore
-import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.enum.EnumStatusUpload
-import bps.sumsel.st2023.response.ResponseSls
+import bps.sumsel.st2023.request.RequestRuta
+import bps.sumsel.st2023.request.RequestRutaMany
 import bps.sumsel.st2023.response.ResponseSlsPetugas
 import bps.sumsel.st2023.response.ResponseStringData
 import bps.sumsel.st2023.room.dao.RutaDao
@@ -17,8 +15,8 @@ import bps.sumsel.st2023.room.dao.SlsDao
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import retrofit2.Call
 import retrofit2.Callback
@@ -229,6 +227,69 @@ class SlsRepository  private constructor(
         CoroutineScope(Dispatchers.IO).launch {
             rutaDao.delete(data)
             _resultSingleRuta.postValue(ResultData.Success(null))
+        }
+    }
+
+    fun storeRutaMany() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val rutaToUpload = rutaDao.findAllToUpload()
+
+            val rutaList = mutableListOf<RequestRuta>()
+
+            rutaToUpload?.forEach {
+                val requestRuta = RequestRuta(
+                    it.id,
+                    it.encId,
+                    it.kode_prov,
+                    it.kode_kab,
+                    it.kode_kec,
+                    it.kode_desa,
+                    it.id_sls,
+                    it.id_sub_sls,
+                    it.nurt,
+                    it.kepala_ruta,
+                    it.jumlah_art,
+                    it.jumlah_unit_usaha,
+                    it.subsektor1_a,
+                    it.subsektor1_b,
+                    it.subsektor2_a,
+                    it.subsektor2_b,
+                    it.subsektor3_a,
+                    it.subsektor3_b,
+                    it.subsektor4_a,
+                    it.subsektor4_b,
+                    it.subsektor4_c,
+                    it.subsektor5_a,
+                    it.subsektor5_b,
+                    it.subsektor5_c,
+                    it.subsektor6_a,
+                    it.subsektor6_b,
+                    it.subsektor6_c,
+                    it.subsektor7_a,
+                    it.jml_308_sawah,
+                    it.jml_308_bukan_sawah,
+                    it.jml_308_rumput_sementara,
+                    it.jml_308_rumput_permanen,
+                    it.jml_308_belum_tanam,
+                    it.jml_308_ternak_bangunan_lain,
+                    it.jml_308_kehutanan,
+                    it.jml_308_budidaya,
+                    it.jml_308_lahan_lainnya,
+                    it.daftar_komoditas,
+                    it.start_time,
+                    it.end_time,
+                    it.start_latitude,
+                    it.end_latitude,
+                    it.start_longitude,
+                    it.end_longitude
+                )
+
+                rutaList.add(requestRuta)
+            }
+
+            val requestRutaMany = RequestRutaMany(rutaList)
+
+            Log.d("ruta", requestRutaMany.toString())
         }
     }
 

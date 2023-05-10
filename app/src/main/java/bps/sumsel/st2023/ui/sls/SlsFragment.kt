@@ -84,6 +84,10 @@ class SlsFragment : Fragment() {
                 }
             }
         }
+
+        binding.btnUpload.setOnClickListener {
+            viewModel.storeRutaMany()
+        }
     }
 
     private fun editData(view: View, data: SlsEntity){

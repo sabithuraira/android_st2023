@@ -10,14 +10,29 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:orientation="vertical">
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_sls"
-            android:layout_gravity="right"
-            android:backgroundTint="@color/green_900"
-            android:drawableLeft="@drawable/ic_baseline_add_24"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginBottom="4dp">
+            <Button
+                android:id="@+id/btn_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/upload"
+                android:drawableLeft="@drawable/ic_baseline_backup_24" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_sls"
+                android:drawableLeft="@drawable/ic_baseline_add_24" />
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSls"
             android:layout_width="match_parent"
