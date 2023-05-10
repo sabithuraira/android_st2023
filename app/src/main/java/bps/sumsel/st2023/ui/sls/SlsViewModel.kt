@@ -17,4 +17,6 @@ class SlsViewModel(private val slsRepository: SlsRepository) : ViewModel() {
     val resultData = slsRepository.resultData
 
     fun storeRutaMany() = slsRepository.storeRutaMany()
+
+    val resultUpload = slsRepository.resultUpload
 }

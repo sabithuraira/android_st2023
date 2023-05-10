@@ -13,10 +13,7 @@ data class RequestRutaMany(
 @Parcelize
 data class RequestRuta(
     @field:SerializedName("id")
-    val id: Int? = null,
-
-    @field:SerializedName("encId")
-    val encId: String? = null,
+    val id: String? = null,
 
     @field:SerializedName("kode_prov")
     val kodeProv: String? = null,
@@ -143,4 +140,7 @@ data class RequestRuta(
 
     @field:SerializedName("end_longitude")
     val endLongitude: Double? = null,
+
+    @field:SerializedName("status_upload")
+    val statusUpload: Int? = null,
 ) : Parcelable

@@ -1,27 +1,22 @@
 package bps.sumsel.st2023.ui.sls
 
+import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import bps.sumsel.st2023.MainActivity
-import bps.sumsel.st2023.MainViewModel
 import bps.sumsel.st2023.R
-import bps.sumsel.st2023.databinding.FragmentNotificationsBinding
 import bps.sumsel.st2023.databinding.FragmentSlsBinding
+import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.SlsEntity
-import bps.sumsel.st2023.ui.notifications.NotificationsViewModel
 
 class SlsFragment : Fragment() {
     private var _binding: FragmentSlsBinding? = null
@@ -56,12 +51,13 @@ class SlsFragment : Fragment() {
 
         viewModel.getSls()
 
-        viewModel.resultData.observe(viewLifecycleOwner){ result ->
+        viewModel.resultData.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is ResultData.Loading -> {
                         parentActivity.setLoading(true)
                     }
+
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
                         val data = result.data
@@ -77,6 +73,7 @@ class SlsFragment : Fragment() {
                             adapter = slsAdapter
                         }
                     }
+
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
@@ -86,11 +83,46 @@ class SlsFragment : Fragment() {
         }
 
         binding.btnUpload.setOnClickListener {
-            viewModel.storeRutaMany()
+            val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
+
+            builder.setTitle("Upload Data")
+            builder.setMessage("Anda yakin ingin mengupload data?")
+
+            builder.setPositiveButton("Ya") { dialog, _ ->
+                viewModel.storeRutaMany()
+
+                viewModel.resultUpload.observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is ResultData.Loading -> {
+                                parentActivity.setLoading(true)
+                            }
+
+                            is ResultData.Success -> {
+                                parentActivity.setLoading(false)
+
+                                Toast.makeText(context, "Upload berhasil", Toast.LENGTH_SHORT).show()
+                            }
+
+                            is ResultData.Error -> {
+                                parentActivity.setLoading(false)
+                                Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+            }
+
+            builder.setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.show()
         }
     }
 
-    private fun editData(view: View, data: SlsEntity){
+    private fun editData(view: View, data: SlsEntity) {
         view.findNavController().navigate(
             SlsFragmentDirections.actionNavigationSlsToDetailSlsFragment(data)
         )

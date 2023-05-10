@@ -1,6 +1,5 @@
 package bps.sumsel.st2023.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import bps.sumsel.st2023.api.ApiInterface
@@ -10,19 +9,19 @@ import bps.sumsel.st2023.request.RequestRuta
 import bps.sumsel.st2023.request.RequestRutaMany
 import bps.sumsel.st2023.response.ResponseSlsPetugas
 import bps.sumsel.st2023.response.ResponseStringData
+import bps.sumsel.st2023.response.ResponseStringStatus
 import bps.sumsel.st2023.room.dao.RutaDao
 import bps.sumsel.st2023.room.dao.SlsDao
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SlsRepository  private constructor(
+class SlsRepository private constructor(
     private val apiService: ApiInterface,
     private val slsDao: SlsDao,
     private val rutaDao: RutaDao,
@@ -31,26 +30,29 @@ class SlsRepository  private constructor(
     private val _resultData = MutableLiveData<ResultData<List<SlsEntity>?>>()
     val resultData: LiveData<ResultData<List<SlsEntity>?>> = _resultData
 
-    fun syncSls(){
-        val dataUser = runBlocking { pref.getUser().first()  }
+    fun syncSls() {
+        val dataUser = runBlocking { pref.getUser().first() }
 
         _resultData.value = ResultData.Loading
 
         val client = apiService.listSlsPetugas(
-            dataUser!!.jabatan,
-            dataUser!!.user
+            dataUser.jabatan,
+            dataUser.user
         )
 
         client.enqueue(object : Callback<ResponseSlsPetugas> {
-            override fun onResponse(call: Call<ResponseSlsPetugas>, response: Response<ResponseSlsPetugas>) {
+            override fun onResponse(
+                call: Call<ResponseSlsPetugas>,
+                response: Response<ResponseSlsPetugas>
+            ) {
                 if (response.isSuccessful) {
                     val sls = response.body()?.datas
 
                     var slsList = mutableListOf<SlsEntity>()
                     var rutasList = mutableListOf<RutaEntity>()
 
-                    sls?.let{
-                        for(item in sls){
+                    sls?.let {
+                        for (item in sls) {
                             slsList.add(
                                 SlsEntity(
                                     item.id ?: 0,
@@ -87,7 +89,7 @@ class SlsRepository  private constructor(
 
                             val rutas = item.daftar_ruta
                             rutas?.let {
-                                for(itemRuta in rutas){
+                                for (itemRuta in rutas) {
                                     val ruta = RutaEntity(
                                         itemRuta.id ?: 0,
                                         itemRuta.encId ?: "",
@@ -154,7 +156,7 @@ class SlsRepository  private constructor(
 
                     runBlocking {
                         slsDao.deleteAll()
-                        slsDao.insert(slsList!!)
+                        slsDao.insert(slsList)
                         rutaDao.deleteAll()
                         rutaDao.insert(rutasList)
 
@@ -163,9 +165,11 @@ class SlsRepository  private constructor(
                             _resultData.postValue(ResultData.Success(localData))
                         }
                     }
-                }
-                else{
-                    val errorMessage: ResponseStringData = Gson().fromJson(response.errorBody()!!.charStream(), ResponseStringData::class.java)
+                } else {
+                    val errorMessage: ResponseStringData = Gson().fromJson(
+                        response.errorBody()!!.charStream(),
+                        ResponseStringData::class.java
+                    )
                     _resultData.value = ResultData.Error(errorMessage.datas ?: "")
                 }
             }
@@ -185,7 +189,7 @@ class SlsRepository  private constructor(
 
     private val _resultDataRuta = MutableLiveData<ResultData<List<RutaEntity>?>>()
     val resultDataRuta: LiveData<ResultData<List<RutaEntity>?>> = _resultDataRuta
-    fun getRuta(data: SlsEntity){
+    fun getRuta(data: SlsEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             val localData = rutaDao.findBySls(
                 data.kode_prov, data.kode_kab,
@@ -200,15 +204,15 @@ class SlsRepository  private constructor(
     private val _resultSingleRuta = MutableLiveData<ResultData<RutaEntity?>>()
     val resultSingleRuta: LiveData<ResultData<RutaEntity?>> = _resultSingleRuta
 
-    fun setSingleRuta(data: RutaEntity?){
+    fun setSingleRuta(data: RutaEntity?) {
         _resultSingleRuta.postValue(ResultData.Success(data))
     }
 
-    fun updateRuta(data: RutaEntity, isFinish: Boolean){
+    fun updateRuta(data: RutaEntity, isFinish: Boolean) {
         _resultSingleRuta.value = ResultData.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
-            if(data.id==0) rutaDao.insert(listOf(data))
+            if (data.id == 0) rutaDao.insert(listOf(data))
             else rutaDao.update(data)
 
             val localData = rutaDao.findDetail(
@@ -216,12 +220,12 @@ class SlsRepository  private constructor(
                 data.id_sls, data.id_sub_sls, data.nurt
             )
 
-            if(isFinish)_resultSingleRuta.postValue(ResultData.Success(null))
+            if (isFinish) _resultSingleRuta.postValue(ResultData.Success(null))
             else _resultSingleRuta.postValue(ResultData.Success(localData))
         }
     }
 
-    fun deleteRuta(data: RutaEntity){
+    fun deleteRuta(data: RutaEntity) {
         _resultSingleRuta.value = ResultData.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -230,15 +234,18 @@ class SlsRepository  private constructor(
         }
     }
 
+    private val _resultUpload = MutableLiveData<ResultData<String>>()
+    val resultUpload: LiveData<ResultData<String>> = _resultUpload
     fun storeRutaMany() {
+        _resultUpload.value = ResultData.Loading
+
         CoroutineScope(Dispatchers.IO).launch {
             val rutaToUpload = rutaDao.findAllToUpload()
 
             val rutaList = mutableListOf<RequestRuta>()
 
-            rutaToUpload?.forEach {
+            rutaToUpload.forEach {
                 val requestRuta = RequestRuta(
-                    it.id,
                     it.encId,
                     it.kode_prov,
                     it.kode_kab,
@@ -281,7 +288,8 @@ class SlsRepository  private constructor(
                     it.start_latitude,
                     it.end_latitude,
                     it.start_longitude,
-                    it.end_longitude
+                    it.end_longitude,
+                    it.status_upload
                 )
 
                 rutaList.add(requestRuta)
@@ -289,7 +297,26 @@ class SlsRepository  private constructor(
 
             val requestRutaMany = RequestRutaMany(rutaList)
 
-            Log.d("ruta", requestRutaMany.toString())
+            val dataUser = runBlocking { pref.getUser().first() }
+
+            val client = apiService.storeRutaMany("Bearer " + dataUser.token, requestRutaMany)
+
+            client.enqueue(object : Callback<ResponseStringStatus> {
+                override fun onResponse(
+                    call: Call<ResponseStringStatus>,
+                    response: Response<ResponseStringStatus>
+                ) {
+                    if (response.isSuccessful) {
+                        runBlocking { syncSls() }
+
+                        _resultUpload.postValue(ResultData.Success("success"))
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseStringStatus>, t: Throwable) {
+                    _resultUpload.value = ResultData.Error(t.message.toString())
+                }
+            })
         }
     }
 

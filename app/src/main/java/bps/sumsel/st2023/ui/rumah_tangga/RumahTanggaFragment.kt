@@ -271,16 +271,18 @@ class RumahTanggaFragment : Fragment() {
             ruta?.let {
                 if (it.status_upload == EnumStatusUpload.NOT_UPLOADED.kode) {
                     viewModel.delete(it)
+
+                    Toast.makeText(context, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
                 } else {
                     it.status_upload = EnumStatusUpload.DELETED_AFTER_UPLOADED.kode
 
                     viewModel.updateRuta(it, true)
+
+                    Toast.makeText(context, "Data akan dihapus saat diupload", Toast.LENGTH_SHORT).show()
                 }
             }
 
             dialog.dismiss()
-
-            Toast.makeText(context, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
         }
 
         builder.setNegativeButton("Batal") { dialog, _ ->

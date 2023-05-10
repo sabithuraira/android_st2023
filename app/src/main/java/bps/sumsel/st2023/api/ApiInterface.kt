@@ -28,5 +28,5 @@ interface ApiInterface {
     fun deleteSls(@Path("id") id: String): Call<ResponseStringData>
 
     @POST("ruta/many")
-    fun storeRutaMany(@Body params: RequestRutaMany): Call<ResponseStringStatus>
+    fun storeRutaMany(@Header("Authorization") token: String, @Body params: RequestRutaMany): Call<ResponseStringStatus>
 }
