@@ -45,49 +45,9 @@ class RumahTanggaFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         _binding = FragmentRumahTanggaBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.input_ruta, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        val itemFinish = menu.findItem(R.id.action_finish)
-        val itemDelete = menu.findItem(R.id.action_delete)
-
-        ruta?.let {
-            if (it.id == 0) {
-                itemFinish.isVisible = false
-                itemDelete.isVisible = false
-            }
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_finish -> {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
-                true
-            }
-
-            R.id.action_delete -> {
-                delete()
-                true
-            }
-
-            R.id.action_save -> {
-                save()
-                requireActivity().onBackPressedDispatcher.onBackPressed()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -330,7 +290,6 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtJmlUnitUsaha.visibility = View.GONE
                 binding.lblJmlUnitUsaha.visibility = View.GONE
 
-                binding.txtHeaderName.text = "Tambah Rumah Tangga"
             } else {
                 binding.linearWawancara.visibility = View.VISIBLE
                 binding.linearUsahaTani.visibility = View.VISIBLE
@@ -339,8 +298,6 @@ class RumahTanggaFragment : Fragment() {
                 binding.lblJmlArt.visibility = View.VISIBLE
                 binding.edtJmlUnitUsaha.visibility = View.VISIBLE
                 binding.lblJmlUnitUsaha.visibility = View.VISIBLE
-
-                binding.txtHeaderName.text = "Perbarui ${it.kepala_ruta}"
 
                 checkWawancara(it.start_time, it.end_time)
 

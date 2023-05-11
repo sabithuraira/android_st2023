@@ -32,4 +32,6 @@
     <string name="label_save">Simpan</string>
     <string name="label_delete">Hapus</string>
     <string name="label_finish">Selesai</string>
+    <string name="label_add_ruta">Tambah Ruta</string>
+    <string name="label_upload">Upload</string>
 </resources>

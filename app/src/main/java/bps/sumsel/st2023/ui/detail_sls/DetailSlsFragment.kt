@@ -1,16 +1,16 @@
 package bps.sumsel.st2023.ui.detail_sls
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import bps.sumsel.st2023.MainActivity
+import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentDetailSlsBinding
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
@@ -30,6 +30,7 @@ class DetailSlsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         _binding = FragmentDetailSlsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -84,12 +85,25 @@ class DetailSlsFragment : Fragment() {
                 }
             }
         }
+    }
 
-        binding.btnAdd.setOnClickListener {
-            view.findNavController().navigate(
-                //in case need to create, insert data with 0 id
-                DetailSlsFragmentDirections.actionDetailSlsFragmentToRumahTanggaFragment(sls!!, RutaEntity(0))
-            )
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.detail_sls, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add -> {
+                findNavController().navigate(
+                    DetailSlsFragmentDirections.actionDetailSlsFragmentToRumahTanggaFragment(sls!!, RutaEntity(0))
+                )
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
