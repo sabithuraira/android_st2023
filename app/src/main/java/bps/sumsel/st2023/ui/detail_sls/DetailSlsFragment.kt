@@ -1,6 +1,8 @@
 package bps.sumsel.st2023.ui.detail_sls
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -52,8 +54,21 @@ class DetailSlsFragment : Fragment() {
 
         sls?.let {
             parentActivity.setActionBarTitle(it.nama_sls)
-            viewModel.getRuta(it)
+            viewModel.getRuta(it, binding.edtSearch.text.toString())
         }
+
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                sls?.let {
+                    viewModel.getRuta(it, binding.edtSearch.text.toString())
+                }
+            }
+        })
 
         viewModel.resultDataRuta.observe(viewLifecycleOwner){ result ->
             if (result != null) {

@@ -2,6 +2,7 @@ package bps.sumsel.st2023.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 
@@ -40,6 +41,8 @@ interface RutaDao {
                   id_sls: String,
                   id_sub_sls: String): List<RutaEntity>
 
+    @RawQuery(observedEntities = [RutaEntity::class])
+    fun findWithCondition(query: SupportSQLiteQuery): List<RutaEntity>
 
     @Query("SELECT * from ruta " +
             "WHERE kode_prov=:kode_prov" +
