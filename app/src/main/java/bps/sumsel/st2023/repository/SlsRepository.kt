@@ -2,6 +2,8 @@ package bps.sumsel.st2023.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Query
+import androidx.sqlite.db.SimpleSQLiteQuery
 import bps.sumsel.st2023.api.ApiInterface
 import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.enum.EnumStatusUpload
@@ -189,13 +191,26 @@ class SlsRepository private constructor(
 
     private val _resultDataRuta = MutableLiveData<ResultData<List<RutaEntity>?>>()
     val resultDataRuta: LiveData<ResultData<List<RutaEntity>?>> = _resultDataRuta
-    fun getRuta(data: SlsEntity) {
+    fun getRuta(data: SlsEntity, keyword: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val localData = rutaDao.findBySls(
-                data.kode_prov, data.kode_kab,
-                data.kode_kec, data.kode_desa,
-                data.id_sls, data.id_sub_sls
-            )
+            val query = StringBuilder().append("SELECT * from ruta ")
+            query.append(" WHERE kode_prov='${data.kode_prov}'")
+            query.append(" AND kode_kab='${data.kode_kab}'")
+            query.append(" AND kode_kec='${data.kode_kec}'")
+            query.append(" AND kode_desa='${data.kode_desa}'")
+            query.append(" AND id_sls='${data.id_sls}'")
+            query.append(" AND id_sub_sls='${data.id_sub_sls}'")
+
+            if(keyword.isNotEmpty()){
+                query.append(" AND (kepala_ruta LIKE '%$keyword%'")
+                query.append(" OR nurt LIKE '%$keyword%')")
+            }
+
+            query.append(" ORDER BY id ASC")
+
+            val sqlQuery = SimpleSQLiteQuery(query.toString())
+
+            val localData = rutaDao.findWithCondition(sqlQuery)
 
             _resultDataRuta.postValue(ResultData.Success(localData))
         }

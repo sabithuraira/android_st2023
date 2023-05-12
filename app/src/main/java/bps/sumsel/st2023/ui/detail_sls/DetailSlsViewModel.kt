@@ -7,7 +7,7 @@ import bps.sumsel.st2023.repository.SlsRepository
 import bps.sumsel.st2023.room.entity.SlsEntity
 
 class DetailSlsViewModel(private val slsRepository: SlsRepository) : ViewModel() {
-    fun getRuta(data: SlsEntity) = slsRepository.getRuta(data)
+    fun getRuta(data: SlsEntity, keyword: String) = slsRepository.getRuta(data, keyword)
 
     val resultDataRuta = slsRepository.resultDataRuta
 
