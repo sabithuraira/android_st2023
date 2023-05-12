@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentSlsBinding
-import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.SlsEntity
@@ -41,6 +40,7 @@ class SlsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         parentActivity = requireActivity() as MainActivity
+
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
         val viewModel: SlsViewModel by viewModels {
             factory
@@ -63,9 +63,13 @@ class SlsFragment : Fragment() {
                         val data = result.data
 
                         val slsAdapter = SlsAdapter(ArrayList(data))
-                        slsAdapter.setOnClickCallBack(object : SlsAdapter.onClickCallBack {
-                            override fun onItemClicked(data: SlsEntity) {
-                                editData(view, data)
+                        slsAdapter.setOnClickCallBack(object : SlsAdapter.OnClickCallBack {
+                            override fun onItemChoose(data: SlsEntity) {
+                                chooseData(view, data)
+                            }
+
+                            override fun onItemProgress(data: SlsEntity) {
+                                progressData(view, data)
                             }
                         })
 
@@ -101,7 +105,8 @@ class SlsFragment : Fragment() {
                             is ResultData.Success -> {
                                 parentActivity.setLoading(false)
 
-                                Toast.makeText(context, "Upload berhasil", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Upload berhasil", Toast.LENGTH_SHORT)
+                                    .show()
                             }
 
                             is ResultData.Error -> {
@@ -122,9 +127,15 @@ class SlsFragment : Fragment() {
         }
     }
 
-    private fun editData(view: View, data: SlsEntity) {
+    private fun chooseData(view: View, data: SlsEntity) {
         view.findNavController().navigate(
             SlsFragmentDirections.actionNavigationSlsToDetailSlsFragment(data)
+        )
+    }
+
+    private fun progressData(view: View, data: SlsEntity) {
+        view.findNavController().navigate(
+            SlsFragmentDirections.actionNavigationSlsToEditSlsFragment(data)
         )
     }
 }

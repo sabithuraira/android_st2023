@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_navigation_sls_to_detailSlsFragment"
             app:destination="@id/detailSlsFragment" />
+        <action
+            android:id="@+id/action_navigation_sls_to_editSlsFragment"
+            app:destination="@id/editSlsFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_setting"
@@ -80,5 +83,17 @@
         <argument
             android:name="ruta"
             app:argType="bps.sumsel.st2023.room.entity.RutaEntity" />
+    </fragment>
+    <fragment
+        android:id="@+id/editSlsFragment"
+        android:name="bps.sumsel.st2023.ui.edit_sls.EditSlsFragment"
+        android:label="fragment_edit_sls"
+        tools:layout="@layout/fragment_edit_sls" >
+        <argument
+            android:name="sls"
+            app:argType="bps.sumsel.st2023.room.entity.SlsEntity" />
+        <action
+            android:id="@+id/action_editSlsFragment_to_navigation_sls"
+            app:destination="@id/navigation_sls" />
     </fragment>
 </navigation>

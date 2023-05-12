@@ -15,8 +15,11 @@ import bps.sumsel.st2023.room.dao.SlsDao
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 import com.google.gson.Gson
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -183,6 +186,25 @@ class SlsRepository private constructor(
     fun getSls() {
         CoroutineScope(Dispatchers.IO).launch {
             val localData = slsDao.findAll()
+            _resultData.postValue(ResultData.Success(localData))
+        }
+    }
+
+    private val _resultSingleData = MutableLiveData<ResultData<SlsEntity?>>()
+    val resultSingleData: LiveData<ResultData<SlsEntity?>> = _resultSingleData
+
+    fun setSingleData(data: SlsEntity?) {
+        _resultSingleData.postValue(ResultData.Success(data))
+    }
+
+    fun updateSls(data: SlsEntity) {
+        _resultData.value = ResultData.Loading
+
+        CoroutineScope(Dispatchers.IO).launch {
+            slsDao.update(data)
+
+            val localData = slsDao.findAll()
+
             _resultData.postValue(ResultData.Success(localData))
         }
     }

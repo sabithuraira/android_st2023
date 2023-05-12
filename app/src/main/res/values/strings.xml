@@ -1,15 +1,18 @@
 <resources>
     <string name="app_name">mon_st2023</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_sls">Daftar SLS</string>
     <string name="add_sls">Tambah SLS</string>
     <string name="delete_sls">Hapus SLS</string>
+    <string name="progress_sls">Progres</string>
     <string name="upload">Upload</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="label_edit_sls">Edit SLS/Non SLS</string>
     <string name="label_nama_sls">Nama SLS</string>
+    <string name="label_kode_desa">Kode Desa/Kelurahan</string>
+    <string name="label_sls_progres">Belum Selesai</string>
+    <string name="label_sls_selesai">Selesai</string>
     <string name="label_pilih">Pilih</string>
     <string name="label_password">Kata Sandi</string>
     <string name="label_saya_lupa_kata_sandi">Saya lupa kata sandi</string>
