@@ -93,9 +93,9 @@ class SlsFragment : Fragment() {
             builder.setMessage("Anda yakin ingin mengupload data?")
 
             builder.setPositiveButton("Ya") { dialog, _ ->
-                viewModel.storeRutaMany()
+                viewModel.upload()
 
-                viewModel.resultUpload.observe(viewLifecycleOwner) { result ->
+                viewModel.resultUploadRuta.observe(viewLifecycleOwner) { result ->
                     if (result != null) {
                         when (result) {
                             is ResultData.Loading -> {
@@ -104,9 +104,6 @@ class SlsFragment : Fragment() {
 
                             is ResultData.Success -> {
                                 parentActivity.setLoading(false)
-
-                                Toast.makeText(context, "Upload berhasil", Toast.LENGTH_SHORT)
-                                    .show()
                             }
 
                             is ResultData.Error -> {
@@ -115,6 +112,37 @@ class SlsFragment : Fragment() {
                                     .show()
                             }
                         }
+                    }
+                }
+
+                viewModel.resultUploadSls.observe(viewLifecycleOwner) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is ResultData.Loading -> {
+                                parentActivity.setLoading(true)
+                            }
+
+                            is ResultData.Success -> {
+                                parentActivity.setLoading(false)
+                            }
+
+                            is ResultData.Error -> {
+                                parentActivity.setLoading(false)
+                                Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+
+                viewModel.resultUpload.observe(viewLifecycleOwner) { result ->
+                    if (result == 2) {
+                        parentActivity.setLoading(false)
+
+                        viewModel.syncSls()
+
+                        Toast.makeText(context, "Upload data berhasil", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

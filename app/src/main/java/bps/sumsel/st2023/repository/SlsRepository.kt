@@ -1,14 +1,16 @@
 package bps.sumsel.st2023.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Query
 import androidx.sqlite.db.SimpleSQLiteQuery
 import bps.sumsel.st2023.api.ApiInterface
 import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.request.RequestRuta
 import bps.sumsel.st2023.request.RequestRutaMany
+import bps.sumsel.st2023.request.RequestSlsMany
+import bps.sumsel.st2023.request.RequestSlsProgress
 import bps.sumsel.st2023.response.ResponseSlsPetugas
 import bps.sumsel.st2023.response.ResponseStringData
 import bps.sumsel.st2023.response.ResponseStringStatus
@@ -223,7 +225,7 @@ class SlsRepository private constructor(
             query.append(" AND id_sls='${data.id_sls}'")
             query.append(" AND id_sub_sls='${data.id_sub_sls}'")
 
-            if(keyword.isNotEmpty()){
+            if (keyword.isNotEmpty()) {
                 query.append(" AND (kepala_ruta LIKE '%$keyword%'")
                 query.append(" OR nurt LIKE '%$keyword%')")
             }
@@ -271,10 +273,10 @@ class SlsRepository private constructor(
         }
     }
 
-    private val _resultUpload = MutableLiveData<ResultData<String>>()
-    val resultUpload: LiveData<ResultData<String>> = _resultUpload
-    fun storeRutaMany() {
-        _resultUpload.value = ResultData.Loading
+    private val _resultUploadRuta = MutableLiveData<ResultData<Int>>()
+    val resultUploadRuta: LiveData<ResultData<Int>> = _resultUploadRuta
+    private fun storeRutaMany() {
+        _resultUploadRuta.value = ResultData.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
             val rutaToUpload = rutaDao.findAllToUpload()
@@ -344,16 +346,101 @@ class SlsRepository private constructor(
                     response: Response<ResponseStringStatus>
                 ) {
                     if (response.isSuccessful) {
-                        runBlocking { syncSls() }
-
-                        _resultUpload.postValue(ResultData.Success("success"))
+                        _resultUploadRuta.postValue(ResultData.Success(1))
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseStringStatus>, t: Throwable) {
-                    _resultUpload.value = ResultData.Error(t.message.toString())
+                    _resultUploadRuta.value = ResultData.Error(t.message.toString())
                 }
             })
+        }
+    }
+
+    private val _resultUploadSls = MutableLiveData<ResultData<Int>>()
+    val resultUploadSls: LiveData<ResultData<Int>> = _resultUploadSls
+    private fun updateSlsProgress() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val sls = slsDao.findAll()
+
+            val slsList = mutableListOf<RequestSlsProgress>()
+
+            sls.forEach {
+                val requestSlsProgress = RequestSlsProgress(
+                    it.encId,
+                    it.status_selesai_pcl
+                )
+
+                slsList.add(requestSlsProgress)
+            }
+
+            val requestSlsMany = RequestSlsMany(slsList)
+
+            val dataUser = runBlocking { pref.getUser().first() }
+
+            val client = apiService.updateSlsProgress("Bearer " + dataUser.token, requestSlsMany)
+
+            client.enqueue(object : Callback<ResponseStringStatus> {
+                override fun onResponse(
+                    call: Call<ResponseStringStatus>,
+                    response: Response<ResponseStringStatus>
+                ) {
+                    if (response.isSuccessful) {
+                        _resultUploadSls.postValue(ResultData.Success(1))
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseStringStatus>, t: Throwable) {
+                    _resultUploadSls.value = ResultData.Error(t.message.toString())
+                }
+            })
+        }
+    }
+
+    fun upload() {
+        runBlocking {
+            storeRutaMany()
+            updateSlsProgress()
+        }
+    }
+
+    val resultUpload = MediatorLiveData<Int>()
+
+    init {
+        resultUpload.addSource(
+            _resultUploadRuta
+        ) { value ->
+            when (value) {
+                is ResultData.Loading -> {
+                    resultUpload.value = 0
+                }
+
+                is ResultData.Success -> {
+                    resultUpload.value = resultUpload.value!! + value.data
+                }
+
+                is ResultData.Error -> {
+                    resultUpload.value = 0
+                }
+            }
+        }
+
+        resultUpload.addSource(
+            _resultUploadSls
+        ) { value ->
+            when (value) {
+                is ResultData.Loading -> {
+                    resultUpload.value = 0
+                }
+
+                is ResultData.Success -> {
+                    resultUpload.value = resultUpload.value!! + value.data
+                }
+
+                is ResultData.Error -> {
+                    resultUpload.value = -1
+                }
+            }
         }
     }
 
