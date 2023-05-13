@@ -159,13 +159,6 @@ class HomeFragment : Fragment() {
 
             builder.show()
         }
-
-        //progress
-        binding.linearProgres.setOnClickListener {
-            view.findNavController().navigate(
-                HomeFragmentDirections.actionNavigationHomeToNavigationSls()
-            )
-        }
     }
 
     private fun loadSls(view: View, data: List<SlsEntity>?, viewModel: HomeViewModel) {

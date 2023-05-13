@@ -263,6 +263,24 @@ class RumahTanggaFragment : Fragment() {
         checkErrorEmpty(binding.edtJmlArt, "Jumlah ART Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtJmlUnitUsaha, "Jumlah Unit Usaha Tidak Boleh Kosong")
 
+        var totalLahan = 0
+//        val luasLahan = binding.edtLuasSawah.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
+
+        if(totalLahan==0){
+            binding.edtJmlUnitUsaha.error = "Total Luas Lahan tidak boleh 0"
+            listError.add("Total Luas Lahan tidak boleh 0")
+        }
+
         checkErrorEmpty(binding.edtLuasSawah, "Luas Sawah Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtLuasBukanSawah, "Luas Bukan Sawah Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtLuasRumputSementara, "Luas Rumput Sementara Tidak Boleh Kosong")
@@ -273,32 +291,15 @@ class RumahTanggaFragment : Fragment() {
         checkErrorEmpty(binding.edtLuasKehutanan, "Luas Kegiatan Kehutanan Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtLuasBudidaya, "Luas Kegiatan Budidaya Perikanan Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtLuasLahanLainnya, "Luas Lahan Lainnya Tidak Boleh Kosong")
-
-        var totalLahan = 0
-        totalLahan += binding.edtLuasSawah.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasBukanSawah.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasRumputSementara.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasRumputPermanen.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasBelumTanam.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasTanamanTahunan.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasTernakBangunanLain.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasKehutanan.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasBudidaya.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasLahanLainnya.toString().toIntOrNull() ?: 0
-
-        if(totalLahan==0){
-            binding.edtJmlUnitUsaha.error = "Total Luas Lahan tidak boleh 0"
-            listError.add("Total Luas Lahan tidak boleh 0")
-        }
     }
 
     private fun checkErrorEmpty(edt: EditText, errMsg: String){
-        if(edt.text.toString().isEmpty()){
-            edt.error = null
-        }
-        else{
+        if(edt.text.toString().isBlank()){
             edt.error = errMsg
             listError.add(errMsg)
+        }
+        else{
+            edt.error = null
         }
     }
 
@@ -330,6 +331,8 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtLuasBudidaya.setText(it.jml_308_budidaya.toString())
                 binding.edtLuasLahanLainnya.setText(it.jml_308_lahan_lainnya.toString())
                 //////
+
+                validation()
             }
         } ?: run {
             view.findNavController().navigate(
