@@ -11,6 +11,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -21,11 +22,13 @@ import androidx.navigation.fragment.findNavController
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentRumahTanggaBinding
+import bps.sumsel.st2023.enum.EnumStatusData
 import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
+import bps.sumsel.st2023.ui.detail_sls.DetailSlsFragmentDirections
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.util.Calendar
@@ -39,12 +42,9 @@ class RumahTanggaFragment : Fragment() {
     private var ruta: RutaEntity? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var curLocation: Location? = null
-    val viewModel: RumahTanggaViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         _binding = FragmentRumahTanggaBinding.inflate(inflater, container, false)
         return binding.root
@@ -70,6 +70,7 @@ class RumahTanggaFragment : Fragment() {
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
                         setView(view, result.data)
+                        ruta = result.data
                     }
 
                     is ResultData.Error -> {
@@ -80,103 +81,12 @@ class RumahTanggaFragment : Fragment() {
             }
         }
 
-        viewModel.setSingleRuta(ruta)
-
-        getLastLocation()
-
-        binding.btnStartWawancara.setOnClickListener {
-            ruta?.let {
-                val currentTime: Date = Calendar.getInstance().time
-
-                it.start_time = currentTime.toString()
-                it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
-                it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
-
-                it.status_upload = if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
-
-                viewModel.updateRuta(it, false)
-
-                wawancaraStarted()
-
-                Toast.makeText(context, "Wawancara dimulai", Toast.LENGTH_SHORT).show()
-            } ?: run {
-                Toast.makeText(
-                    context,
-                    "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-        binding.btnEndWawancara.setOnClickListener {
-            ruta?.let {
-                val currentTime: Date = Calendar.getInstance().time
-
-                it.end_time = currentTime.toString()
-                it.end_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
-                it.end_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
-
-                it.status_upload = if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
-
-                viewModel.updateRuta(it, false)
-
-                wawancaraEnded()
-
-                Toast.makeText(context, "Wawancara diakhiri", Toast.LENGTH_SHORT).show()
-            } ?: run {
-                Toast.makeText(
-                    context,
-                    "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-        binding.btnReWawancara.setOnClickListener {
-            val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
-
-            builder.setTitle("Ulangi Wawancara")
-            builder.setMessage("Anda yakin ingin mengulangi wawancara?")
-
-            builder.setPositiveButton("Ya") { dialog, _ ->
-                ruta?.let {
-                    it.start_time = ""
-                    it.start_latitude = 0.0
-                    it.start_longitude = 0.0
-
-                    it.end_time = ""
-                    it.end_latitude = 0.0
-                    it.end_longitude = 0.0
-
-                    it.status_upload = if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
-
-                    viewModel.updateRuta(it, false)
-
-                    wawancaraDeleted()
-
-                    Toast.makeText(context, "Wawancara berhasil dihapus", Toast.LENGTH_SHORT).show()
-                } ?: run {
-                    Toast.makeText(
-                        context,
-                        "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    dialog.dismiss()
-                }
-            }
-
-            builder.setNegativeButton("Batal") { dialog, _ ->
-                dialog.dismiss()
-            }
-
-            builder.show()
-        }
-    }
-
-    private fun save() {
         ruta?.let {
-            if (it.id == 0) {
+            if (ruta?.id == 0) {
+                setView(view, it)
+
+                val currentTime: Date = Calendar.getInstance().time
+
                 it.encId = ""
                 it.kode_prov = sls!!.kode_prov
                 it.kode_kab = sls!!.kode_kab
@@ -185,137 +95,241 @@ class RumahTanggaFragment : Fragment() {
                 it.id_sls = sls!!.id_sls
                 it.id_sub_sls = sls!!.id_sub_sls
 
-                it.nurt = binding.edtNurt.text.toString().toInt()
-                it.kepala_ruta = binding.edtNamaKk.text.toString()
+                it.start_time = currentTime.toString()
+                it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
+                it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
                 it.status_upload = EnumStatusUpload.NOT_UPLOADED.kode
+
+                it.status_data = EnumStatusData.ERROR.kode
+
+                viewModel.updateRuta(it, false)
             } else {
+                viewModel.setSingleRuta(it)
+            }
+        } ?: run {
+            Toast.makeText(context,
+                "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        getLastLocation()
+
+        binding.btnSave.setOnClickListener {
+            ruta?.let {
+                val currentTime: Date = Calendar.getInstance().time
+
+                it.end_time = currentTime.toString()
+                it.end_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
+                it.end_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
+
                 it.nurt = binding.edtNurt.text.toString().toInt()
                 it.kepala_ruta = binding.edtNamaKk.text.toString()
                 it.jumlah_art = binding.edtJmlArt.text.toString().toIntOrNull() ?: 0
                 it.jumlah_unit_usaha = binding.edtJmlUnitUsaha.text.toString().toIntOrNull() ?: 0
 
                 it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
-                it.jml_308_bukan_sawah = binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
-                it.jml_308_rumput_sementara = binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
-                it.jml_308_rumput_permanen = binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
-                it.jml_308_belum_tanam = binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
-//                it.jml_308_tanaman_tahunan = binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
-                it.jml_308_ternak_bangunan_lain = binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
+                it.jml_308_bukan_sawah =
+                    binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
+                it.jml_308_rumput_sementara =
+                    binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
+                it.jml_308_rumput_permanen =
+                    binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
+                it.jml_308_belum_tanam =
+                    binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
+                it.jml_308_tanaman_tahunan =
+                    binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
+                it.jml_308_ternak_bangunan_lain =
+                    binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
                 it.jml_308_kehutanan = binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
                 it.jml_308_budidaya = binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
-                it.jml_308_lahan_lainnya = binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
+                it.jml_308_lahan_lainnya =
+                    binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
 
-                it.status_upload = if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
-            }
+                it.status_upload =
+                    if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
 
-            viewModel.updateRuta(it, false)
+                validation()
 
-            Toast.makeText(context, "Data berhasil diperbarui", Toast.LENGTH_SHORT).show()
-        } ?: run {
-            Toast.makeText(
-                context,
-                "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-
-    private fun delete() {
-        val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
-
-        builder.setTitle("Hapus Data")
-        builder.setMessage("Anda yakin ingin menghapus data ini?")
-
-        builder.setPositiveButton("Ya") { dialog, _ ->
-            ruta?.let {
-                if (it.status_upload == EnumStatusUpload.NOT_UPLOADED.kode) {
-                    viewModel.delete(it)
-
-                    Toast.makeText(context, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
-                } else {
-                    it.status_upload = EnumStatusUpload.DELETED_AFTER_UPLOADED.kode
-
-                    viewModel.updateRuta(it, true)
-
-                    Toast.makeText(context, "Data akan dihapus saat diupload", Toast.LENGTH_SHORT).show()
+                if(listError.isNotEmpty()){
+                    it.status_data = EnumStatusData.ERROR.kode
                 }
+                else{
+                    it.status_data = EnumStatusData.CLEAN.kode
+                }
+
+                viewModel.updateRuta(it, false)
+
+                Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(
+                    RumahTanggaFragmentDirections.actionRumahTanggaFragmentToDetailSlsFragment(sls!!)
+//                    DetailSlsFragmentDirections.actionDetailSlsFragmentToRumahTanggaFragment(sls!!, RutaEntity(0))
+                )
+            } ?: run {
+                Toast.makeText(context,
+                    "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        binding.btnDelete.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
+
+            builder.setTitle("Hapus Data")
+            builder.setMessage("Anda yakin ingin menghapus data ini?")
+
+            builder.setPositiveButton("Ya") { dialog, _ ->
+               ruta?.let {
+                    if (it.status_upload == EnumStatusUpload.NOT_UPLOADED.kode) {
+                        viewModel.delete(it)
+                        Toast.makeText(context, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
+                    } else {
+                        it.status_upload = EnumStatusUpload.DELETED_AFTER_UPLOADED.kode
+                        viewModel.updateRuta(it, true)
+                        Toast.makeText(context, "Data akan dihapus saat diupload", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                dialog.dismiss()
             }
 
-            dialog.dismiss()
+            builder.setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.show()
         }
+//    }
+    }
 
-        builder.setNegativeButton("Batal") { dialog, _ ->
-            dialog.dismiss()
+//    private fun delete() {
+//        val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
+//
+//        builder.setTitle("Hapus Data")
+//        builder.setMessage("Anda yakin ingin menghapus data ini?")
+//
+//        builder.setPositiveButton("Ya") { dialog, _ ->
+//     a      ruta?.let {
+//                if (it.status_upload == EnumStatusUpload.NOT_UPLOADED.kode) {
+//                    viewModel.delete(it)
+//
+//                    Toast.makeText(context, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    it.status_upload = EnumStatusUpload.DELETED_AFTER_UPLOADED.kode
+//
+//                    viewModel.updateRuta(it, true)
+//
+//                    Toast.makeText(context, "Data akan dihapus saat diupload", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            dialog.dismiss()
+//        }
+//
+//        builder.setNegativeButton("Batal") { dialog, _ ->
+//            dialog.dismiss()
+//        }
+//
+//        builder.show()
+//    }
+
+//    private fun checkWawancara(startTime: String, endTime: String) {
+//        if (startTime != "") {
+//            if (endTime == "") wawancaraStarted()
+//            else wawancaraEnded()
+//        } else {
+//            wawancaraDeleted()
+//        }
+//    }
+
+//    private fun wawancaraEnded() {
+//        binding.btnStartWawancara.visibility = View.GONE
+//        binding.btnEndWawancara.visibility = View.GONE
+//        binding.btnReWawancara.visibility = View.VISIBLE
+//    }
+//
+//    private fun wawancaraDeleted() {
+//        binding.btnStartWawancara.visibility = View.VISIBLE
+//        binding.btnEndWawancara.visibility = View.GONE
+//        binding.btnReWawancara.visibility = View.GONE
+//    }
+
+    private var listError = mutableListOf<String>()
+    private fun validation(){
+        checkErrorEmpty(binding.edtNurt, "Nomor Urut Ruta Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtNamaKk, "Nama Kepala Keluarga Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtJmlArt, "Jumlah ART Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtJmlUnitUsaha, "Jumlah Unit Usaha Tidak Boleh Kosong")
+
+        checkErrorEmpty(binding.edtLuasSawah, "Luas Sawah Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasBukanSawah, "Luas Bukan Sawah Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasRumputSementara, "Luas Rumput Sementara Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasRumputPermanen, "Luas Rumput Permanen Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasBelumTanam, "Luas Belum Tanam Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasTanamanTahunan, "Luas Tanaman Tahunan Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasTernakBangunanLain, "Luas Ternak Bangunan Lain Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasKehutanan, "Luas Kegiatan Kehutanan Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasBudidaya, "Luas Kegiatan Budidaya Perikanan Tidak Boleh Kosong")
+        checkErrorEmpty(binding.edtLuasLahanLainnya, "Luas Lahan Lainnya Tidak Boleh Kosong")
+
+        var totalLahan = 0
+        totalLahan += binding.edtLuasSawah.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasBukanSawah.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasRumputSementara.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasRumputPermanen.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasBelumTanam.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasTanamanTahunan.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasTernakBangunanLain.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasKehutanan.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasBudidaya.toString().toIntOrNull() ?: 0
+        totalLahan += binding.edtLuasLahanLainnya.toString().toIntOrNull() ?: 0
+
+        if(totalLahan==0){
+            binding.edtJmlUnitUsaha.error = "Total Luas Lahan tidak boleh 0"
+            listError.add("Total Luas Lahan tidak boleh 0")
         }
-
-        builder.show()
     }
 
-    private fun checkWawancara(startTime: String, endTime: String) {
-        if (startTime != "") {
-            if (endTime == "") wawancaraStarted()
-            else wawancaraEnded()
-        } else {
-            wawancaraDeleted()
+    private fun checkErrorEmpty(edt: EditText, errMsg: String){
+        if(edt.text.toString().isEmpty()){
+            edt.error = null
         }
-    }
-
-    private fun wawancaraStarted() {
-        binding.btnStartWawancara.visibility = View.GONE
-        binding.btnEndWawancara.visibility = View.VISIBLE
-        binding.btnReWawancara.visibility = View.GONE
-    }
-
-    private fun wawancaraEnded() {
-        binding.btnStartWawancara.visibility = View.GONE
-        binding.btnEndWawancara.visibility = View.GONE
-        binding.btnReWawancara.visibility = View.VISIBLE
-    }
-
-    private fun wawancaraDeleted() {
-        binding.btnStartWawancara.visibility = View.VISIBLE
-        binding.btnEndWawancara.visibility = View.GONE
-        binding.btnReWawancara.visibility = View.GONE
+        else{
+            edt.error = errMsg
+            listError.add(errMsg)
+        }
     }
 
     private fun setView(view: View, data: RutaEntity?) {
         data?.let {
-            if (it.id == 0) {
-                binding.linearWawancara.visibility = View.GONE
+            if(data.end_time==""){
+                binding.btnDelete.visibility = View.GONE
                 binding.linearUsahaTani.visibility = View.GONE
-
-                binding.edtJmlArt.visibility = View.GONE
-                binding.lblJmlArt.visibility = View.GONE
-                binding.edtJmlUnitUsaha.visibility = View.GONE
-                binding.lblJmlUnitUsaha.visibility = View.GONE
-
-            } else {
-                binding.linearWawancara.visibility = View.VISIBLE
+            }
+            else{
+                binding.btnDelete.visibility = View.VISIBLE
                 binding.linearUsahaTani.visibility = View.VISIBLE
 
-                binding.edtJmlArt.visibility = View.VISIBLE
-                binding.lblJmlArt.visibility = View.VISIBLE
-                binding.edtJmlUnitUsaha.visibility = View.VISIBLE
-                binding.lblJmlUnitUsaha.visibility = View.VISIBLE
-
-                checkWawancara(it.start_time, it.end_time)
-
-                binding.edtNurt.setText(if (it.nurt.toString() == "0") "" else it.nurt.toString())
+                /////////
+                binding.edtNurt.setText(it.nurt.toString())
+                binding.edtNurt.isEnabled = false
                 binding.edtNamaKk.setText(it.kepala_ruta)
-                binding.edtJmlArt.setText(if (it.jumlah_art.toString() == "0") "" else it.jumlah_art.toString())
-                binding.edtJmlUnitUsaha.setText(if (it.jumlah_unit_usaha.toString() == "0") "" else it.jumlah_unit_usaha.toString())
+                binding.edtJmlArt.setText(it.jumlah_art.toString())
+                binding.edtJmlUnitUsaha.setText(it.jumlah_unit_usaha.toString())
 
-                binding.edtLuasSawah.setText(if (it.jml_308_sawah.toString() == "0") "" else it.jml_308_sawah.toString())
-                binding.edtLuasBukanSawah.setText(if (it.jml_308_bukan_sawah.toString() == "0") "" else it.jml_308_bukan_sawah.toString())
-                binding.edtLuasRumputSementara.setText(if (it.jml_308_rumput_sementara.toString() == "0") "" else it.jml_308_rumput_sementara.toString())
-                binding.edtLuasRumputPermanen.setText(if (it.jml_308_rumput_permanen.toString() == "0") "" else it.jml_308_rumput_permanen.toString())
-                binding.edtLuasBelumTanam.setText(if (it.jml_308_belum_tanam.toString() == "0") "" else it.jml_308_belum_tanam.toString())
-//                binding.edtLuasTanamanTahunan.setText(if (it.jml_308_tanaman_tahunan.toString() == "0") "" else it.jml_308_tanaman_tahunan.toString())
-                binding.edtLuasTernakBangunanLain.setText(if (it.jml_308_ternak_bangunan_lain.toString() == "0") "" else it.jml_308_ternak_bangunan_lain.toString())
-                binding.edtLuasKehutanan.setText(if (it.jml_308_kehutanan.toString() == "0") "" else it.jml_308_kehutanan.toString())
-                binding.edtLuasBudidaya.setText(if (it.jml_308_budidaya.toString() == "0") "" else it.jml_308_budidaya.toString())
-                binding.edtLuasLahanLainnya.setText(if (it.jml_308_lahan_lainnya.toString() == "0") "" else it.jml_308_lahan_lainnya.toString())
+                binding.edtLuasSawah.setText(it.jml_308_sawah.toString())
+                binding.edtLuasBukanSawah.setText(it.jml_308_bukan_sawah.toString())
+                binding.edtLuasRumputSementara.setText(it.jml_308_rumput_sementara.toString())
+                binding.edtLuasRumputPermanen.setText(it.jml_308_rumput_permanen.toString())
+                binding.edtLuasBelumTanam.setText(it.jml_308_belum_tanam.toString())
+                binding.edtLuasTanamanTahunan.setText(it.jml_308_tanaman_tahunan.toString())
+                binding.edtLuasTernakBangunanLain.setText(it.jml_308_ternak_bangunan_lain.toString())
+                binding.edtLuasKehutanan.setText(it.jml_308_kehutanan.toString())
+                binding.edtLuasBudidaya.setText(it.jml_308_budidaya.toString())
+                binding.edtLuasLahanLainnya.setText(it.jml_308_lahan_lainnya.toString())
+                //////
             }
         } ?: run {
             view.findNavController().navigate(

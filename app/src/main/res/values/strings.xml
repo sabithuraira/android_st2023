@@ -37,4 +37,5 @@
     <string name="label_finish">Selesai</string>
     <string name="label_add_ruta">Tambah Ruta</string>
     <string name="label_upload">Upload</string>
+    <string name="label_save_finish">Simpan dan Nyatakan Selesai</string>
 </resources>

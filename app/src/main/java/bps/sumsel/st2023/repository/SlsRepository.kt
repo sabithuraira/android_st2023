@@ -140,6 +140,8 @@ class SlsRepository private constructor(
                                         itemRuta.jml308Kehutanan ?: 0,
                                         itemRuta.jml308Budidaya ?: 0,
                                         itemRuta.jml308LahanLainnya ?: 0,
+                                        itemRuta.jml308TanamanTahunan ?: 0,
+                                        itemRuta.statusData ?: 0,
 
                                         itemRuta.daftarKomoditas ?: "",
 

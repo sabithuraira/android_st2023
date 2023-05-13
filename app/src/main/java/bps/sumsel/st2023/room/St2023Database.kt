@@ -1,6 +1,7 @@
 package bps.sumsel.st2023.room
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -14,7 +15,11 @@ import bps.sumsel.st2023.room.entity.SlsEntity
 
 @Database(
     entities = [SlsEntity::class, RutaEntity::class],
-    version = 4,
+    version = 1,
+//    autoMigrations = [
+//        AutoMigration(from = 4, to = 5),
+//    ],
+//    exportSchema = true
 )
 abstract class St2023Database: RoomDatabase() {
     abstract fun slsDao(): SlsDao
@@ -29,7 +34,7 @@ abstract class St2023Database: RoomDatabase() {
                     context.applicationContext,
                     St2023Database::class.java, "st2023.db"
                 )
-                    .fallbackToDestructiveMigration()
+//                    .fallbackToDestructiveMigration()
                     .build()
             }
     }

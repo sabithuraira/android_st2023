@@ -51,6 +51,8 @@ data class RutaEntity(
     @ColumnInfo(name="jml_308_kehutanan") var jml_308_kehutanan: Int = 0,
     @ColumnInfo(name="jml_308_budidaya") var jml_308_budidaya: Int = 0,
     @ColumnInfo(name="jml_308_lahan_lainnya") var jml_308_lahan_lainnya: Int = 0,
+    @ColumnInfo(name="jml_308_tanaman_tahunan") var jml_308_tanaman_tahunan: Int = 0,
+    @ColumnInfo(name="status_data") var status_data: Int = 0,
 
     @ColumnInfo(name="daftar_komoditas") var daftar_komoditas: String = "",
 

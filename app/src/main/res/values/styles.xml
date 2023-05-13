@@ -10,4 +10,10 @@
         <item name="android:textColorPrimary">@color/black_3</item>
         <item name="android:background">@color/white</item>
     </style>
+
+    <style name="NormalEditText" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/bg_edittext</item>
+        <item name="android:textColor">@color/black_300</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

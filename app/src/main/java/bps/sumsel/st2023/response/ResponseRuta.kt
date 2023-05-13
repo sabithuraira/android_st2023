@@ -118,6 +118,12 @@ data class ResponseRuta(
 	@field:SerializedName("jml_308_lahan_lainnya")
 	val jml308LahanLainnya: Int? = null,
 
+	@field:SerializedName("jml_308_tanaman_tahunan")
+	val jml308TanamanTahunan: Int? = null,
+
+	@field:SerializedName("status_data")
+	val statusData: Int? = null,
+
 	@field:SerializedName("daftar_komoditas")
 	val daftarKomoditas: String? = null,
 

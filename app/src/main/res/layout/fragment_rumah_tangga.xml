@@ -35,29 +35,20 @@
                     android:text="@string/label_wawancara" />
 
                 <Button
-                    android:id="@+id/btn_start_wawancara"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/blue_900"
-                    android:textAllCaps="false"
-                    android:text="@string/label_start_wawancara" />
-
-                <Button
-                    android:id="@+id/btn_end_wawancara"
+                    android:id="@+id/btn_delete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/red_900"
                     android:textAllCaps="false"
-                    android:text="@string/label_end_wawancara" />
+                    android:text="@string/label_delete" />
 
                 <Button
-                    android:id="@+id/btn_re_wawancara"
+                    android:id="@+id/btn_save"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/black_200"
                     android:textAllCaps="false"
-                    android:text="@string/label_re_wawancara" />
+                    android:text="@string/label_save" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -91,9 +82,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -108,9 +97,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="text" />
 
                     <TextView
@@ -126,9 +113,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -144,9 +129,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number"/>
                 </LinearLayout>
 
@@ -185,9 +168,7 @@
                         android:id="@+id/edt_luas_sawah"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -211,9 +192,7 @@
                         android:id="@+id/edt_luas_bukan_sawah"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -237,9 +216,7 @@
                         android:id="@+id/edt_luas_rumput_sementara"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -263,9 +240,7 @@
                         android:id="@+id/edt_luas_rumput_permanen"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -289,9 +264,7 @@
                         android:id="@+id/edt_luas_belum_tanam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -315,9 +288,7 @@
                         android:id="@+id/edt_luas_tanaman_tahunan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -341,9 +312,7 @@
                         android:id="@+id/edt_luas_ternak_bangunan_lain"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -367,9 +336,7 @@
                         android:id="@+id/edt_luas_kehutanan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -393,9 +360,7 @@
                         android:id="@+id/edt_luas_budidaya"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
@@ -419,9 +384,7 @@
                         android:id="@+id/edt_luas_lahan_lainnya"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black_300"
-                        android:textSize="14sp"
+                        style="@style/NormalEditText"
                         android:inputType="number" />
 
                     <TextView
