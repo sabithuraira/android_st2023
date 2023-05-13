@@ -185,15 +185,15 @@
                                 android:textColor="@color/black_300" />
 
                             <TextView
+                                android:id="@+id/txt_jumlah_sls"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="4"
+                                android:text="0"
                                 android:textStyle="bold"
                                 android:textSize="17dp"
                                 android:padding="5dp"
                                 android:background="@drawable/bg_textview_summary"
-                                android:id="@+id/txt_jumlah_sls"
                                 android:textColor="@color/green_900" />
                         </LinearLayout>
 
@@ -214,15 +214,15 @@
                                 android:textColor="@color/black_300" />
 
                             <TextView
+                                android:id="@+id/txt_jumlah_ruta"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:textStyle="bold"
                                 android:textSize="17dp"
                                 android:padding="5dp"
-                                android:text="20.000"
+                                android:text="0"
                                 android:background="@drawable/bg_textview_summary"
-                                android:id="@+id/txt_ruta_tani"
                                 android:textColor="@color/green_900" />
                         </LinearLayout>
                     </LinearLayout>

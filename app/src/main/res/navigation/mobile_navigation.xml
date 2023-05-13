@@ -27,7 +27,14 @@
         android:id="@+id/navigation_home"
         android:name="bps.sumsel.st2023.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_sls"
+            app:destination="@id/navigation_sls" />
+        <action
+            android:id="@+id/action_navigation_home_to_detailSlsFragment"
+            app:destination="@id/detailSlsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="bps.sumsel.st2023.ui.notifications.NotificationsFragment"

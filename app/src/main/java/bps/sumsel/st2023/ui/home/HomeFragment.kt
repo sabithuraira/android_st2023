@@ -12,7 +12,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
@@ -23,7 +23,8 @@ import bps.sumsel.st2023.helper.Injection
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.room.entity.SlsEntity
 
-private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name = "auth")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
+
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -42,44 +43,113 @@ class HomeFragment : Fragment() {
 
         parentActivity = requireActivity() as MainActivity
         val pref = AuthDataStore.getInstance(requireContext().dataStore)
-        val viewModel: HomeViewModel by viewModels { HomeViewModelFactory(pref, Injection.slsRepository(requireContext())) }
+        val viewModel: HomeViewModel by viewModels {
+            HomeViewModelFactory(
+                pref,
+                Injection.slsRepository(requireContext())
+            )
+        }
 
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvProgresSls.layoutManager = layoutManager
 
         viewModel.getAuthUser().observe(this) { user: UserStore ->
-            if (user.name!="") {
+            if (user.name != "") {
                 binding.txtHalo.text = "Halo ${user.name}"
             }
         }
 
-        viewModel.resultData.observe(this) {  result ->
+        viewModel.getSls()
+        viewModel.getRekapSls()
+        viewModel.getRekapRuta()
+
+        viewModel.resultData.observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultData.Loading -> {
                         parentActivity.setLoading(true)
                     }
+
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
-                        loadSls(view, result.data)
+
+                        loadSls(view, result.data, viewModel)
                     }
+
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
+
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
 
-        //syncronize
-        binding.linearSync.setOnClickListener{
-            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
+        viewModel.resutRekapSls.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultData.Loading -> {
+                        parentActivity.setLoading(true)
+                    }
+
+                    is ResultData.Success -> {
+                        parentActivity.setLoading(false)
+
+                        result.data?.let {
+                            if (it.isNotEmpty()) {
+                                binding.txtJumlahSls.text = it.first().jumlah.toString()
+                            }
+                        }
+                    }
+
+                    is ResultData.Error -> {
+                        parentActivity.setLoading(false)
+
+                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        viewModel.resultRekapRuta.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultData.Loading -> {
+                        parentActivity.setLoading(true)
+                    }
+
+                    is ResultData.Success -> {
+                        parentActivity.setLoading(false)
+
+                        result.data?.let { d ->
+                            if (d.isNotEmpty()) {
+                                val jumlah: List<Int> = d.map { m -> m.jumlah }
+                                binding.txtJumlahRuta.text = jumlah.sum().toString()
+                            }
+                        }
+                    }
+
+                    is ResultData.Error -> {
+                        parentActivity.setLoading(false)
+
+                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        //synchronize
+        binding.linearSync.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
 
             builder.setTitle("Sinkronisasi")
             builder.setMessage("Anda yakin ingin melakukan sinkronisasi? Semua data yang belum diunggah akan hilang.")
 
             builder.setPositiveButton("Ya") { dialog, _ ->
                 viewModel.syncSls()
+                viewModel.getRekapSls()
+                viewModel.getRekapRuta()
+
                 dialog.dismiss()
             }
 
@@ -87,17 +157,28 @@ class HomeFragment : Fragment() {
                 dialog.dismiss()
             }
 
-            val alert: AlertDialog = builder.create()
-            alert.show()
+            builder.show()
         }
 
-        viewModel.getSls()
+        //progress
+        binding.linearProgres.setOnClickListener {
+            view.findNavController().navigate(
+                HomeFragmentDirections.actionNavigationHomeToNavigationSls()
+            )
+        }
     }
 
-    private fun loadSls(view: View, data: List<SlsEntity>?){
+    private fun loadSls(view: View, data: List<SlsEntity>?, viewModel: HomeViewModel) {
         data?.let {
-            val slsAdapter = SlsHomeAdapter(ArrayList(data))
-            slsAdapter.setOnClickCallBack(object : SlsHomeAdapter.onClickCallBack {
+
+            val slsAdapter = SlsHomeAdapter(
+                ArrayList(data),
+                viewModel.resultRekapRuta,
+                context,
+                this,
+                parentActivity
+            )
+            slsAdapter.setOnClickCallBack(object : SlsHomeAdapter.OnClickCallBack {
                 override fun onItemClicked(data: SlsEntity) {
                     editData(view, data)
                 }
@@ -109,10 +190,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun editData(view: View, data: SlsEntity){
-//        view.findNavController().navigate(
-//            TodosFragmentDirections.actionTodosFragmentToFormFragment(data)
-//        )
+    private fun editData(view: View, data: SlsEntity) {
+        view.findNavController().navigate(
+            HomeFragmentDirections.actionNavigationHomeToDetailSlsFragment(data)
+        )
     }
 
     override fun onDestroyView() {

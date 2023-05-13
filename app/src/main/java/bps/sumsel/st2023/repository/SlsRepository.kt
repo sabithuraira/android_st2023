@@ -16,6 +16,8 @@ import bps.sumsel.st2023.response.ResponseStringData
 import bps.sumsel.st2023.response.ResponseStringStatus
 import bps.sumsel.st2023.room.dao.RutaDao
 import bps.sumsel.st2023.room.dao.SlsDao
+import bps.sumsel.st2023.room.entity.RekapRutaEntity
+import bps.sumsel.st2023.room.entity.RekapSlsEntity
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 import com.google.gson.Gson
@@ -55,8 +57,8 @@ class SlsRepository private constructor(
                 if (response.isSuccessful) {
                     val sls = response.body()?.datas
 
-                    var slsList = mutableListOf<SlsEntity>()
-                    var rutasList = mutableListOf<RutaEntity>()
+                    val slsList = mutableListOf<SlsEntity>()
+                    val rutasList = mutableListOf<RutaEntity>()
 
                     sls?.let {
                         for (item in sls) {
@@ -441,6 +443,24 @@ class SlsRepository private constructor(
                     resultUpload.value = -1
                 }
             }
+        }
+    }
+
+    private val _resultRekapSls = MutableLiveData<ResultData<List<RekapSlsEntity>?>>()
+    val resultRekapSls: LiveData<ResultData<List<RekapSlsEntity>?>> = _resultRekapSls
+    fun getRekapSls() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val localData = slsDao.rekapSls()
+            _resultRekapSls.postValue(ResultData.Success(localData))
+        }
+    }
+
+    private val _resultRekapRuta = MutableLiveData<ResultData<List<RekapRutaEntity>?>>()
+    val resultRekapRuta: LiveData<ResultData<List<RekapRutaEntity>?>> = _resultRekapRuta
+    fun getRekapRuta() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val localData = rutaDao.rekapRuta()
+            _resultRekapRuta.postValue(ResultData.Success(localData))
         }
     }
 

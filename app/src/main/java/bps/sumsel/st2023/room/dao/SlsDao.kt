@@ -2,6 +2,7 @@ package bps.sumsel.st2023.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import bps.sumsel.st2023.room.entity.RekapSlsEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 
 @Dao
@@ -23,4 +24,7 @@ interface SlsDao {
 
     @Query("DELETE FROM sls")
     suspend fun deleteAll()
+
+    @Query("SELECT COUNT(*) AS jumlah FROM sls")
+    fun rekapSls(): List<RekapSlsEntity>
 }

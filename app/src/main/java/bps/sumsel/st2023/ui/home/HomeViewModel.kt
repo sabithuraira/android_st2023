@@ -18,12 +18,20 @@ class HomeViewModel(
     fun syncSls() = slsRepository.syncSls()
 
     val resultData = slsRepository.resultData
+
+    fun getRekapSls() = slsRepository.getRekapSls()
+
+    val resutRekapSls = slsRepository.resultRekapSls
+
+    fun getRekapRuta() = slsRepository.getRekapRuta()
+
+    val resultRekapRuta = slsRepository.resultRekapRuta
 }
 
 class HomeViewModelFactory(
     private val pref: AuthDataStore,
     private val slsRepository: SlsRepository
-    ) : ViewModelProvider.NewInstanceFactory() {
+) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {

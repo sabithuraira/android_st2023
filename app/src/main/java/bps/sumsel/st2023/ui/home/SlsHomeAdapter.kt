@@ -1,31 +1,89 @@
 package bps.sumsel.st2023.ui.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
+import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.databinding.RowSlsDashboardBinding
+import bps.sumsel.st2023.repository.ResultData
+import bps.sumsel.st2023.room.entity.RekapRutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 
-class SlsHomeAdapter(private val listData: ArrayList<SlsEntity>): RecyclerView.Adapter<SlsHomeAdapter.DataViewHolder>() {
-    private lateinit var OnClickCallBack: onClickCallBack
+class SlsHomeAdapter(
+    private val listData: ArrayList<SlsEntity>,
+    private val resultRekapRuta: LiveData<ResultData<List<RekapRutaEntity>?>>,
+    private val context: Context?,
+    private val homeFragment: HomeFragment,
+    private val parentActivity: MainActivity
+) :
+    RecyclerView.Adapter<SlsHomeAdapter.DataViewHolder>() {
+    private lateinit var onClickCallBack: OnClickCallBack
 
-    fun setOnClickCallBack(data: onClickCallBack){
-        this.OnClickCallBack = data
+    fun setOnClickCallBack(data: OnClickCallBack) {
+        this.onClickCallBack = data
     }
 
-    interface onClickCallBack{
+    interface OnClickCallBack {
         fun onItemClicked(data: SlsEntity)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
-        return DataViewHolder(RowSlsDashboardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return DataViewHolder(
+            RowSlsDashboardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        val curTodo = listData[position]
-        holder.binding.txtTitle.text = curTodo.id_sls + curTodo.nama_sls
+        val curData = listData[position]
+        holder.binding.txtTitle.text = "[" + curData.id_sls + "] " + curData.nama_sls
+        holder.binding.txtDescription.text =
+            "16" + curData.kode_kab + curData.kode_kec + curData.kode_desa
+
+        holder.binding.txtRutaPml.text = curData.jml_dok_ke_pml.toString()
+        holder.binding.txtRutaKoseka.text = curData.jml_dok_ke_koseka.toString()
+
         holder.itemView.setOnClickListener {
-            OnClickCallBack.onItemClicked(listData[holder.adapterPosition])
+            onClickCallBack.onItemClicked(listData[holder.adapterPosition])
+        }
+
+        resultRekapRuta.observe(homeFragment) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultData.Loading -> {
+                        parentActivity.setLoading(true)
+                    }
+
+                    is ResultData.Success -> {
+                        parentActivity.setLoading(false)
+
+                        result.data?.let { d ->
+                            d.forEach {
+                                if (it.kode_kab == curData.kode_kab &&
+                                    it.kode_kec == curData.kode_kec &&
+                                    it.kode_desa == curData.kode_desa &&
+                                    it.id_sls == curData.id_sls &&
+                                    it.id_sub_sls == curData.id_sub_sls
+                                ) {
+                                    holder.binding.txtRutaPcl.text = it.jumlah.toString()
+                                }
+                            }
+                        }
+                    }
+
+                    is ResultData.Error -> {
+                        parentActivity.setLoading(false)
+
+                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 
@@ -33,5 +91,6 @@ class SlsHomeAdapter(private val listData: ArrayList<SlsEntity>): RecyclerView.A
         return listData.count()
     }
 
-    class DataViewHolder(val binding: RowSlsDashboardBinding) : RecyclerView.ViewHolder(binding.root)
+    class DataViewHolder(val binding: RowSlsDashboardBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }
