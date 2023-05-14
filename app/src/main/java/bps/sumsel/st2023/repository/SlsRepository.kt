@@ -277,6 +277,20 @@ class SlsRepository private constructor(
         }
     }
 
+    private val _resultLastNurt = MutableLiveData<ResultData<Int>>()
+    val resultLastNurt: LiveData<ResultData<Int>> = _resultLastNurt
+    fun getLastNumber(data: SlsEntity) {
+        _resultLastNurt.value = ResultData.Loading
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val lastNumber = rutaDao.getLastNoUrut(
+                data.kode_prov, data.kode_kab, data.kode_kec,
+                data.kode_desa, data.id_sls, data.id_sub_sls
+            )
+            _resultLastNurt.postValue(ResultData.Success(lastNumber))
+        }
+    }
+
     private val _resultUploadRuta = MutableLiveData<ResultData<Int>>()
     val resultUploadRuta: LiveData<ResultData<Int>> = _resultUploadRuta
     private fun storeRutaMany() {

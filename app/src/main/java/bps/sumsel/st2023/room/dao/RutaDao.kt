@@ -70,4 +70,22 @@ interface RutaDao {
 
     @Query("SELECT COUNT(status_upload) AS jumlah, kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls FROM ruta WHERE status_upload = 1 GROUP BY kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls")
     fun rekapRuta(): List<RekapRutaEntity>
+
+    @Query(
+        "SELECT COUNT(*) from ruta " +
+            "WHERE kode_prov=:kode_prov" +
+            " AND kode_kab=:kode_kab" +
+            " AND kode_kec=:kode_kec" +
+            " AND kode_desa=:kode_desa" +
+            " AND id_sls=:id_sls" +
+            " AND id_sub_sls=:id_sub_sls"
+    )
+    fun getLastNoUrut(
+        kode_prov: String,
+        kode_kab: String,
+        kode_kec: String,
+        kode_desa: String,
+        id_sls: String,
+        id_sub_sls: String
+    ): Int
 }

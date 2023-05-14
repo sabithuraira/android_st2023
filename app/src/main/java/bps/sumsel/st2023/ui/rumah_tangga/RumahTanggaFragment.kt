@@ -42,6 +42,7 @@ class RumahTanggaFragment : Fragment() {
     private var ruta: RutaEntity? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var curLocation: Location? = null
+    private var lastPlusOne: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
@@ -81,8 +82,34 @@ class RumahTanggaFragment : Fragment() {
             }
         }
 
+        viewModel.resultLastNurt.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultData.Loading -> {
+                        parentActivity.setLoading(true)
+                    }
+
+                    is ResultData.Success -> {
+                        parentActivity.setLoading(false)
+                        lastPlusOne = result.data+1
+//                        ruta?.let {
+//                            it.nurt = lastPlusOne
+//                            viewModel.updateRuta(it, false)
+//                        }
+                        binding.edtNurt.setText(lastPlusOne.toString())
+                    }
+
+                    is ResultData.Error -> {
+                        parentActivity.setLoading(false)
+                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
         ruta?.let {
             if (ruta?.id == 0) {
+                viewModel.getLastNurt(sls!!)
                 setView(view, it)
 
                 val currentTime: Date = Calendar.getInstance().time
@@ -103,7 +130,7 @@ class RumahTanggaFragment : Fragment() {
 
                 it.status_data = EnumStatusData.ERROR.kode
 
-                viewModel.updateRuta(it, false)
+//                viewModel.updateRuta(it, false)
             } else {
                 viewModel.setSingleRuta(it)
             }
@@ -124,7 +151,7 @@ class RumahTanggaFragment : Fragment() {
                 it.end_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
                 it.end_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
-                it.nurt = binding.edtNurt.text.toString().toInt()
+                it.nurt = binding.edtNurt.text.toString().toIntOrNull() ?: 0
                 it.kepala_ruta = binding.edtNamaKk.text.toString()
                 it.jumlah_art = binding.edtJmlArt.text.toString().toIntOrNull() ?: 0
                 it.jumlah_unit_usaha = binding.edtJmlUnitUsaha.text.toString().toIntOrNull() ?: 0
@@ -204,58 +231,6 @@ class RumahTanggaFragment : Fragment() {
 //    }
     }
 
-//    private fun delete() {
-//        val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
-//
-//        builder.setTitle("Hapus Data")
-//        builder.setMessage("Anda yakin ingin menghapus data ini?")
-//
-//        builder.setPositiveButton("Ya") { dialog, _ ->
-//     a      ruta?.let {
-//                if (it.status_upload == EnumStatusUpload.NOT_UPLOADED.kode) {
-//                    viewModel.delete(it)
-//
-//                    Toast.makeText(context, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    it.status_upload = EnumStatusUpload.DELETED_AFTER_UPLOADED.kode
-//
-//                    viewModel.updateRuta(it, true)
-//
-//                    Toast.makeText(context, "Data akan dihapus saat diupload", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            dialog.dismiss()
-//        }
-//
-//        builder.setNegativeButton("Batal") { dialog, _ ->
-//            dialog.dismiss()
-//        }
-//
-//        builder.show()
-//    }
-
-//    private fun checkWawancara(startTime: String, endTime: String) {
-//        if (startTime != "") {
-//            if (endTime == "") wawancaraStarted()
-//            else wawancaraEnded()
-//        } else {
-//            wawancaraDeleted()
-//        }
-//    }
-
-//    private fun wawancaraEnded() {
-//        binding.btnStartWawancara.visibility = View.GONE
-//        binding.btnEndWawancara.visibility = View.GONE
-//        binding.btnReWawancara.visibility = View.VISIBLE
-//    }
-//
-//    private fun wawancaraDeleted() {
-//        binding.btnStartWawancara.visibility = View.VISIBLE
-//        binding.btnEndWawancara.visibility = View.GONE
-//        binding.btnReWawancara.visibility = View.GONE
-//    }
-
     private var listError = mutableListOf<String>()
     private fun validation(){
         checkErrorEmpty(binding.edtNurt, "Nomor Urut Ruta Tidak Boleh Kosong")
@@ -264,7 +239,6 @@ class RumahTanggaFragment : Fragment() {
         checkErrorEmpty(binding.edtJmlUnitUsaha, "Jumlah Unit Usaha Tidak Boleh Kosong")
 
         var totalLahan = 0
-//        val luasLahan = binding.edtLuasSawah.toString().toIntOrNull() ?: 0
         totalLahan += binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
         totalLahan += binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
         totalLahan += binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
