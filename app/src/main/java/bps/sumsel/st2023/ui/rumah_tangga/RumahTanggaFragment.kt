@@ -60,6 +60,7 @@ class RumahTanggaFragment : Fragment() {
 
         sls = RumahTanggaFragmentArgs.fromBundle(arguments as Bundle).sls
         ruta = RumahTanggaFragmentArgs.fromBundle(arguments as Bundle).ruta
+        viewModel.setSingleRuta(ruta)
 
         viewModel.resultSingleRuta.observe(this) { result ->
             if (result != null) {
@@ -70,8 +71,8 @@ class RumahTanggaFragment : Fragment() {
 
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
-                        setView(view, result.data)
                         ruta = result.data
+                        setView(view, ruta)
                     }
 
                     is ResultData.Error -> {
@@ -92,10 +93,6 @@ class RumahTanggaFragment : Fragment() {
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
                         lastPlusOne = result.data+1
-//                        ruta?.let {
-//                            it.nurt = lastPlusOne
-//                            viewModel.updateRuta(it, false)
-//                        }
                         binding.edtNurt.setText(lastPlusOne.toString())
                     }
 
@@ -110,7 +107,6 @@ class RumahTanggaFragment : Fragment() {
         ruta?.let {
             if (ruta?.id == 0) {
                 viewModel.getLastNurt(sls!!)
-                setView(view, it)
 
                 val currentTime: Date = Calendar.getInstance().time
 
@@ -129,10 +125,7 @@ class RumahTanggaFragment : Fragment() {
                 it.status_upload = EnumStatusUpload.NOT_UPLOADED.kode
 
                 it.status_data = EnumStatusData.ERROR.kode
-
 //                viewModel.updateRuta(it, false)
-            } else {
-                viewModel.setSingleRuta(it)
             }
         } ?: run {
             Toast.makeText(context,
@@ -279,9 +272,27 @@ class RumahTanggaFragment : Fragment() {
 
     private fun setView(view: View, data: RutaEntity?) {
         data?.let {
+
+            binding.edtNurt.isEnabled = false
             if(data.end_time==""){
                 binding.btnDelete.visibility = View.GONE
                 binding.linearUsahaTani.visibility = View.GONE
+
+                binding.edtNurt.setText("")
+                binding.edtNamaKk.setText("")
+                binding.edtJmlArt.setText("")
+                binding.edtJmlUnitUsaha.setText("")
+
+                binding.edtLuasSawah.setText("")
+                binding.edtLuasBukanSawah.setText("")
+                binding.edtLuasRumputSementara.setText("")
+                binding.edtLuasRumputPermanen.setText("")
+                binding.edtLuasBelumTanam.setText("")
+                binding.edtLuasTanamanTahunan.setText("")
+                binding.edtLuasTernakBangunanLain.setText("")
+                binding.edtLuasKehutanan.setText("")
+                binding.edtLuasBudidaya.setText("")
+                binding.edtLuasLahanLainnya.setText("")
             }
             else{
                 binding.btnDelete.visibility = View.VISIBLE
@@ -289,7 +300,6 @@ class RumahTanggaFragment : Fragment() {
 
                 /////////
                 binding.edtNurt.setText(it.nurt.toString())
-                binding.edtNurt.isEnabled = false
                 binding.edtNamaKk.setText(it.kepala_ruta)
                 binding.edtJmlArt.setText(it.jumlah_art.toString())
                 binding.edtJmlUnitUsaha.setText(it.jumlah_unit_usaha.toString())

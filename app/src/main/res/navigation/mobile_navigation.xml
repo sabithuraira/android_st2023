@@ -68,7 +68,8 @@
         tools:layout="@layout/fragment_detail_sls" >
         <action
             android:id="@+id/action_detailSlsFragment_to_rumahTanggaFragment"
-            app:destination="@id/rumahTanggaFragment" />
+            app:destination="@id/rumahTanggaFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_detailSlsFragment_to_navigation_sls"
             app:destination="@id/navigation_sls" />
@@ -83,7 +84,8 @@
         tools:layout="@layout/fragment_rumah_tangga" >
         <action
             android:id="@+id/action_rumahTanggaFragment_to_detailSlsFragment"
-            app:destination="@id/detailSlsFragment" />
+            app:destination="@id/detailSlsFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="sls"
             app:argType="bps.sumsel.st2023.room.entity.SlsEntity" />
