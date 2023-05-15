@@ -1,11 +1,24 @@
 package bps.sumsel.st2023.ui.rumah_tangga
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import bps.sumsel.st2023.datastore.AuthDataStore
+import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.repository.SlsRepository
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
+import bps.sumsel.st2023.ui.home.HomeViewModel
 
-class RumahTanggaViewModel(private val slsRepository: SlsRepository) : ViewModel() {
+class RumahTanggaViewModel(
+    private val pref: AuthDataStore,
+    private val slsRepository: SlsRepository) : ViewModel() {
+
+    fun getAuthUser(): LiveData<UserStore> {
+        return pref.getUser().asLiveData()
+    }
+
     fun updateRuta(data: RutaEntity, isFinish: Boolean) = slsRepository.updateRuta(data, isFinish)
     fun delete(data: RutaEntity) = slsRepository.deleteRuta(data)
     fun setSingleRuta(data: RutaEntity?) = slsRepository.setSingleRuta(data)
