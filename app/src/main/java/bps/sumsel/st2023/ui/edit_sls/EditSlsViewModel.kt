@@ -10,4 +10,6 @@ class EditSlsViewModel(private val slsRepository: SlsRepository) : ViewModel() {
     val resultSingleData = slsRepository.resultSingleData
 
     fun updateSls(data: SlsEntity) = slsRepository.updateSls(data)
+
+    val user = slsRepository.getUser()
 }

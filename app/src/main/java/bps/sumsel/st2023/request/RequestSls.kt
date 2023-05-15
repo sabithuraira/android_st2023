@@ -17,4 +17,10 @@ data class RequestSlsProgress(
 
     @field:SerializedName("status_selesai_pcl")
     val statusSelesaiPcl: Int? = 0,
+
+    @field:SerializedName("jml_dok_ke_pml")
+    val jmlDokKePml: Int? = 0,
+
+    @field:SerializedName("jml_dok_ke_koseka")
+    val jmlDokKeKoseka: Int? = 0,
 ) : Parcelable

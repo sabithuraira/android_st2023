@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentEditSlsBinding
+import bps.sumsel.st2023.enum.EnumJabatan
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.SlsEntity
@@ -54,7 +55,7 @@ class EditSlsFragment : Fragment() {
                         parentActivity.setLoading(false)
                         val data = result.data
 
-                        setView(view, data)
+                        setView(view, data, viewModel)
                     }
 
                     is ResultData.Error -> {
@@ -108,10 +109,54 @@ class EditSlsFragment : Fragment() {
                 ).show()
             }
         }
+
+        binding.btnSavePml.setOnClickListener {
+            sls?.let {
+                it.jml_dok_ke_pml = binding.edtDokPml.text.toString().toIntOrNull() ?: 0
+
+                viewModel.updateSls(it)
+
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+
+                Toast.makeText(
+                    context,
+                    "Jumlah dokumen yang diterima PML berhasil diperbarui",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } ?: run {
+                Toast.makeText(
+                    context,
+                    "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        binding.btnSaveKoseka.setOnClickListener {
+            sls?.let {
+                it.jml_dok_ke_koseka = binding.edtDokKoseka.text.toString().toIntOrNull() ?: 0
+
+                viewModel.updateSls(it)
+
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+
+                Toast.makeText(
+                    context,
+                    "Jumlah dokumen yang diterima KOSEKA berhasil diperbarui",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } ?: run {
+                Toast.makeText(
+                    context,
+                    "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
 
-    private fun setView(view: View, data: SlsEntity?) {
+    private fun setView(view: View, data: SlsEntity?, viewModel: EditSlsViewModel) {
         data?.let {
             binding.edtNamaSls.setText(it.nama_sls)
             binding.edtIdDesa.setText(it.kode_prov + it.kode_kab + it.kode_kec + it.kode_desa)
@@ -119,24 +164,44 @@ class EditSlsFragment : Fragment() {
             binding.edtNamaSls.isEnabled = false
             binding.edtIdDesa.isEnabled = false
 
-            if (it.status_selesai_pcl == 0) {
-                binding.btnProgres.isEnabled = false
-                binding.btnProgres.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.gray
+            val user = viewModel.user
+
+            if (user.jabatan == EnumJabatan.PCL.kode) {
+                binding.layoutPcl.visibility = View.VISIBLE
+                binding.layoutPml.visibility = View.GONE
+                binding.layoutKoseka.visibility = View.GONE
+
+                if (it.status_selesai_pcl == 0) {
+                    binding.btnProgres.isEnabled = false
+                    binding.btnProgres.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.gray
+                        )
                     )
-                )
-                binding.btnSelesai.isEnabled = true
-            } else {
-                binding.btnProgres.isEnabled = true
-                binding.btnSelesai.isEnabled = false
-                binding.btnSelesai.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.gray
+                    binding.btnSelesai.isEnabled = true
+                } else {
+                    binding.btnProgres.isEnabled = true
+                    binding.btnSelesai.isEnabled = false
+                    binding.btnSelesai.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.gray
+                        )
                     )
-                )
+                }
+            } else if (user.jabatan == EnumJabatan.PML.kode) {
+                binding.layoutPcl.visibility = View.GONE
+                binding.layoutPml.visibility = View.VISIBLE
+                binding.layoutKoseka.visibility = View.GONE
+
+                binding.edtDokPml.setText(it.jml_dok_ke_pml.toString())
+            } else if (user.jabatan == EnumJabatan.KOSEKA.kode) {
+                binding.layoutPcl.visibility = View.GONE
+                binding.layoutPml.visibility = View.GONE
+                binding.layoutKoseka.visibility = View.VISIBLE
+
+                binding.edtDokKoseka.setText(it.jml_dok_ke_koseka.toString())
             }
         } ?: run {
             view.findNavController().navigate(

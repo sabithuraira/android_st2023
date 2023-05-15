@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
 import bps.sumsel.st2023.api.ApiInterface
 import bps.sumsel.st2023.datastore.AuthDataStore
+import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.request.RequestRuta
 import bps.sumsel.st2023.request.RequestRutaMany
@@ -386,7 +387,9 @@ class SlsRepository private constructor(
             sls.forEach {
                 val requestSlsProgress = RequestSlsProgress(
                     it.encId,
-                    it.status_selesai_pcl
+                    it.status_selesai_pcl,
+                    it.jml_dok_ke_pml,
+                    it.jml_dok_ke_koseka
                 )
 
                 slsList.add(requestSlsProgress)
@@ -478,6 +481,10 @@ class SlsRepository private constructor(
             val localData = rutaDao.rekapRuta()
             _resultRekapRuta.postValue(ResultData.Success(localData))
         }
+    }
+
+    fun getUser(): UserStore {
+        return runBlocking { pref.getUser().first() }
     }
 
     companion object {
