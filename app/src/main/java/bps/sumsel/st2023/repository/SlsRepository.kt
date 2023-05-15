@@ -192,6 +192,13 @@ class SlsRepository private constructor(
         })
     }
 
+    fun emptyData(){
+        runBlocking {
+            slsDao.deleteAll()
+            rutaDao.deleteAll()
+        }
+    }
+
     fun getSls() {
         CoroutineScope(Dispatchers.IO).launch {
             val localData = slsDao.findAll()

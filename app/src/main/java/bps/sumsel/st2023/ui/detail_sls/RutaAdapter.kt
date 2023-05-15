@@ -37,7 +37,7 @@ class RutaAdapter(private val listData: ArrayList<RutaEntity>) :
         holder.binding.txtStatusUpload.text = getUploadStatus(curData.status_upload)
 
         if(curData.status_data==0){
-            holder.binding.txtStatusData.text = "ERROR"
+            holder.binding.txtStatusData.text = "ERROR/BELUM SELESAI"
             holder.binding.txtStatusData.setTextColor(
                 ContextCompat.getColor(holder.binding.txtStatusData.context,
                 R.color.red_900))

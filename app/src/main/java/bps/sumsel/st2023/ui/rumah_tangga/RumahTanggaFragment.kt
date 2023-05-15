@@ -2,19 +2,20 @@ package bps.sumsel.st2023.ui.rumah_tangga
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -22,18 +23,20 @@ import androidx.navigation.fragment.findNavController
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentRumahTanggaBinding
+import bps.sumsel.st2023.datastore.AuthDataStore
+import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.enum.EnumStatusData
 import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.repository.ResultData
-import bps.sumsel.st2023.repository.ViewModelFactory
+import bps.sumsel.st2023.repository.ViewModelAuthFactory
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
-import bps.sumsel.st2023.ui.detail_sls.DetailSlsFragmentDirections
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.util.Calendar
 import java.util.Date
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
 class RumahTanggaFragment : Fragment() {
     private var _binding: FragmentRumahTanggaBinding? = null
     private val binding get() = _binding!!
@@ -55,7 +58,8 @@ class RumahTanggaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         parentActivity = requireActivity() as MainActivity
 
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
+        val pref = AuthDataStore.getInstance(requireContext().dataStore)
+        val factory: ViewModelAuthFactory = ViewModelAuthFactory.getInstance(requireActivity(), pref)
         val viewModel: RumahTanggaViewModel by viewModels { factory }
 
         sls = RumahTanggaFragmentArgs.fromBundle(arguments as Bundle).sls
@@ -101,6 +105,30 @@ class RumahTanggaFragment : Fragment() {
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+        }
+
+        viewModel.getAuthUser().observe(this) { user: UserStore ->
+            //WHEN NOT LOGIN AS PPL, DISABLED ALL CONTROL (BUTTON, EDITTEXT)
+            if (user.jabatan != 1) {
+                binding.btnDelete.visibility = View.GONE
+                binding.btnSave.visibility = View.GONE
+
+                binding.edtNurt.isEnabled = false
+                binding.edtNamaKk.isEnabled = false
+                binding.edtJmlArt.isEnabled = false
+                binding.edtJmlUnitUsaha.isEnabled = false
+
+                binding.edtLuasSawah.isEnabled = false
+                binding.edtLuasBukanSawah.isEnabled = false
+                binding.edtLuasRumputSementara.isEnabled = false
+                binding.edtLuasRumputPermanen.isEnabled = false
+                binding.edtLuasBelumTanam.isEnabled = false
+                binding.edtLuasTanamanTahunan.isEnabled = false
+                binding.edtLuasTernakBangunanLain.isEnabled = false
+                binding.edtLuasKehutanan.isEnabled = false
+                binding.edtLuasBudidaya.isEnabled = false
+                binding.edtLuasLahanLainnya.isEnabled = false
             }
         }
 
@@ -226,6 +254,7 @@ class RumahTanggaFragment : Fragment() {
 
     private var listError = mutableListOf<String>()
     private fun validation(){
+        listError.clear()
         checkErrorEmpty(binding.edtNurt, "Nomor Urut Ruta Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtNamaKk, "Nama Kepala Keluarga Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtJmlArt, "Jumlah ART Tidak Boleh Kosong")
@@ -272,7 +301,6 @@ class RumahTanggaFragment : Fragment() {
 
     private fun setView(view: View, data: RutaEntity?) {
         data?.let {
-
             binding.edtNurt.isEnabled = false
             if(data.end_time==""){
                 binding.btnDelete.visibility = View.GONE

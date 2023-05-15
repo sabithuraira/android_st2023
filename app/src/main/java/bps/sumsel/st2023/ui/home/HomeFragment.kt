@@ -72,13 +72,11 @@ class HomeFragment : Fragment() {
 
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
-
                         loadSls(view, result.data, viewModel)
                     }
 
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
-
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -104,7 +102,6 @@ class HomeFragment : Fragment() {
 
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
-
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -131,7 +128,6 @@ class HomeFragment : Fragment() {
 
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
-
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }

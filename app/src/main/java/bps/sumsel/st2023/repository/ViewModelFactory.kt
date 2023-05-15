@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import bps.sumsel.st2023.helper.Injection
 import bps.sumsel.st2023.ui.detail_sls.DetailSlsViewModel
 import bps.sumsel.st2023.ui.edit_sls.EditSlsViewModel
-import bps.sumsel.st2023.ui.rumah_tangga.RumahTanggaViewModel
 import bps.sumsel.st2023.ui.sls.SlsViewModel
 
 class ViewModelFactory private constructor(private val slsRepository: SlsRepository) :
@@ -15,9 +14,9 @@ class ViewModelFactory private constructor(private val slsRepository: SlsReposit
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         when{
             modelClass.isAssignableFrom(SlsViewModel::class.java) -> return  SlsViewModel(slsRepository) as T
-            modelClass.isAssignableFrom(DetailSlsViewModel::class.java) -> return  DetailSlsViewModel(slsRepository) as T
+//            modelClass.isAssignableFrom(DetailSlsViewModel::class.java) -> return  DetailSlsViewModel(slsRepository) as T
             modelClass.isAssignableFrom(EditSlsViewModel::class.java) -> return  EditSlsViewModel(slsRepository) as T
-            modelClass.isAssignableFrom(RumahTanggaViewModel::class.java) -> return  RumahTanggaViewModel(slsRepository) as T
+//            modelClass.isAssignableFrom(RumahTanggaViewModel::class.java) -> return  RumahTanggaViewModel(slsRepository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
