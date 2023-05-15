@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName
 
 @Parcelize
 data class ResponseLogin(
-
 	@field:SerializedName("data")
 	val data: Data? = null,
 
@@ -63,6 +62,9 @@ data class Data(
 
 	@field:SerializedName("token_type")
 	val tokenType: String? = null,
+
+	@field:SerializedName("jabatan")
+	val jabatan: Int? = null,
 
 	@field:SerializedName("user")
 	val user: User? = null

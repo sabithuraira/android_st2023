@@ -42,8 +42,6 @@ class LoginFragment : Fragment() {
             factory
         }
 
-//        viewModel.setEmptyUser()
-
         binding.btnLogin.setOnClickListener {
             val email = binding.edtUsername.text.toString()
             val password = binding.edtPassword.text.toString()

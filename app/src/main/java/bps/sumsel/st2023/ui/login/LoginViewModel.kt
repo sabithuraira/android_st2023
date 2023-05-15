@@ -24,23 +24,29 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginViewModel(
+    private val slsRepository: SlsRepository,
     private val authRepository: AuthRepository
     ) : ViewModel() {
     fun getAuthUser() = authRepository.getAuthUser()
     fun setEmptyUser() = authRepository.logout()
+    fun emptyData() = slsRepository.emptyData()
 
-    fun login(username: String, password: String) = authRepository.login(username, password)
+    fun login(username: String, password: String){
+        slsRepository.emptyData()
+        authRepository.login(username, password)
+    }
 
     val resultData = authRepository.resultData
 }
 
 class LoginViewModelFactory private constructor(
+    private val slsRepository: SlsRepository,
     private val authRepository: AuthRepository) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(authRepository) as T
+            return LoginViewModel(slsRepository, authRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
@@ -50,7 +56,10 @@ class LoginViewModelFactory private constructor(
         private var instance: LoginViewModelFactory? = null
         fun getInstance(context: Context): LoginViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: LoginViewModelFactory(Injection.authRepository(context))
+                instance ?: LoginViewModelFactory(
+                    Injection.slsRepository(context),
+                    Injection.authRepository(context)
+                )
             }.also { instance = it }
     }
 }

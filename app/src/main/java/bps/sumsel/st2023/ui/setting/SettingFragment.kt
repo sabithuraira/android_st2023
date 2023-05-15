@@ -40,6 +40,9 @@ class SettingFragment : Fragment() {
             if (user.token=="") {
                 findNavController().navigate(R.id.action_navigation_setting_to_navigation_login)
             }
+            else{
+                binding.userName.setText(user.name)
+            }
         }
 
         binding.relativeLogout.setOnClickListener {
