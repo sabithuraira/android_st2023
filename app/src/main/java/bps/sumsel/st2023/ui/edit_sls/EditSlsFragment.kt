@@ -26,7 +26,7 @@ class EditSlsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEditSlsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -115,6 +115,9 @@ class EditSlsFragment : Fragment() {
         data?.let {
             binding.edtNamaSls.setText(it.nama_sls)
             binding.edtIdDesa.setText(it.kode_prov + it.kode_kab + it.kode_kec + it.kode_desa)
+
+            binding.edtNamaSls.isEnabled = false
+            binding.edtIdDesa.isEnabled = false
 
             if (it.status_selesai_pcl == 0) {
                 binding.btnProgres.isEnabled = false
