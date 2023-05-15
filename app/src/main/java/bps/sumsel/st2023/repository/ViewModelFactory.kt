@@ -14,7 +14,7 @@ class ViewModelFactory private constructor(private val slsRepository: SlsReposit
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         when{
             modelClass.isAssignableFrom(SlsViewModel::class.java) -> return  SlsViewModel(slsRepository) as T
-            modelClass.isAssignableFrom(DetailSlsViewModel::class.java) -> return  DetailSlsViewModel(slsRepository) as T
+//            modelClass.isAssignableFrom(DetailSlsViewModel::class.java) -> return  DetailSlsViewModel(slsRepository) as T
             modelClass.isAssignableFrom(EditSlsViewModel::class.java) -> return  EditSlsViewModel(slsRepository) as T
 //            modelClass.isAssignableFrom(RumahTanggaViewModel::class.java) -> return  RumahTanggaViewModel(slsRepository) as T
         }
