@@ -7,7 +7,6 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import bps.sumsel.st2023.api.ApiInterface
 import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.datastore.UserStore
-import bps.sumsel.st2023.enum.EnumStatusData
 import bps.sumsel.st2023.enum.EnumStatusUpload
 import bps.sumsel.st2023.request.RequestRuta
 import bps.sumsel.st2023.request.RequestRutaMany
@@ -144,9 +143,8 @@ class SlsRepository private constructor(
                                         itemRuta.jml308Budidaya ?: 0,
                                         itemRuta.jml308LahanLainnya ?: 0,
                                         itemRuta.jml308TanamanTahunan ?: 0,
-                                        itemRuta.statusData ?: 0,
 
-                                        EnumStatusData.CLEAN.kode,
+                                        itemRuta.statusData ?: 0,
 
                                         itemRuta.daftarKomoditas ?: "",
                                         itemRuta.startTime ?: "",
