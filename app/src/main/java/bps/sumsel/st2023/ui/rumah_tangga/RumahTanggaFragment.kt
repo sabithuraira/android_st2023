@@ -60,8 +60,6 @@ class RumahTanggaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         parentActivity = requireActivity() as MainActivity
 
-        generateChipSubsektor(requireActivity())
-
         val pref = AuthDataStore.getInstance(requireContext().dataStore)
         val factory: ViewModelAuthFactory = ViewModelAuthFactory.getInstance(requireActivity(), pref)
         val viewModel: RumahTanggaViewModel by viewModels { factory }
@@ -216,7 +214,6 @@ class RumahTanggaFragment : Fragment() {
                 Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(
                     RumahTanggaFragmentDirections.actionRumahTanggaFragmentToDetailSlsFragment(sls!!)
-//                    DetailSlsFragmentDirections.actionDetailSlsFragmentToRumahTanggaFragment(sls!!, RutaEntity(0))
                 )
             } ?: run {
                 Toast.makeText(context,
@@ -253,6 +250,12 @@ class RumahTanggaFragment : Fragment() {
 
             builder.show()
         }
+
+        generateChipSubsektor(requireActivity())
+
+        binding.cbApakahMenggunaakanLahan.setOnCheckedChangeListener { _, isChecked ->
+            ruta?.apakah_menggunakan_lahan = if(isChecked) 1 else 0
+        }
     }
 
     private fun generateChipSubsektor(context: Context){
@@ -273,6 +276,30 @@ class RumahTanggaFragment : Fragment() {
             isClickable = true
             setTextColor(ContextCompat.getColor(context, R.color.white))
             setChipBackgroundColorResource(R.color.green_900)
+        }
+
+        when (subsektor.code){
+            1 -> if(ruta?.subsektor1_a?.toInt()==1) curChip.isChecked = true
+            2 -> if(ruta?.subsektor1_b?.toInt()==1) curChip.isChecked = true
+
+            3 -> if(ruta?.subsektor2_a?.toInt()==1) curChip.isChecked = true
+            4 -> if(ruta?.subsektor2_b?.toInt()==1) curChip.isChecked = true
+
+            5 -> if(ruta?.subsektor3_a?.toInt()==1) curChip.isChecked = true
+            6 -> if(ruta?.subsektor3_b?.toInt()==1) curChip.isChecked = true
+
+            7 -> if(ruta?.subsektor4_a?.toInt()==1) curChip.isChecked = true
+            8 -> if(ruta?.subsektor4_b?.toInt()==1) curChip.isChecked = true
+            9 -> if(ruta?.subsektor4_c?.toInt()==1) curChip.isChecked = true
+
+            10 -> if(ruta?.subsektor5_a?.toInt()==1) curChip.isChecked = true
+            11 -> if(ruta?.subsektor5_b?.toInt()==1) curChip.isChecked = true
+            12 -> if(ruta?.subsektor5_c?.toInt()==1) curChip.isChecked = true
+
+            13 -> if(ruta?.subsektor6_a?.toInt()==1) curChip.isChecked = true
+            14 -> if(ruta?.subsektor6_b?.toInt()==1) curChip.isChecked = true
+            15 -> if(ruta?.subsektor6_c?.toInt()==1) curChip.isChecked = true
+            16 -> if(ruta?.subsektor7_a?.toInt()==1) curChip.isChecked = true
         }
 
         curChip.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, result ->
@@ -324,9 +351,11 @@ class RumahTanggaFragment : Fragment() {
         totalLahan += binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
         totalLahan += binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
 
-        if(totalLahan==0){
-            binding.edtJmlUnitUsaha.error = "Total Luas Lahan tidak boleh 0"
-            listError.add("Total Luas Lahan tidak boleh 0")
+        if(ruta?.apakah_menggunakan_lahan==1){
+            if(totalLahan==0){
+                binding.edtJmlUnitUsaha.error = "Jika menggunakan lahan, Total Luas Lahan tidak boleh 0"
+                listError.add("Total Luas Lahan tidak boleh 0")
+            }
         }
 
         var totalSubsektor = 0
@@ -347,7 +376,7 @@ class RumahTanggaFragment : Fragment() {
         totalSubsektor += ruta?.subsektor6_c?.toInt() ?: 0
         totalSubsektor += ruta?.subsektor7_a?.toInt() ?: 0
 
-        if(totalLahan==0){
+        if(totalSubsektor==0){
             binding.edtJmlUnitUsaha.error = "Minimal memilih 1 subsektor"
             listError.add("Minimal memilih 1 subsektor")
         }
@@ -417,6 +446,7 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtLuasKehutanan.setText(it.jml_308_kehutanan.toString())
                 binding.edtLuasBudidaya.setText(it.jml_308_budidaya.toString())
                 binding.edtLuasLahanLainnya.setText(it.jml_308_lahan_lainnya.toString())
+                binding.cbApakahMenggunaakanLahan.isChecked = it.apakah_menggunakan_lahan==1
                 //////
 
                 validation()
