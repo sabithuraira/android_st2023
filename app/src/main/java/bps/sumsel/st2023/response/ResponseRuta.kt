@@ -91,6 +91,9 @@ data class ResponseRuta(
 	@field:SerializedName("subsektor7_a")
 	val subsektor7A: Byte? = null,
 
+	@field:SerializedName("apakah_menggunakan_lahan")
+	val apakahMenggunakanLahan: Int? = null,
+
 	@field:SerializedName("jml_308_sawah")
 	val jml308Sawah: Int? = null,
 
