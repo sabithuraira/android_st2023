@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,21 +21,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import bps.sumsel.st2023.MainActivity
-import bps.sumsel.st2023.R
+import bps.sumsel.st2023.*
 import bps.sumsel.st2023.databinding.FragmentRumahTanggaBinding
 import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.enum.EnumStatusData
 import bps.sumsel.st2023.enum.EnumStatusUpload
+import bps.sumsel.st2023.enum.EnumSubsektor
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelAuthFactory
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import java.util.Calendar
-import java.util.Date
+import com.google.android.material.chip.Chip
+import java.util.*
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
 class RumahTanggaFragment : Fragment() {
@@ -57,6 +59,8 @@ class RumahTanggaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentActivity = requireActivity() as MainActivity
+
+        generateChipSubsektor(requireActivity())
 
         val pref = AuthDataStore.getInstance(requireContext().dataStore)
         val factory: ViewModelAuthFactory = ViewModelAuthFactory.getInstance(requireActivity(), pref)
@@ -249,7 +253,55 @@ class RumahTanggaFragment : Fragment() {
 
             builder.show()
         }
-//    }
+    }
+
+    private fun generateChipSubsektor(context: Context){
+        enumValues<EnumSubsektor>().forEach {
+            binding.chipSubsektor.addView(addChip(context, it))
+        }
+    }
+
+    private fun addChip(context: Context, subsektor: EnumSubsektor): Chip {
+        val lp = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        val curChip = Chip(context, null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Choice).apply {
+            id = subsektor.code
+            layoutParams = lp
+            text = subsektor.label
+            textSize = 13F
+            isCheckable = true
+            isClickable = true
+            setTextColor(ContextCompat.getColor(context, R.color.white))
+            setChipBackgroundColorResource(R.color.green_900)
+        }
+
+        curChip.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, result ->
+            when (subsektor.code){
+                1 -> ruta?.subsektor1_a = if(result) 1 else 0
+                2 -> ruta?.subsektor1_b = if(result) 1 else 0
+
+                3 -> ruta?.subsektor2_a = if(result) 1 else 0
+                4 -> ruta?.subsektor2_b = if(result) 1 else 0
+
+                5 -> ruta?.subsektor3_a = if(result) 1 else 0
+                6 -> ruta?.subsektor3_b = if(result) 1 else 0
+
+                7 -> ruta?.subsektor4_a = if(result) 1 else 0
+                8 -> ruta?.subsektor4_b = if(result) 1 else 0
+                9 -> ruta?.subsektor4_c = if(result) 1 else 0
+
+                10 -> ruta?.subsektor5_a = if(result) 1 else 0
+                11 -> ruta?.subsektor5_b = if(result) 1 else 0
+                12 -> ruta?.subsektor5_c = if(result) 1 else 0
+
+                13 -> ruta?.subsektor6_a = if(result) 1 else 0
+                14 -> ruta?.subsektor6_b = if(result) 1 else 0
+                15 -> ruta?.subsektor6_c = if(result) 1 else 0
+                16 -> ruta?.subsektor7_a = if(result) 1 else 0
+            }
+        })
+
+        return curChip
     }
 
     private var listError = mutableListOf<String>()
@@ -275,6 +327,29 @@ class RumahTanggaFragment : Fragment() {
         if(totalLahan==0){
             binding.edtJmlUnitUsaha.error = "Total Luas Lahan tidak boleh 0"
             listError.add("Total Luas Lahan tidak boleh 0")
+        }
+
+        var totalSubsektor = 0
+        totalSubsektor += ruta?.subsektor1_a?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor1_b?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor2_a?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor2_b?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor3_a?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor3_b?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor4_a?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor4_b?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor4_c?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor5_a?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor5_b?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor5_c?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor6_a?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor6_b?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor6_c?.toInt() ?: 0
+        totalSubsektor += ruta?.subsektor7_a?.toInt() ?: 0
+
+        if(totalLahan==0){
+            binding.edtJmlUnitUsaha.error = "Minimal memilih 1 subsektor"
+            listError.add("Minimal memilih 1 subsektor")
         }
 
         checkErrorEmpty(binding.edtLuasSawah, "Luas Sawah Tidak Boleh Kosong")

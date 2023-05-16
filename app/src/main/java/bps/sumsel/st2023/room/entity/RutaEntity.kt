@@ -42,6 +42,7 @@ data class RutaEntity(
     @ColumnInfo(name="subsektor6_c") var subsektor6_c: Byte = 0,
     @ColumnInfo(name="subsektor7_a") var subsektor7_a: Byte = 0,
 
+    @ColumnInfo(name="apakah_menggunakan_lahan") var apakah_menggunakan_lahan: Int = 0,
     @ColumnInfo(name="jml_308_sawah") var jml_308_sawah: Int = 0,
     @ColumnInfo(name="jml_308_bukan_sawah") var jml_308_bukan_sawah: Int = 0,
     @ColumnInfo(name="jml_308_rumput_sementara") var jml_308_rumput_sementara: Int = 0,

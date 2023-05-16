@@ -15,7 +15,7 @@ import bps.sumsel.st2023.room.entity.SlsEntity
 
 @Database(
     entities = [SlsEntity::class, RutaEntity::class],
-    version = 1,
+    version = 2,
 //    autoMigrations = [
 //        AutoMigration(from = 4, to = 5),
 //    ],
@@ -34,17 +34,17 @@ abstract class St2023Database: RoomDatabase() {
                     context.applicationContext,
                     St2023Database::class.java, "st2023.db"
                 )
-//                    .fallbackToDestructiveMigration()
-                    .build()
+                .addMigrations(MIGRATION_1_2)
+                .build()
             }
     }
 }
 
-//val MIGRATION_1_2: Migration = object : Migration(1, 2) {
-//    override fun migrate(database: SupportSQLiteDatabase) {
-//        database.execSQL(
-//            "ALTER TABLE ruta "
-//                    + " ADD COLUMN is_upload INTEGER"
-//        )
-//    }
-//}
+val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE ruta "
+                    + " ADD COLUMN apakah_menggunakan_lahan INTEGER NOT NULL DEFAULT(0)"
+        )
+    }
+}

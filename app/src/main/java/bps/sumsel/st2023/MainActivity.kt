@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.room.Room
 import bps.sumsel.st2023.databinding.ActivityMainBinding
+import bps.sumsel.st2023.room.MIGRATION_1_2
 //import bps.sumsel.st2023.room.MIGRATION_1_2
 import bps.sumsel.st2023.room.St2023Database
 
@@ -27,8 +28,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         dbRoom = Room.databaseBuilder(this, St2023Database::class.java, "room_db")
-            .fallbackToDestructiveMigration()
-//            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2)
             .build()
 
         setContentView(binding.root)
