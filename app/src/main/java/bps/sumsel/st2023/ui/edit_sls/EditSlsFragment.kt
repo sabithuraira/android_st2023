@@ -42,7 +42,10 @@ class EditSlsFragment : Fragment() {
 
         sls = EditSlsFragmentArgs.fromBundle(arguments as Bundle).sls
 
-        viewModel.setSingleData(sls!!)
+        sls?.let {
+            parentActivity.setActionBarTitle(it.nama_sls)
+            viewModel.setSingleData(it)
+        }
 
         viewModel.resultSingleData.observe(viewLifecycleOwner) { result ->
             if (result != null) {
@@ -163,6 +166,45 @@ class EditSlsFragment : Fragment() {
 
             binding.edtNamaSls.isEnabled = false
             binding.edtIdDesa.isEnabled = false
+
+            viewModel.getRekapRuta()
+
+            viewModel.resultRekapRuta.observe(viewLifecycleOwner) { result ->
+                if (result != null) {
+                    when (result) {
+                        is ResultData.Loading -> {
+                            parentActivity.setLoading(true)
+                        }
+
+                        is ResultData.Success -> {
+                            parentActivity.setLoading(false)
+
+                            result.data?.let { d ->
+                                d.forEach { r ->
+                                    if (r.kode_kab == data.kode_kab &&
+                                        r.kode_kec == data.kode_kec &&
+                                        r.kode_desa == data.kode_desa &&
+                                        r.id_sls == data.id_sls &&
+                                        r.id_sub_sls == data.id_sub_sls
+                                    ) {
+                                        binding.txtProgresPcl.text = r.jumlah.toString()
+                                    }
+                                }
+                            }
+                        }
+
+                        is ResultData.Error -> {
+                            parentActivity.setLoading(false)
+
+                            Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
+            }
+
+            binding.txtProgresPml.text = it.jml_dok_ke_pml.toString()
+            binding.txtProgresKoseka.text = it.jml_dok_ke_koseka.toString()
 
             val user = viewModel.user
 

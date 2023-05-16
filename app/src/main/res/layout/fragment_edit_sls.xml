@@ -81,6 +81,86 @@
                 android:text="Progres" />
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Progres PCL"
+                        android:textColor="@color/black_300" />
+                    <TextView
+                        android:id="@+id/txt_progres_pcl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="0"
+                        android:textColor="@color/green_900" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Progres PML"
+                        android:textColor="@color/black_300" />
+                    <TextView
+                        android:id="@+id/txt_progres_pml"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="0"
+                        android:textColor="@color/green_900" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Progres Koseka"
+                        android:textColor="@color/black_300" />
+                    <TextView
+                        android:id="@+id/txt_progres_koseka"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="0"
+                        android:textColor="@color/green_900" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layout_pcl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,12 +211,13 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
-                    android:text="Jumlah Dokumen yang Diterima" />
+                    android:text="Jumlah Dokumen yang Diterima PML" />
 
                 <EditText
                     android:id="@+id/edt_dok_pml"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:background="@drawable/bg_edittext"
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
@@ -164,12 +245,13 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:textColor="@color/black_300"
-                    android:text="Jumlah Dokumen yang Diterima" />
+                    android:text="Jumlah Dokumen yang Diterima KOSEKA" />
 
                 <EditText
                     android:id="@+id/edt_dok_koseka"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:background="@drawable/bg_edittext"
                     android:textColor="@color/black_300"
                     android:textSize="14sp"
