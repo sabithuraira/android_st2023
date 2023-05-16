@@ -12,6 +12,9 @@ interface ApiInterface {
     @POST("login")
     fun login(@Body params: RequestBody): Call<ResponseLogin>
 
+    @POST("change_password")
+    fun changePassword(@Header("Authorization") token: String, @Body params: RequestBody): Call<ResponseStringStatus>
+
     //SLS
     @GET("sls/{jenis}/{kode_petugas}/petugas")
     fun listSlsPetugas(

@@ -21,7 +21,7 @@ class SettingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -61,6 +61,12 @@ class SettingFragment : Fragment() {
 
             val alert: AlertDialog = builder.create()
             alert.show()
+        }
+
+        binding.relativeChangePassword.setOnClickListener {
+            findNavController().navigate(
+                SettingFragmentDirections.actionNavigationSettingToChangePasswordFragment()
+            )
         }
     }
 

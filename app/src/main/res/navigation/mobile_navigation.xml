@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_navigation_setting_to_navigation_login"
             app:destination="@id/navigation_login" />
+        <action
+            android:id="@+id/action_navigation_setting_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailSlsFragment"
@@ -102,4 +105,9 @@
             android:id="@+id/action_editSlsFragment_to_navigation_sls"
             app:destination="@id/navigation_sls" />
     </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="bps.sumsel.st2023.ui.change_password.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" />
 </navigation>
