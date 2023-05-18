@@ -19,9 +19,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import bps.sumsel.st2023.*
+import bps.sumsel.st2023.MainActivity
+import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentRumahTanggaBinding
 import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.datastore.UserStore
@@ -35,10 +34,12 @@ import bps.sumsel.st2023.room.entity.SlsEntity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.chip.Chip
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
+
 class RumahTanggaFragment : Fragment() {
     private var _binding: FragmentRumahTanggaBinding? = null
     private val binding get() = _binding!!
@@ -49,8 +50,10 @@ class RumahTanggaFragment : Fragment() {
     private var curLocation: Location? = null
     private var lastPlusOne: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         _binding = FragmentRumahTanggaBinding.inflate(inflater, container, false)
         return binding.root
@@ -61,7 +64,8 @@ class RumahTanggaFragment : Fragment() {
         parentActivity = requireActivity() as MainActivity
 
         val pref = AuthDataStore.getInstance(requireContext().dataStore)
-        val factory: ViewModelAuthFactory = ViewModelAuthFactory.getInstance(requireActivity(), pref)
+        val factory: ViewModelAuthFactory =
+            ViewModelAuthFactory.getInstance(requireActivity(), pref)
         val viewModel: RumahTanggaViewModel by viewModels { factory }
 
         sls = RumahTanggaFragmentArgs.fromBundle(arguments as Bundle).sls
@@ -77,8 +81,13 @@ class RumahTanggaFragment : Fragment() {
 
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
-                        ruta = result.data
-                        setView(view, ruta)
+                        if (result.data != null) {
+                            ruta = result.data
+                            setView(view, ruta)
+                        } else {
+                            viewModel.setSingleRuta(ruta)
+                            requireActivity().onBackPressedDispatcher.onBackPressed()
+                        }
                     }
 
                     is ResultData.Error -> {
@@ -98,7 +107,7 @@ class RumahTanggaFragment : Fragment() {
 
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
-                        lastPlusOne = result.data+1
+                        lastPlusOne = result.data + 1
                         binding.edtNurt.setText(lastPlusOne.toString())
                     }
 
@@ -155,10 +164,10 @@ class RumahTanggaFragment : Fragment() {
                 it.status_upload = EnumStatusUpload.NOT_UPLOADED.kode
 
                 it.status_data = EnumStatusData.ERROR.kode
-//                viewModel.updateRuta(it, false)
             }
         } ?: run {
-            Toast.makeText(context,
+            Toast.makeText(
+                context,
                 "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
                 Toast.LENGTH_SHORT
             ).show()
@@ -202,21 +211,20 @@ class RumahTanggaFragment : Fragment() {
 
                 validation()
 
-                if(listError.isNotEmpty()){
+                if (listError.isNotEmpty()) {
                     it.status_data = EnumStatusData.ERROR.kode
-                }
-                else{
+                } else {
                     it.status_data = EnumStatusData.CLEAN.kode
                 }
 
                 viewModel.updateRuta(it, false)
 
                 Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(
-                    RumahTanggaFragmentDirections.actionRumahTanggaFragmentToDetailSlsFragment(sls!!)
-                )
+
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             } ?: run {
-                Toast.makeText(context,
+                Toast.makeText(
+                    context,
                     "Error, Terjadi kesalahan. Mohon kembali ke halaman utama aplikasi dan ulangi lagi",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -230,14 +238,18 @@ class RumahTanggaFragment : Fragment() {
             builder.setMessage("Anda yakin ingin menghapus data ini?")
 
             builder.setPositiveButton("Ya") { dialog, _ ->
-               ruta?.let {
+                ruta?.let {
                     if (it.status_upload == EnumStatusUpload.NOT_UPLOADED.kode) {
                         viewModel.delete(it)
                         Toast.makeText(context, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
                     } else {
                         it.status_upload = EnumStatusUpload.DELETED_AFTER_UPLOADED.kode
                         viewModel.updateRuta(it, true)
-                        Toast.makeText(context, "Data akan dihapus saat diupload", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Data akan dihapus saat diupload",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -254,20 +266,27 @@ class RumahTanggaFragment : Fragment() {
         generateChipSubsektor(requireActivity())
 
         binding.cbApakahMenggunaakanLahan.setOnCheckedChangeListener { _, isChecked ->
-            ruta?.apakah_menggunakan_lahan = if(isChecked) 1 else 0
+            ruta?.apakah_menggunakan_lahan = if (isChecked) 1 else 0
         }
     }
 
-    private fun generateChipSubsektor(context: Context){
+    private fun generateChipSubsektor(context: Context) {
         enumValues<EnumSubsektor>().forEach {
             binding.chipSubsektor.addView(addChip(context, it))
         }
     }
 
     private fun addChip(context: Context, subsektor: EnumSubsektor): Chip {
-        val lp = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        val lp = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
 
-        val curChip = Chip(context, null, com.google.android.material.R.style.Widget_MaterialComponents_Chip_Choice).apply {
+        val curChip = Chip(
+            context,
+            null,
+            com.google.android.material.R.style.Widget_MaterialComponents_Chip_Choice
+        ).apply {
             id = subsektor.code
             layoutParams = lp
             text = subsektor.label
@@ -278,53 +297,53 @@ class RumahTanggaFragment : Fragment() {
             setChipBackgroundColorResource(R.color.green_900)
         }
 
-        when (subsektor.code){
-            1 -> if(ruta?.subsektor1_a?.toInt()==1) curChip.isChecked = true
-            2 -> if(ruta?.subsektor1_b?.toInt()==1) curChip.isChecked = true
+        when (subsektor.code) {
+            1 -> if (ruta?.subsektor1_a?.toInt() == 1) curChip.isChecked = true
+            2 -> if (ruta?.subsektor1_b?.toInt() == 1) curChip.isChecked = true
 
-            3 -> if(ruta?.subsektor2_a?.toInt()==1) curChip.isChecked = true
-            4 -> if(ruta?.subsektor2_b?.toInt()==1) curChip.isChecked = true
+            3 -> if (ruta?.subsektor2_a?.toInt() == 1) curChip.isChecked = true
+            4 -> if (ruta?.subsektor2_b?.toInt() == 1) curChip.isChecked = true
 
-            5 -> if(ruta?.subsektor3_a?.toInt()==1) curChip.isChecked = true
-            6 -> if(ruta?.subsektor3_b?.toInt()==1) curChip.isChecked = true
+            5 -> if (ruta?.subsektor3_a?.toInt() == 1) curChip.isChecked = true
+            6 -> if (ruta?.subsektor3_b?.toInt() == 1) curChip.isChecked = true
 
-            7 -> if(ruta?.subsektor4_a?.toInt()==1) curChip.isChecked = true
-            8 -> if(ruta?.subsektor4_b?.toInt()==1) curChip.isChecked = true
-            9 -> if(ruta?.subsektor4_c?.toInt()==1) curChip.isChecked = true
+            7 -> if (ruta?.subsektor4_a?.toInt() == 1) curChip.isChecked = true
+            8 -> if (ruta?.subsektor4_b?.toInt() == 1) curChip.isChecked = true
+            9 -> if (ruta?.subsektor4_c?.toInt() == 1) curChip.isChecked = true
 
-            10 -> if(ruta?.subsektor5_a?.toInt()==1) curChip.isChecked = true
-            11 -> if(ruta?.subsektor5_b?.toInt()==1) curChip.isChecked = true
-            12 -> if(ruta?.subsektor5_c?.toInt()==1) curChip.isChecked = true
+            10 -> if (ruta?.subsektor5_a?.toInt() == 1) curChip.isChecked = true
+            11 -> if (ruta?.subsektor5_b?.toInt() == 1) curChip.isChecked = true
+            12 -> if (ruta?.subsektor5_c?.toInt() == 1) curChip.isChecked = true
 
-            13 -> if(ruta?.subsektor6_a?.toInt()==1) curChip.isChecked = true
-            14 -> if(ruta?.subsektor6_b?.toInt()==1) curChip.isChecked = true
-            15 -> if(ruta?.subsektor6_c?.toInt()==1) curChip.isChecked = true
-            16 -> if(ruta?.subsektor7_a?.toInt()==1) curChip.isChecked = true
+            13 -> if (ruta?.subsektor6_a?.toInt() == 1) curChip.isChecked = true
+            14 -> if (ruta?.subsektor6_b?.toInt() == 1) curChip.isChecked = true
+            15 -> if (ruta?.subsektor6_c?.toInt() == 1) curChip.isChecked = true
+            16 -> if (ruta?.subsektor7_a?.toInt() == 1) curChip.isChecked = true
         }
 
         curChip.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, result ->
-            when (subsektor.code){
-                1 -> ruta?.subsektor1_a = if(result) 1 else 0
-                2 -> ruta?.subsektor1_b = if(result) 1 else 0
+            when (subsektor.code) {
+                1 -> ruta?.subsektor1_a = if (result) 1 else 0
+                2 -> ruta?.subsektor1_b = if (result) 1 else 0
 
-                3 -> ruta?.subsektor2_a = if(result) 1 else 0
-                4 -> ruta?.subsektor2_b = if(result) 1 else 0
+                3 -> ruta?.subsektor2_a = if (result) 1 else 0
+                4 -> ruta?.subsektor2_b = if (result) 1 else 0
 
-                5 -> ruta?.subsektor3_a = if(result) 1 else 0
-                6 -> ruta?.subsektor3_b = if(result) 1 else 0
+                5 -> ruta?.subsektor3_a = if (result) 1 else 0
+                6 -> ruta?.subsektor3_b = if (result) 1 else 0
 
-                7 -> ruta?.subsektor4_a = if(result) 1 else 0
-                8 -> ruta?.subsektor4_b = if(result) 1 else 0
-                9 -> ruta?.subsektor4_c = if(result) 1 else 0
+                7 -> ruta?.subsektor4_a = if (result) 1 else 0
+                8 -> ruta?.subsektor4_b = if (result) 1 else 0
+                9 -> ruta?.subsektor4_c = if (result) 1 else 0
 
-                10 -> ruta?.subsektor5_a = if(result) 1 else 0
-                11 -> ruta?.subsektor5_b = if(result) 1 else 0
-                12 -> ruta?.subsektor5_c = if(result) 1 else 0
+                10 -> ruta?.subsektor5_a = if (result) 1 else 0
+                11 -> ruta?.subsektor5_b = if (result) 1 else 0
+                12 -> ruta?.subsektor5_c = if (result) 1 else 0
 
-                13 -> ruta?.subsektor6_a = if(result) 1 else 0
-                14 -> ruta?.subsektor6_b = if(result) 1 else 0
-                15 -> ruta?.subsektor6_c = if(result) 1 else 0
-                16 -> ruta?.subsektor7_a = if(result) 1 else 0
+                13 -> ruta?.subsektor6_a = if (result) 1 else 0
+                14 -> ruta?.subsektor6_b = if (result) 1 else 0
+                15 -> ruta?.subsektor6_c = if (result) 1 else 0
+                16 -> ruta?.subsektor7_a = if (result) 1 else 0
             }
         })
 
@@ -332,7 +351,7 @@ class RumahTanggaFragment : Fragment() {
     }
 
     private var listError = mutableListOf<String>()
-    private fun validation(){
+    private fun validation() {
         listError.clear()
         checkErrorEmpty(binding.edtNurt, "Nomor Urut Ruta Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtNamaKk, "Nama Kepala Keluarga Tidak Boleh Kosong")
@@ -351,9 +370,10 @@ class RumahTanggaFragment : Fragment() {
         totalLahan += binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
         totalLahan += binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
 
-        if(ruta?.apakah_menggunakan_lahan==1){
-            if(totalLahan==0){
-                binding.edtJmlUnitUsaha.error = "Jika menggunakan lahan, Total Luas Lahan tidak boleh 0"
+        if (ruta?.apakah_menggunakan_lahan == 1) {
+            if (totalLahan == 0) {
+                binding.edtJmlUnitUsaha.error =
+                    "Jika menggunakan lahan, Total Luas Lahan tidak boleh 0"
                 listError.add("Total Luas Lahan tidak boleh 0")
             }
         }
@@ -376,7 +396,7 @@ class RumahTanggaFragment : Fragment() {
         totalSubsektor += ruta?.subsektor6_c?.toInt() ?: 0
         totalSubsektor += ruta?.subsektor7_a?.toInt() ?: 0
 
-        if(totalSubsektor==0){
+        if (totalSubsektor == 0) {
             binding.edtJmlUnitUsaha.error = "Minimal memilih 1 subsektor"
             listError.add("Minimal memilih 1 subsektor")
         }
@@ -387,18 +407,23 @@ class RumahTanggaFragment : Fragment() {
         checkErrorEmpty(binding.edtLuasRumputPermanen, "Luas Rumput Permanen Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtLuasBelumTanam, "Luas Belum Tanam Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtLuasTanamanTahunan, "Luas Tanaman Tahunan Tidak Boleh Kosong")
-        checkErrorEmpty(binding.edtLuasTernakBangunanLain, "Luas Ternak Bangunan Lain Tidak Boleh Kosong")
+        checkErrorEmpty(
+            binding.edtLuasTernakBangunanLain,
+            "Luas Ternak Bangunan Lain Tidak Boleh Kosong"
+        )
         checkErrorEmpty(binding.edtLuasKehutanan, "Luas Kegiatan Kehutanan Tidak Boleh Kosong")
-        checkErrorEmpty(binding.edtLuasBudidaya, "Luas Kegiatan Budidaya Perikanan Tidak Boleh Kosong")
+        checkErrorEmpty(
+            binding.edtLuasBudidaya,
+            "Luas Kegiatan Budidaya Perikanan Tidak Boleh Kosong"
+        )
         checkErrorEmpty(binding.edtLuasLahanLainnya, "Luas Lahan Lainnya Tidak Boleh Kosong")
     }
 
-    private fun checkErrorEmpty(edt: EditText, errMsg: String){
-        if(edt.text.toString().isBlank()){
+    private fun checkErrorEmpty(edt: EditText, errMsg: String) {
+        if (edt.text.toString().isBlank()) {
             edt.error = errMsg
             listError.add(errMsg)
-        }
-        else{
+        } else {
             edt.error = null
         }
     }
@@ -406,7 +431,7 @@ class RumahTanggaFragment : Fragment() {
     private fun setView(view: View, data: RutaEntity?) {
         data?.let {
             binding.edtNurt.isEnabled = false
-            if(data.end_time==""){
+            if (data.end_time == "") {
                 binding.btnDelete.visibility = View.GONE
                 binding.linearUsahaTani.visibility = View.GONE
 
@@ -425,8 +450,7 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtLuasKehutanan.setText("")
                 binding.edtLuasBudidaya.setText("")
                 binding.edtLuasLahanLainnya.setText("")
-            }
-            else{
+            } else {
                 binding.btnDelete.visibility = View.VISIBLE
                 binding.linearUsahaTani.visibility = View.VISIBLE
 
@@ -446,15 +470,13 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtLuasKehutanan.setText(it.jml_308_kehutanan.toString())
                 binding.edtLuasBudidaya.setText(it.jml_308_budidaya.toString())
                 binding.edtLuasLahanLainnya.setText(it.jml_308_lahan_lainnya.toString())
-                binding.cbApakahMenggunaakanLahan.isChecked = it.apakah_menggunakan_lahan==1
+                binding.cbApakahMenggunaakanLahan.isChecked = it.apakah_menggunakan_lahan == 1
                 //////
 
                 validation()
             }
         } ?: run {
-            view.findNavController().navigate(
-                RumahTanggaFragmentDirections.actionRumahTanggaFragmentToDetailSlsFragment(sls!!)
-            )
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
@@ -476,9 +498,8 @@ class RumahTanggaFragment : Fragment() {
                     "Anda harus mengizinkan aplikasi ini mendeteksi lokasi untuk menjalankan operasi ini",
                     Toast.LENGTH_SHORT
                 ).show()
-                findNavController().navigate(
-                    RumahTanggaFragmentDirections.actionRumahTanggaFragmentToDetailSlsFragment(sls!!)
-                )
+
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
     }
