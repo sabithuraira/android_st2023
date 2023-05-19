@@ -1,9 +1,7 @@
 package bps.sumsel.st2023.ui.rumah_tangga
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
+import android.location.Location
+import androidx.lifecycle.*
 import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.repository.SlsRepository
@@ -27,4 +25,13 @@ class RumahTanggaViewModel(
     val resultLastNurt = slsRepository.resultLastNurt
 
     fun getLastNurt(data: SlsEntity) = slsRepository.getLastNumber(data)
+
+
+//    private val _curLocation = MutableLiveData<Location?>()
+//    val curLocation: LiveData<Location?> = _curLocation
+//
+//    fun setLocation(data: Location?){
+//        _curLocation.value = data
+//    }
+
 }

@@ -1,17 +1,24 @@
 package bps.sumsel.st2023.ui.rumah_tangga
 
 import android.Manifest
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
@@ -31,12 +38,11 @@ import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelAuthFactory
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.material.chip.Chip
-import java.util.Calendar
-import java.util.Date
-
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
 
@@ -47,6 +53,8 @@ class RumahTanggaFragment : Fragment() {
     private var sls: SlsEntity? = null
     private var ruta: RutaEntity? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
     private var curLocation: Location? = null
     private var lastPlusOne: Int = 0
 
@@ -143,6 +151,11 @@ class RumahTanggaFragment : Fragment() {
             }
         }
 
+//        getLastLocation()
+        createLocationRequest()
+        createLocationCallback()
+        startLocationUpdates()
+
         ruta?.let {
             if (ruta?.id == 0) {
                 viewModel.getLastNurt(sls!!)
@@ -172,8 +185,6 @@ class RumahTanggaFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-
-        getLastLocation()
 
         binding.btnSave.setOnClickListener {
             ruta?.let {
@@ -480,6 +491,67 @@ class RumahTanggaFragment : Fragment() {
         }
     }
 
+    private val resolutionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult()
+        ) { result ->
+            when (result.resultCode) {
+                RESULT_OK ->
+                    Log.i(TAG, "onActivityResult: All location settings are satisfied.")
+                RESULT_CANCELED ->
+                    Toast.makeText(requireContext(), "Anda harus mengaktifkan GPS untuk menggunakan aplikasi ini!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest.create().apply {
+            interval = TimeUnit.SECONDS.toMillis(20000)
+            maxWaitTime = TimeUnit.SECONDS.toMillis(1)
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val client = LocationServices.getSettingsClient(requireActivity())
+        client.checkLocationSettings(builder.build())
+            .addOnSuccessListener { getLastLocation() }
+            .addOnFailureListener { exception ->
+                if (exception is ResolvableApiException) {
+                    try {
+                        resolutionLauncher.launch(
+                            IntentSenderRequest.Builder(exception.resolution).build()
+                        )
+                    } catch (sendEx: IntentSender.SendIntentException) {
+                        Toast.makeText(requireActivity(), sendEx.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+    }
+
+    private fun createLocationCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+                    Log.d(TAG, "onLocationResult: " + location.latitude + ", " + location.longitude)
+                    curLocation = location
+                }
+            }
+        }
+    }
+
+    private fun startLocationUpdates() {
+        try {
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        } catch (exception: SecurityException) {
+            Log.e(TAG, "Error : " + exception.message)
+        }
+    }
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -518,19 +590,12 @@ class RumahTanggaFragment : Fragment() {
                 if (location != null) {
                     curLocation = location
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Lokasi tidak ditemukan. Coba lagi",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Lokasi tidak ditemukan. Coba lagi", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
             requestPermissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
             )
         }
     }
@@ -538,5 +603,16 @@ class RumahTanggaFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        stopLocationUpdates()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
     }
 }
