@@ -41,6 +41,7 @@ import bps.sumsel.st2023.room.entity.SlsEntity
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.material.chip.Chip
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -161,6 +162,8 @@ class RumahTanggaFragment : Fragment() {
                 viewModel.getLastNurt(sls!!)
 
                 val currentTime: Date = Calendar.getInstance().time
+                val currentTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
 
                 it.encId = ""
                 it.kode_prov = sls!!.kode_prov
@@ -170,7 +173,7 @@ class RumahTanggaFragment : Fragment() {
                 it.id_sls = sls!!.id_sls
                 it.id_sub_sls = sls!!.id_sub_sls
 
-                it.start_time = currentTime.toString()
+                it.start_time = currentTimeFormat.format(currentTime).toString()
                 it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
                 it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
@@ -189,8 +192,9 @@ class RumahTanggaFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             ruta?.let {
                 val currentTime: Date = Calendar.getInstance().time
+                val currentTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-                it.end_time = currentTime.toString()
+                it.end_time = currentTimeFormat.format(currentTime).toString()
                 it.end_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
                 it.end_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
@@ -369,25 +373,25 @@ class RumahTanggaFragment : Fragment() {
         checkErrorEmpty(binding.edtJmlArt, "Jumlah ART Tidak Boleh Kosong")
         checkErrorEmpty(binding.edtJmlUnitUsaha, "Jumlah Unit Usaha Tidak Boleh Kosong")
 
-        var totalLahan = 0
-        totalLahan += binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
-        totalLahan += binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
-
-        if (ruta?.apakah_menggunakan_lahan == 1) {
-            if (totalLahan == 0) {
-                binding.edtJmlUnitUsaha.error =
-                    "Jika menggunakan lahan, Total Luas Lahan tidak boleh 0"
-                listError.add("Total Luas Lahan tidak boleh 0")
-            }
-        }
+//        var totalLahan = 0
+//        totalLahan += binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
+//        totalLahan += binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
+//
+//        if (ruta?.apakah_menggunakan_lahan == 1) {
+//            if (totalLahan == 0) {
+//                binding.edtJmlUnitUsaha.error =
+//                    "Jika menggunakan lahan, Total Luas Lahan tidak boleh 0"
+//                listError.add("Total Luas Lahan tidak boleh 0")
+//            }
+//        }
 
         var totalSubsektor = 0
         totalSubsektor += ruta?.subsektor1_a?.toInt() ?: 0
@@ -412,22 +416,22 @@ class RumahTanggaFragment : Fragment() {
             listError.add("Minimal memilih 1 subsektor")
         }
 
-        checkErrorEmpty(binding.edtLuasSawah, "Luas Sawah Tidak Boleh Kosong")
-        checkErrorEmpty(binding.edtLuasBukanSawah, "Luas Bukan Sawah Tidak Boleh Kosong")
-        checkErrorEmpty(binding.edtLuasRumputSementara, "Luas Rumput Sementara Tidak Boleh Kosong")
-        checkErrorEmpty(binding.edtLuasRumputPermanen, "Luas Rumput Permanen Tidak Boleh Kosong")
-        checkErrorEmpty(binding.edtLuasBelumTanam, "Luas Belum Tanam Tidak Boleh Kosong")
-        checkErrorEmpty(binding.edtLuasTanamanTahunan, "Luas Tanaman Tahunan Tidak Boleh Kosong")
-        checkErrorEmpty(
-            binding.edtLuasTernakBangunanLain,
-            "Luas Ternak Bangunan Lain Tidak Boleh Kosong"
-        )
-        checkErrorEmpty(binding.edtLuasKehutanan, "Luas Kegiatan Kehutanan Tidak Boleh Kosong")
-        checkErrorEmpty(
-            binding.edtLuasBudidaya,
-            "Luas Kegiatan Budidaya Perikanan Tidak Boleh Kosong"
-        )
-        checkErrorEmpty(binding.edtLuasLahanLainnya, "Luas Lahan Lainnya Tidak Boleh Kosong")
+//        checkErrorEmpty(binding.edtLuasSawah, "Luas Sawah Tidak Boleh Kosong")
+//        checkErrorEmpty(binding.edtLuasBukanSawah, "Luas Bukan Sawah Tidak Boleh Kosong")
+//        checkErrorEmpty(binding.edtLuasRumputSementara, "Luas Rumput Sementara Tidak Boleh Kosong")
+//        checkErrorEmpty(binding.edtLuasRumputPermanen, "Luas Rumput Permanen Tidak Boleh Kosong")
+//        checkErrorEmpty(binding.edtLuasBelumTanam, "Luas Belum Tanam Tidak Boleh Kosong")
+//        checkErrorEmpty(binding.edtLuasTanamanTahunan, "Luas Tanaman Tahunan Tidak Boleh Kosong")
+//        checkErrorEmpty(
+//            binding.edtLuasTernakBangunanLain,
+//            "Luas Ternak Bangunan Lain Tidak Boleh Kosong"
+//        )
+//        checkErrorEmpty(binding.edtLuasKehutanan, "Luas Kegiatan Kehutanan Tidak Boleh Kosong")
+//        checkErrorEmpty(
+//            binding.edtLuasBudidaya,
+//            "Luas Kegiatan Budidaya Perikanan Tidak Boleh Kosong"
+//        )
+//        checkErrorEmpty(binding.edtLuasLahanLainnya, "Luas Lahan Lainnya Tidak Boleh Kosong")
     }
 
     private fun checkErrorEmpty(edt: EditText, errMsg: String) {
@@ -441,6 +445,8 @@ class RumahTanggaFragment : Fragment() {
 
     private fun setView(view: View, data: RutaEntity?) {
         data?.let {
+            binding.linearLuas.visibility = View.GONE
+
             binding.edtNurt.isEnabled = false
             if (data.end_time == "") {
                 binding.btnDelete.visibility = View.GONE
