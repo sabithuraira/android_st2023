@@ -193,7 +193,7 @@ class SlsRepository private constructor(
         })
     }
 
-    fun emptyData(){
+    fun emptyData() {
         runBlocking {
             slsDao.deleteAll()
             rutaDao.deleteAll()
@@ -400,7 +400,8 @@ class SlsRepository private constructor(
                     it.encId,
                     it.status_selesai_pcl,
                     it.jml_dok_ke_pml,
-                    it.jml_dok_ke_koseka
+                    it.jml_dok_ke_koseka,
+                    it.status_sls
                 )
 
                 slsList.add(requestSlsProgress)

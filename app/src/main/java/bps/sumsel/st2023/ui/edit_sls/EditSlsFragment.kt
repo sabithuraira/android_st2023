@@ -1,5 +1,6 @@
 package bps.sumsel.st2023.ui.edit_sls
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentEditSlsBinding
 import bps.sumsel.st2023.enum.EnumJabatan
+import bps.sumsel.st2023.enum.EnumStatusSLS
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.SlsEntity
@@ -208,42 +210,106 @@ class EditSlsFragment : Fragment() {
 
             val user = viewModel.user
 
-            if (user.jabatan == EnumJabatan.PCL.kode) {
-                binding.layoutPcl.visibility = View.VISIBLE
-                binding.layoutPml.visibility = View.GONE
-                binding.layoutKoseka.visibility = View.GONE
+            when (user.jabatan) {
+                EnumJabatan.PCL.kode -> {
+                    binding.layoutPcl.visibility = View.VISIBLE
+                    binding.layoutPerubahanBatas.visibility = View.VISIBLE
+                    binding.layoutPml.visibility = View.GONE
+                    binding.layoutKoseka.visibility = View.GONE
 
-                if (it.status_selesai_pcl == 0) {
-                    binding.btnProgres.isEnabled = false
-                    binding.btnProgres.setBackgroundColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.gray
+                    if (it.status_selesai_pcl == 0) {
+                        binding.btnProgres.isEnabled = false
+                        binding.btnProgres.setBackgroundColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.gray
+                            )
                         )
-                    )
-                    binding.btnSelesai.isEnabled = true
-                } else {
-                    binding.btnProgres.isEnabled = true
-                    binding.btnSelesai.isEnabled = false
-                    binding.btnSelesai.setBackgroundColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.gray
+                        binding.btnSelesai.isEnabled = true
+                        binding.btnSelesai.setBackgroundColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.green_900
+                            )
                         )
-                    )
+                    } else {
+                        binding.btnProgres.isEnabled = true
+                        binding.btnProgres.setBackgroundColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.green_900
+                            )
+                        )
+                        binding.btnSelesai.isEnabled = false
+                        binding.btnSelesai.setBackgroundColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.gray
+                            )
+                        )
+                    }
+                    binding.switchBerubahBatas.isChecked =
+                        it.status_sls == EnumStatusSLS.BERUBAH_BATAS.kode
+
+                    binding.switchBerubahBatas.setOnCheckedChangeListener { buttonView, isChecked ->
+                        sls?.let {s ->
+                            if (isChecked && (s.status_sls == EnumStatusSLS.AKTIF.kode)) {
+                                val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
+
+                                builder.setTitle("SLS Berubah Batas")
+                                builder.setMessage("Apakah yakin " + s.nama_sls + " mengalami perubahan batas?")
+
+                                builder.setPositiveButton("Ya") { dialog, _ ->
+                                    s.status_sls = EnumStatusSLS.BERUBAH_BATAS.kode
+
+                                    viewModel.updateSls(s)
+
+                                    dialog.dismiss()
+
+                                    Toast.makeText(
+                                        context,
+                                        s.nama_sls + " ditandai sebagai mengalami perubahan batas",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                                builder.setNegativeButton("Batal") { dialog, _ ->
+                                    buttonView.isChecked = false
+
+                                    dialog.dismiss()
+                                }
+
+                                builder.show()
+                            } else if (!isChecked && (s.status_sls == EnumStatusSLS.BERUBAH_BATAS.kode)) {
+                                s.status_sls = EnumStatusSLS.AKTIF.kode
+
+                                viewModel.updateSls(s)
+
+                                Toast.makeText(
+                                    context,
+                                    s.nama_sls + " ditandai sebagai tidak mengalami perubahan batas",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
                 }
-            } else if (user.jabatan == EnumJabatan.PML.kode) {
-                binding.layoutPcl.visibility = View.GONE
-                binding.layoutPml.visibility = View.VISIBLE
-                binding.layoutKoseka.visibility = View.GONE
+                EnumJabatan.PML.kode -> {
+                    binding.layoutPcl.visibility = View.GONE
+                    binding.layoutPerubahanBatas.visibility = View.GONE
+                    binding.layoutPml.visibility = View.VISIBLE
+                    binding.layoutKoseka.visibility = View.GONE
 
-                binding.edtDokPml.setText(it.jml_dok_ke_pml.toString())
-            } else if (user.jabatan == EnumJabatan.KOSEKA.kode) {
-                binding.layoutPcl.visibility = View.GONE
-                binding.layoutPml.visibility = View.GONE
-                binding.layoutKoseka.visibility = View.VISIBLE
+                    binding.edtDokPml.setText(it.jml_dok_ke_pml.toString())
+                }
+                EnumJabatan.KOSEKA.kode -> {
+                    binding.layoutPcl.visibility = View.GONE
+                    binding.layoutPerubahanBatas.visibility = View.GONE
+                    binding.layoutPml.visibility = View.GONE
+                    binding.layoutKoseka.visibility = View.VISIBLE
 
-                binding.edtDokKoseka.setText(it.jml_dok_ke_koseka.toString())
+                    binding.edtDokKoseka.setText(it.jml_dok_ke_koseka.toString())
+                }
             }
         } ?: run {
             view.findNavController().navigate(

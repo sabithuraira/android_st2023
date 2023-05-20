@@ -23,4 +23,7 @@ data class RequestSlsProgress(
 
     @field:SerializedName("jml_dok_ke_koseka")
     val jmlDokKeKoseka: Int? = 0,
+
+    @field:SerializedName("status_sls")
+    val statusSls: Int? = 1,
 ) : Parcelable
