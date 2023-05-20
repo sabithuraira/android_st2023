@@ -200,6 +200,13 @@ class SlsRepository private constructor(
         }
     }
 
+    fun insertData(sls: List<SlsEntity>, ruta: List<RutaEntity>) {
+        runBlocking {
+            slsDao.insert(sls)
+            rutaDao.insert(ruta)
+        }
+    }
+
     fun getSls() {
         CoroutineScope(Dispatchers.IO).launch {
             val localData = slsDao.findAll()
@@ -228,6 +235,14 @@ class SlsRepository private constructor(
 
     private val _resultDataRuta = MutableLiveData<ResultData<List<RutaEntity>?>>()
     val resultDataRuta: LiveData<ResultData<List<RutaEntity>?>> = _resultDataRuta
+
+    fun getRutaAll() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val localData = rutaDao.findAll()
+            _resultDataRuta.postValue(ResultData.Success(localData))
+        }
+    }
+
     fun getRuta(data: SlsEntity, keyword: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val query = StringBuilder().append("SELECT * from ruta ")
