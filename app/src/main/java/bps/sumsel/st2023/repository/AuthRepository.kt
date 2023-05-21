@@ -50,12 +50,13 @@ class AuthRepository private constructor(
                 ) {
                     if (response.isSuccessful) {
                         val user = response.body()?.data?.user
+                        val jabatan = response.body()?.data?.jabatan
 
                         val userStore = UserStore(
                             response.body()?.data?.accessToken ?: "",
                             user?.email ?: "",
                             user?.name ?: "",
-                            user?.jabatan ?: 0,
+                            jabatan ?: 0,
                         )
 
                         _resultData.value = ResultData.Success(userStore)
