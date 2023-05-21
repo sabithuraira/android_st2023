@@ -175,6 +175,12 @@ data class SlsItem(
 	@field:SerializedName("kode_koseka")
 	val kodeKoseka: String? = null,
 
+	@field:SerializedName("nama_desa")
+	val nama_desa: String? = null,
+
+	@field:SerializedName("nama_kec")
+	val nama_kec: String? = null,
+
 	@field:SerializedName("daftar_ruta")
 	val daftar_ruta: List<ResponseRuta>? = null,
 ) : Parcelable

@@ -43,8 +43,7 @@ class SlsHomeAdapter(
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
         val curData = listData[position]
         holder.binding.txtTitle.text = "[" + curData.id_sls + "] " + curData.nama_sls
-        holder.binding.txtDescription.text =
-            "16" + curData.kode_kab + curData.kode_kec + curData.kode_desa
+        holder.binding.txtDescription.text = curData.nama_desa + ", " + curData.nama_kec
 
         holder.binding.txtRutaPml.text = curData.jml_dok_ke_pml.toString()
         holder.binding.txtRutaKoseka.text = curData.jml_dok_ke_koseka.toString()

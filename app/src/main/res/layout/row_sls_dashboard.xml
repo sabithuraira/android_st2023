@@ -38,7 +38,7 @@
                 android:textColor="@color/black_3"
                 android:layout_marginBottom="5dp"
                 android:textSize="12sp"
-                android:text="@string/label_kode_desa" />
+                android:text="@string/label_nama_desa" />
         </LinearLayout>
 
         <com.google.android.material.divider.MaterialDivider

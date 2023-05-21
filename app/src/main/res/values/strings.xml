@@ -10,7 +10,7 @@
     <string name="progress_sls">Progres</string>
     <string name="upload">Upload</string>
     <string name="label_nama_sls">Nama SLS</string>
-    <string name="label_kode_desa">Kode Desa/Kelurahan</string>
+    <string name="label_nama_desa">Nama Desa/Kelurahan</string>
     <string name="label_sls_progres">Belum Selesai</string>
     <string name="label_sls_selesai">Selesai</string>
     <string name="label_pilih">Pilih</string>

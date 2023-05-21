@@ -35,8 +35,7 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>) :
         val curData = listData[position]
 
         holder.binding.txtTitle.text = "[" + curData.id_sls + "] " + curData.nama_sls
-        holder.binding.txtDescription.text =
-            "16" + curData.kode_kab + curData.kode_kec + curData.kode_desa
+        holder.binding.txtDescription.text = curData.nama_desa + ", " + curData.nama_kec
 
         if (curData.status_selesai_pcl == 0) {
             holder.binding.txtStatusProgres.visibility = View.VISIBLE

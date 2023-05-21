@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/black_300"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="@string/label_nama_sls" />
 
@@ -37,8 +37,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_3"
                 android:layout_marginBottom="5dp"
-                android:textSize="14dp"
-                android:text="@string/label_kode_desa" />
+                android:textSize="14sp"
+                android:text="@string/label_nama_desa" />
         </LinearLayout>
 
         <com.google.android.material.divider.MaterialDivider
@@ -57,7 +57,7 @@
                 android:text="@string/progress_sls"
                 android:backgroundTint="@color/green_900"
                 android:layout_marginRight="10dp"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textAllCaps="false"
                 android:layout_weight="1"/>
             <Button
@@ -67,7 +67,7 @@
                 android:text="@string/label_pilih"
                 android:layout_marginLeft="10dp"
                 android:backgroundTint="@color/green_900"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textAllCaps="false"
                 android:layout_weight="1"/>
         </LinearLayout>
@@ -78,8 +78,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/red_900"
             android:layout_marginBottom="5dp"
-            android:layout_gravity="right"
-            android:textSize="11dp"
+            android:layout_gravity="end"
+            android:textSize="11sp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="7dp"
@@ -92,8 +92,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/green_700"
             android:layout_marginBottom="5dp"
-            android:layout_gravity="right"
-            android:textSize="11dp"
+            android:layout_gravity="end"
+            android:textSize="11sp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="7dp"

@@ -93,7 +93,9 @@ class SlsRepository private constructor(
                                     item.kodePcl ?: "",
                                     item.kodePml ?: "",
                                     item.kodeKoseka ?: "",
-                                    item.statusSls ?: 0
+                                    item.statusSls ?: 0,
+                                    item.nama_desa ?: "",
+                                    item.nama_kec ?: ""
                                 )
                             )
 

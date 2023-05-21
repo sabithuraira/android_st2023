@@ -2,7 +2,6 @@ package bps.sumsel.st2023.room.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
@@ -41,4 +40,6 @@ data class SlsEntity(
     @ColumnInfo(name="kode_pml") var kode_pml: String = "",
     @ColumnInfo(name="kode_koseka") var kode_koseka: String = "",
     @ColumnInfo(name="status_sls") var status_sls: Int = 0,
+    @ColumnInfo(name="nama_desa") var nama_desa: String = "",
+    @ColumnInfo(name="nama_kec") var nama_kec: String = "",
 ): Parcelable
