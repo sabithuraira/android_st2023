@@ -1,20 +1,16 @@
 package bps.sumsel.st2023
 
+//import bps.sumsel.st2023.room.MIGRATION_1_2
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.room.Room
 import bps.sumsel.st2023.databinding.ActivityMainBinding
-import bps.sumsel.st2023.room.MIGRATION_1_2
-//import bps.sumsel.st2023.room.MIGRATION_1_2
-import bps.sumsel.st2023.room.St2023Database
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var dbRoom: St2023Database
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,13 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.let {
-            it.hide()
-        }
-
-        dbRoom = Room.databaseBuilder(this, St2023Database::class.java, "room_db")
-            .addMigrations(MIGRATION_1_2)
-            .build()
+        supportActionBar?.hide()
 
         setContentView(binding.root)
         this.setupNav()
@@ -46,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 //        navView.setupWithNavController(navController)
     }
 
-    private fun setupNav(){
+    private fun setupNav() {
         navController = findNavController(R.id.nav_host_fragment_activity_main)
         binding.navView.setupWithNavController(navController)
 
@@ -72,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (data) View.VISIBLE else View.GONE
     }
 
-    fun setActionBarTitle(title: String){
+    fun setActionBarTitle(title: String) {
         supportActionBar?.title = title
     }
 }

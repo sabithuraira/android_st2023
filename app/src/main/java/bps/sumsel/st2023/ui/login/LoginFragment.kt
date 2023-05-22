@@ -3,20 +3,17 @@ package bps.sumsel.st2023.ui.login
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import bps.sumsel.st2023.MainActivity
-import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentLoginBinding
 import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.repository.ResultData
-import bps.sumsel.st2023.room.entity.SlsEntity
-import bps.sumsel.st2023.ui.sls.SlsAdapter
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -27,7 +24,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,12 +46,12 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.getAuthUser().observe(this) { user: UserStore ->
-            if (user.token!="") {
-                findNavController().navigate(R.id.action_navigation_login_to_navigation_home)
+            if (user.token != "") {
+                findNavController().navigate(LoginFragmentDirections.actionNavigationLoginToNavigationHome())
             }
         }
 
-        viewModel.resultData.observe(this) {  result ->
+        viewModel.resultData.observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultData.Loading -> {
@@ -76,13 +73,12 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun changePasswordType(){
-        if(isShowPassword==1){
+    private fun changePasswordType() {
+        if (isShowPassword == 1) {
             binding.edtPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
             isShowPassword = 0
-        }
-        else{
-            binding.edtPassword.transformationMethod =  PasswordTransformationMethod.getInstance()
+        } else {
+            binding.edtPassword.transformationMethod = PasswordTransformationMethod.getInstance()
             isShowPassword = 1
         }
     }

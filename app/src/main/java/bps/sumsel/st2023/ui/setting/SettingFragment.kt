@@ -25,7 +25,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.util.Calendar
+import java.util.*
 
 
 class SettingFragment : Fragment() {
@@ -58,7 +58,7 @@ class SettingFragment : Fragment() {
 
         viewModel.getAuthUser().observe(this) { user: UserStore ->
             if (user.token == "") {
-                findNavController().navigate(R.id.action_navigation_setting_to_navigation_login)
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             } else {
                 binding.userName.text = user.name
             }
