@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_navigation_sls_to_editSlsFragment"
             app:destination="@id/editSlsFragment" />
+        <action
+            android:id="@+id/action_navigation_sls_to_pendampinganFragment"
+            app:destination="@id/pendampinganFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_setting"
@@ -110,4 +113,13 @@
         android:name="bps.sumsel.st2023.ui.change_password.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/pendampinganFragment"
+        android:name="bps.sumsel.st2023.ui.pendampingan.PendampinganFragment"
+        android:label="fragment_pendampingan"
+        tools:layout="@layout/fragment_pendampingan" >
+        <argument
+            android:name="sls"
+            app:argType="bps.sumsel.st2023.room.entity.SlsEntity" />
+    </fragment>
 </navigation>

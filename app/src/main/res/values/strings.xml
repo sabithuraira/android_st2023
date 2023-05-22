@@ -8,7 +8,10 @@
     <string name="add_sls">Tambah SLS</string>
     <string name="delete_sls">Hapus SLS</string>
     <string name="progress_sls">Progres</string>
+    <string name="pendampingan_sls">Pendampingan</string>
     <string name="upload">Upload</string>
+    <string name="label_waktu_pendampingan">Waktu Pendampingan</string>
+    <string name="label_add_pendampingan">Tambah Pendampingan</string>
     <string name="label_nama_sls">Nama SLS</string>
     <string name="label_nama_desa">Nama Desa/Kelurahan</string>
     <string name="label_sls_progres">Belum Selesai</string>

@@ -16,6 +16,8 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>) :
     }
 
     interface OnClickCallBack {
+        fun onItemPendampingan(data: SlsEntity)
+
         fun onItemChoose(data: SlsEntity)
 
         fun onItemProgress(data: SlsEntity)
@@ -43,6 +45,10 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>) :
         } else {
             holder.binding.txtStatusProgres.visibility = View.GONE
             holder.binding.txtStatusSelesai.visibility = View.VISIBLE
+        }
+
+        holder.binding.btnPendampingan.setOnClickListener {
+            onClickCallBack.onItemPendampingan(listData[holder.adapterPosition])
         }
 
         holder.binding.btnPilih.setOnClickListener {

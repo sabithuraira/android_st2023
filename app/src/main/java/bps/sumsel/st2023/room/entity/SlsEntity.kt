@@ -42,4 +42,5 @@ data class SlsEntity(
     @ColumnInfo(name="status_sls") var status_sls: Int = 0,
     @ColumnInfo(name="nama_desa") var nama_desa: String = "",
     @ColumnInfo(name="nama_kec") var nama_kec: String = "",
+    @ColumnInfo(name="pendampingan") var pendampingan: String = "",
 ): Parcelable

@@ -64,6 +64,10 @@ class SlsFragment : Fragment() {
 
                         val slsAdapter = SlsAdapter(ArrayList(data))
                         slsAdapter.setOnClickCallBack(object : SlsAdapter.OnClickCallBack {
+                            override fun onItemPendampingan(data: SlsEntity) {
+                                pendampinganData(view, data)
+                            }
+
                             override fun onItemChoose(data: SlsEntity) {
                                 chooseData(view, data)
                             }
@@ -153,6 +157,12 @@ class SlsFragment : Fragment() {
 
             builder.show()
         }
+    }
+
+    private fun pendampinganData(view: View, data: SlsEntity) {
+        view.findNavController().navigate(
+            SlsFragmentDirections.actionNavigationSlsToPendampinganFragment(data)
+        )
     }
 
     private fun chooseData(view: View, data: SlsEntity) {

@@ -51,12 +51,21 @@
             android:layout_marginTop="3dp"
             android:orientation="horizontal">
             <Button
+                android:id="@+id/btn_pendampingan"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:text="@string/pendampingan_sls"
+                android:backgroundTint="@color/green_900"
+                android:layout_marginRight="10dp"
+                android:textSize="12sp"
+                android:textAllCaps="false"
+                android:layout_weight="1"/>
+            <Button
                 android:id="@+id/btn_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:text="@string/progress_sls"
                 android:backgroundTint="@color/green_900"
-                android:layout_marginRight="10dp"
                 android:textSize="12sp"
                 android:textAllCaps="false"
                 android:layout_weight="1"/>
