@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -191,52 +192,120 @@ class RumahTanggaFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             ruta?.let {
-                val currentTime: Date = Calendar.getInstance().time
-                val currentTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                if (it.end_time == "") {
+                    val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
 
-                it.end_time = currentTimeFormat.format(currentTime).toString()
-                it.end_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
-                it.end_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
+                    builder.setTitle("Simpan Data")
+                    builder.setMessage(
+                        HtmlCompat.fromHtml(
+                            "Anda yakin ingin menyimpan data ini? <b>Harap menyimpan setelah wawancara selesai dilakukan!</b>",
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        )
+                    )
 
-                it.nurt = binding.edtNurt.text.toString().toIntOrNull() ?: 0
-                it.kepala_ruta = binding.edtNamaKk.text.toString()
-                it.jumlah_art = binding.edtJmlArt.text.toString().toIntOrNull() ?: 0
-                it.jumlah_unit_usaha = binding.edtJmlUnitUsaha.text.toString().toIntOrNull() ?: 0
+                    builder.setPositiveButton("Ya") { dialog, _ ->
+                        val currentTime: Date = Calendar.getInstance().time
+                        val currentTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-                it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
-                it.jml_308_bukan_sawah =
-                    binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
-                it.jml_308_rumput_sementara =
-                    binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
-                it.jml_308_rumput_permanen =
-                    binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
-                it.jml_308_belum_tanam =
-                    binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
-                it.jml_308_tanaman_tahunan =
-                    binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
-                it.jml_308_ternak_bangunan_lain =
-                    binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
-                it.jml_308_kehutanan = binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
-                it.jml_308_budidaya = binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
-                it.jml_308_lahan_lainnya =
-                    binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
+                        it.end_time = currentTimeFormat.format(currentTime).toString()
+                        it.end_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
+                        it.end_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
-                it.status_upload =
-                    if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
+                        it.nurt = binding.edtNurt.text.toString().toIntOrNull() ?: 0
+                        it.kepala_ruta = binding.edtNamaKk.text.toString()
+                        it.jumlah_art = binding.edtJmlArt.text.toString().toIntOrNull() ?: 0
+                        it.jumlah_unit_usaha =
+                            binding.edtJmlUnitUsaha.text.toString().toIntOrNull() ?: 0
 
-                validation()
+                        it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_bukan_sawah =
+                            binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_rumput_sementara =
+                            binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_rumput_permanen =
+                            binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_belum_tanam =
+                            binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_tanaman_tahunan =
+                            binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_ternak_bangunan_lain =
+                            binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_kehutanan =
+                            binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_budidaya =
+                            binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
+                        it.jml_308_lahan_lainnya =
+                            binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
 
-                if (listError.isNotEmpty()) {
-                    it.status_data = EnumStatusData.ERROR.kode
+                        it.status_upload =
+                            if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
+
+                        validation()
+
+                        if (listError.isNotEmpty()) {
+                            it.status_data = EnumStatusData.ERROR.kode
+                        } else {
+                            it.status_data = EnumStatusData.CLEAN.kode
+                        }
+
+                        viewModel.updateRuta(it, false)
+
+                        Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+
+                        dialog.dismiss()
+                    }
+
+                    builder.setNegativeButton("Batal") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                    builder.show()
                 } else {
-                    it.status_data = EnumStatusData.CLEAN.kode
+                    it.nurt = binding.edtNurt.text.toString().toIntOrNull() ?: 0
+                    it.kepala_ruta = binding.edtNamaKk.text.toString()
+                    it.jumlah_art = binding.edtJmlArt.text.toString().toIntOrNull() ?: 0
+                    it.jumlah_unit_usaha =
+                        binding.edtJmlUnitUsaha.text.toString().toIntOrNull() ?: 0
+
+                    it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_bukan_sawah =
+                        binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_rumput_sementara =
+                        binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_rumput_permanen =
+                        binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_belum_tanam =
+                        binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_tanaman_tahunan =
+                        binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_ternak_bangunan_lain =
+                        binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_kehutanan =
+                        binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_budidaya = binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
+                    it.jml_308_lahan_lainnya =
+                        binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
+
+                    it.status_upload =
+                        if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
+
+                    validation()
+
+                    if (listError.isNotEmpty()) {
+                        it.status_data = EnumStatusData.ERROR.kode
+                    } else {
+                        it.status_data = EnumStatusData.CLEAN.kode
+                    }
+
+                    viewModel.updateRuta(it, false)
+
+                    Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
+
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
 
-                viewModel.updateRuta(it, false)
-
-                Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
-
-                requireActivity().onBackPressedDispatcher.onBackPressed()
             } ?: run {
                 Toast.makeText(
                     context,
@@ -505,7 +574,11 @@ class RumahTanggaFragment : Fragment() {
                 RESULT_OK ->
                     Log.i(TAG, "onActivityResult: All location settings are satisfied.")
                 RESULT_CANCELED ->
-                    Toast.makeText(requireContext(), "Anda harus mengaktifkan GPS untuk menggunakan aplikasi ini!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Anda harus mengaktifkan GPS untuk menggunakan aplikasi ini!",
+                        Toast.LENGTH_SHORT
+                    ).show()
             }
         }
 
@@ -554,6 +627,7 @@ class RumahTanggaFragment : Fragment() {
             Log.e(TAG, "Error : " + exception.message)
         }
     }
+
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
@@ -596,12 +670,19 @@ class RumahTanggaFragment : Fragment() {
                 if (location != null) {
                     curLocation = location
                 } else {
-                    Toast.makeText(requireContext(), "Lokasi tidak ditemukan. Coba lagi", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Lokasi tidak ditemukan. Coba lagi",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         } else {
             requestPermissionLauncher.launch(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
             )
         }
     }
