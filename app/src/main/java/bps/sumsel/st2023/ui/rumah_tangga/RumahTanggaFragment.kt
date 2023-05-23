@@ -155,18 +155,16 @@ class RumahTanggaFragment : Fragment() {
             }
         }
 
-//        getLastLocation()
-        createLocationRequest()
-        createLocationCallback()
-        startLocationUpdates()
-
         ruta?.let {
-            if (ruta?.id == 0) {
+            if (it.id == 0) {
                 viewModel.getLastNurt(sls!!)
+
+                createLocationRequest()
+                createLocationCallback()
+                startLocationUpdates()
 
                 val currentTime: Date = Calendar.getInstance().time
                 val currentTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-
 
                 it.encId = ""
                 it.kode_prov = sls!!.kode_prov
@@ -176,13 +174,14 @@ class RumahTanggaFragment : Fragment() {
                 it.id_sls = sls!!.id_sls
                 it.id_sub_sls = sls!!.id_sub_sls
 
-                it.start_time = currentTimeFormat.format(currentTime).toString()
                 it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
                 it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
 
                 it.status_upload = EnumStatusUpload.NOT_UPLOADED.kode
 
                 it.status_data = EnumStatusData.ERROR.kode
+
+                it.start_time = currentTimeFormat.format(currentTime).toString()
             }
         } ?: run {
             Toast.makeText(
@@ -250,12 +249,11 @@ class RumahTanggaFragment : Fragment() {
                             it.status_data = EnumStatusData.CLEAN.kode
                         }
 
+                        stopLocationUpdates()
                         viewModel.updateRuta(it, false)
 
                         Toast.makeText(context, "Data berhasil disimpan", Toast.LENGTH_SHORT).show()
-
                         requireActivity().onBackPressedDispatcher.onBackPressed()
-
                         dialog.dismiss()
                     }
 
@@ -578,15 +576,6 @@ class RumahTanggaFragment : Fragment() {
         }
     }
 
-    private fun updateFirstLocation() {
-        ruta?.let {
-            if (it.start_latitude == 0.0 || it.start_longitude == 0.0) {
-                it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
-                it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
-            }
-        }
-    }
-
     private val resolutionLauncher =
         registerForActivityResult(
             ActivityResultContracts.StartIntentSenderForResult()
@@ -605,8 +594,8 @@ class RumahTanggaFragment : Fragment() {
 
     private fun createLocationRequest() {
         locationRequest = LocationRequest.create().apply {
-            interval = TimeUnit.SECONDS.toMillis(20000)
-            maxWaitTime = TimeUnit.SECONDS.toMillis(1)
+            interval = TimeUnit.SECONDS.toMillis(10)
+            maxWaitTime = TimeUnit.SECONDS.toMillis(10)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
@@ -616,9 +605,7 @@ class RumahTanggaFragment : Fragment() {
             .addOnFailureListener { exception ->
                 if (exception is ResolvableApiException) {
                     try {
-                        resolutionLauncher.launch(
-                            IntentSenderRequest.Builder(exception.resolution).build()
-                        )
+                        resolutionLauncher.launch(IntentSenderRequest.Builder(exception.resolution).build())
                     } catch (sendEx: IntentSender.SendIntentException) {
                         Toast.makeText(requireActivity(), sendEx.message, Toast.LENGTH_SHORT).show()
                     }
@@ -632,7 +619,13 @@ class RumahTanggaFragment : Fragment() {
                 for (location in locationResult.locations) {
                     Log.d(TAG, "onLocationResult: " + location.latitude + ", " + location.longitude)
                     curLocation = location
-                    updateFirstLocation()
+
+                    ruta?.let {
+                        if (it.start_latitude==0.0 || it.start_longitude==0.0) {
+                            it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
+                            it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
+                        }
+                    }
                 }
             }
         }
@@ -692,11 +685,7 @@ class RumahTanggaFragment : Fragment() {
                 if (location != null) {
                     curLocation = location
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Lokasi tidak ditemukan. Coba lagi",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Lokasi tidak ditemukan. Coba lagi", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
@@ -712,16 +701,24 @@ class RumahTanggaFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        stopLocationUpdates()
+
+        ruta?.let {
+            if (it.id == 0) stopLocationUpdates()
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        stopLocationUpdates()
+        ruta?.let {
+            if (it.id == 0) stopLocationUpdates()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        startLocationUpdates()
+
+        ruta?.let {
+            if (it.id == 0) startLocationUpdates()
+        }
     }
 }
