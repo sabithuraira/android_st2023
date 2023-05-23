@@ -3,11 +3,15 @@ package bps.sumsel.st2023.ui.sls
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import bps.sumsel.st2023.databinding.RowSlsBinding
+import bps.sumsel.st2023.datastore.UserStore
+import bps.sumsel.st2023.enum.EnumJabatan
 import bps.sumsel.st2023.room.entity.SlsEntity
 
-class SlsAdapter(private val listData: ArrayList<SlsEntity>) :
+class SlsAdapter(private val listData: ArrayList<SlsEntity>, private val user: LiveData<UserStore>, private val lifecycleOwner: LifecycleOwner) :
     RecyclerView.Adapter<SlsAdapter.DataViewHolder>() {
     private lateinit var onClickCallBack: OnClickCallBack
 
@@ -34,6 +38,14 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>) :
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
+        user.observe(lifecycleOwner) {
+            if (it.jabatan == EnumJabatan.PML.kode) {
+                holder.binding.btnPendampingan.visibility = View.VISIBLE
+            } else {
+                holder.binding.btnPendampingan.visibility = View.GONE
+            }
+        }
+
         val curData = listData[position]
 
         holder.binding.txtTitle.text = "[" + curData.id_sls + "] " + curData.nama_sls

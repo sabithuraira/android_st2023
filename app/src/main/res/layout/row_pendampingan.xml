@@ -16,16 +16,27 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:orientation="horizontal">
-        <TextView
-            android:id="@+id/txt_title"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="3"
-            android:layout_gravity="center"
-            android:textColor="@color/black_300"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="@string/label_waktu_pendampingan" />
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_300"
+                android:textSize="12sp"
+                android:text="@string/label_waktu_pendampingan" />
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_300"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="@string/label_waktu_pendampingan" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_hapus"

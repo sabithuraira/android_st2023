@@ -95,7 +95,8 @@ class SlsRepository private constructor(
                                     item.kodeKoseka ?: "",
                                     item.statusSls ?: 0,
                                     item.nama_desa ?: "",
-                                    item.nama_kec ?: ""
+                                    item.nama_kec ?: "",
+                                    item.pendampingan ?: "",
                                 )
                             )
 
@@ -418,7 +419,8 @@ class SlsRepository private constructor(
                     it.status_selesai_pcl,
                     it.jml_dok_ke_pml,
                     it.jml_dok_ke_koseka,
-                    it.status_sls
+                    it.status_sls,
+                    it.pendampingan
                 )
 
                 slsList.add(requestSlsProgress)
