@@ -3,6 +3,7 @@ package bps.sumsel.st2023.ui.home
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,7 +64,7 @@ class HomeFragment : Fragment() {
         viewModel.getRekapSls()
         viewModel.getRekapRuta()
 
-        viewModel.resultData.observe(this) { result ->
+        viewModel.resultData.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is ResultData.Loading -> {
@@ -83,7 +84,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.resutRekapSls.observe(this) { result ->
+        viewModel.resultRekapSls.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is ResultData.Loading -> {
@@ -93,9 +94,12 @@ class HomeFragment : Fragment() {
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
 
+                        Log.d("REKAP", result.data.toString())
                         result.data?.let {
                             if (it.isNotEmpty()) {
                                 binding.txtJumlahSls.text = it.first().jumlah.toString()
+                            } else {
+                                binding.txtJumlahSls.text = "0"
                             }
                         }
                     }
@@ -108,7 +112,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.resultRekapRuta.observe(this) { result ->
+        viewModel.resultRekapRuta.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is ResultData.Loading -> {
@@ -122,6 +126,8 @@ class HomeFragment : Fragment() {
                             if (d.isNotEmpty()) {
                                 val jumlah: List<Int> = d.map { m -> m.jumlah }
                                 binding.txtJumlahRuta.text = jumlah.sum().toString()
+                            } else {
+                                binding.txtJumlahRuta.text = "0"
                             }
                         }
                     }
@@ -164,7 +170,7 @@ class HomeFragment : Fragment() {
                 ArrayList(data),
                 viewModel.resultRekapRuta,
                 context,
-                this,
+                viewLifecycleOwner,
                 parentActivity
             )
             slsAdapter.setOnClickCallBack(object : SlsHomeAdapter.OnClickCallBack {

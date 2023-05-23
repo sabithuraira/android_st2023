@@ -21,7 +21,7 @@ class HomeViewModel(
 
     fun getRekapSls() = slsRepository.getRekapSls()
 
-    val resutRekapSls = slsRepository.resultRekapSls
+    val resultRekapSls = slsRepository.resultRekapSls
 
     fun getRekapRuta() = slsRepository.getRekapRuta()
 

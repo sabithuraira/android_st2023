@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import bps.sumsel.st2023.MainActivity
@@ -16,7 +17,7 @@ class SlsHomeAdapter(
     private val listData: ArrayList<SlsEntity>,
     private val resultRekapRuta: LiveData<ResultData<List<RekapRutaEntity>?>>,
     private val context: Context?,
-    private val homeFragment: HomeFragment,
+    private val lifecycleOwner: LifecycleOwner,
     private val parentActivity: MainActivity
 ) :
     RecyclerView.Adapter<SlsHomeAdapter.DataViewHolder>() {
@@ -52,7 +53,7 @@ class SlsHomeAdapter(
             onClickCallBack.onItemClicked(listData[holder.adapterPosition])
         }
 
-        resultRekapRuta.observe(homeFragment) { result ->
+        resultRekapRuta.observe(lifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is ResultData.Loading -> {
