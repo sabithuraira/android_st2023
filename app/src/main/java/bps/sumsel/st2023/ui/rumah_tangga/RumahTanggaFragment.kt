@@ -580,6 +580,15 @@ class RumahTanggaFragment : Fragment() {
         }
     }
 
+    private fun updateFirstLocation() {
+        ruta?.let {
+            if (it.start_latitude == 0.0 || it.start_longitude == 0.0) {
+                it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
+                it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
+            }
+        }
+    }
+
     private val resolutionLauncher =
         registerForActivityResult(
             ActivityResultContracts.StartIntentSenderForResult()
@@ -625,6 +634,7 @@ class RumahTanggaFragment : Fragment() {
                 for (location in locationResult.locations) {
                     Log.d(TAG, "onLocationResult: " + location.latitude + ", " + location.longitude)
                     curLocation = location
+                    updateFirstLocation()
                 }
             }
         }
