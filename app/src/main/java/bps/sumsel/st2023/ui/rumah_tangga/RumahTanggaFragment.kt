@@ -28,7 +28,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentRumahTanggaBinding
@@ -41,7 +40,6 @@ import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelAuthFactory
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
-import bps.sumsel.st2023.ui.detail_sls.DetailSlsFragmentDirections
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.material.chip.Chip
