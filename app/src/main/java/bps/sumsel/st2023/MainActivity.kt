@@ -53,7 +53,14 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_notifications, R.id.navigation_sls,
                 R.id.navigation_splash, R.id.navigation_login
                 -> supportActionBar?.hide()
-                else -> supportActionBar?.show()
+                R.id.detailSlsFragment, R.id.rumahTanggaFragment -> {
+                    supportActionBar?.show()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                }
+                else -> {
+                    supportActionBar?.show()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
             }
         }
     }
