@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
@@ -26,6 +27,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentRumahTanggaBinding
@@ -38,6 +40,7 @@ import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelAuthFactory
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
+import bps.sumsel.st2023.ui.detail_sls.DetailSlsFragmentDirections
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.material.chip.Chip
@@ -63,6 +66,7 @@ class RumahTanggaFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setHasOptionsMenu(true)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         _binding = FragmentRumahTanggaBinding.inflate(inflater, container, false)
         return binding.root
@@ -282,6 +286,16 @@ class RumahTanggaFragment : Fragment() {
 
         binding.cbApakahMenggunaakanLahan.setOnCheckedChangeListener { _, isChecked ->
             ruta?.apakah_menggunakan_lahan = if (isChecked) 1 else 0
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

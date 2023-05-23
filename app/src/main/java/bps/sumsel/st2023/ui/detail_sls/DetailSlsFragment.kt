@@ -37,6 +37,7 @@ class DetailSlsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
+
         _binding = FragmentDetailSlsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -45,6 +46,7 @@ class DetailSlsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         parentActivity = requireActivity() as MainActivity
+        parentActivity.actionBar?.setDisplayHomeAsUpEnabled(true)
 
         val pref = AuthDataStore.getInstance(requireContext().dataStore)
         val factory: ViewModelAuthFactory = ViewModelAuthFactory.getInstance(requireActivity(), pref)
@@ -126,6 +128,10 @@ class DetailSlsFragment : Fragment() {
                 findNavController().navigate(
                     DetailSlsFragmentDirections.actionDetailSlsFragmentToRumahTanggaFragment(sls!!, RutaEntity(0))
                 )
+                true
+            }
+            android.R.id.home -> {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
