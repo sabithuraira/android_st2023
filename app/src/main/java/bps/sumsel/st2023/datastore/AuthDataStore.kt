@@ -1,5 +1,6 @@
 package bps.sumsel.st2023.datastore
 
+import android.os.Parcelable
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -7,6 +8,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.parcelize.Parcelize
 
 class AuthDataStore private constructor(private val dataStore: DataStore<Preferences>) {
     companion object {
@@ -48,9 +50,10 @@ class AuthDataStore private constructor(private val dataStore: DataStore<Prefere
     }
 }
 
+@Parcelize
 data class UserStore(
     val token: String,
     val user: String,
     val name: String,
     val jabatan: Int
-)
+): Parcelable

@@ -18,6 +18,7 @@ import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentSlsBinding
 import bps.sumsel.st2023.datastore.AuthDataStore
+import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelAuthFactory
 import bps.sumsel.st2023.room.entity.SlsEntity
@@ -73,8 +74,8 @@ class SlsFragment : Fragment() {
 
                         val slsAdapter = SlsAdapter(ArrayList(data), viewModel.getAuthUser(), viewLifecycleOwner)
                         slsAdapter.setOnClickCallBack(object : SlsAdapter.OnClickCallBack {
-                            override fun onItemPendampingan(data: SlsEntity) {
-                                pendampinganData(view, data)
+                            override fun onItemPendampingan(data: SlsEntity, userStore: UserStore) {
+                                pendampinganData(view, data, userStore)
                             }
 
                             override fun onItemChoose(data: SlsEntity) {
@@ -168,9 +169,9 @@ class SlsFragment : Fragment() {
         }
     }
 
-    private fun pendampinganData(view: View, data: SlsEntity) {
+    private fun pendampinganData(view: View, data: SlsEntity, userStore: UserStore) {
         view.findNavController().navigate(
-            SlsFragmentDirections.actionNavigationSlsToPendampinganFragment(data)
+            SlsFragmentDirections.actionNavigationSlsToPendampinganFragment(data, userStore)
         )
     }
 

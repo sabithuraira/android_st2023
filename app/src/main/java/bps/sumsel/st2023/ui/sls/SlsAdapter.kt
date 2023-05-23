@@ -14,13 +14,14 @@ import bps.sumsel.st2023.room.entity.SlsEntity
 class SlsAdapter(private val listData: ArrayList<SlsEntity>, private val user: LiveData<UserStore>, private val lifecycleOwner: LifecycleOwner) :
     RecyclerView.Adapter<SlsAdapter.DataViewHolder>() {
     private lateinit var onClickCallBack: OnClickCallBack
+    private lateinit var userStore: UserStore
 
     fun setOnClickCallBack(data: OnClickCallBack) {
         this.onClickCallBack = data
     }
 
     interface OnClickCallBack {
-        fun onItemPendampingan(data: SlsEntity)
+        fun onItemPendampingan(data: SlsEntity, userStore: UserStore)
 
         fun onItemChoose(data: SlsEntity)
 
@@ -39,7 +40,8 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>, private val user: L
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
         user.observe(lifecycleOwner) {
-            if (it.jabatan == EnumJabatan.PML.kode) {
+            userStore = it
+            if (it.jabatan != EnumJabatan.PCL.kode) {
                 holder.binding.btnPendampingan.visibility = View.VISIBLE
             } else {
                 holder.binding.btnPendampingan.visibility = View.GONE
@@ -60,7 +62,7 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>, private val user: L
         }
 
         holder.binding.btnPendampingan.setOnClickListener {
-            onClickCallBack.onItemPendampingan(listData[holder.adapterPosition])
+            onClickCallBack.onItemPendampingan(listData[holder.adapterPosition], userStore)
         }
 
         holder.binding.btnPilih.setOnClickListener {

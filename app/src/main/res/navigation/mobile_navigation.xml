@@ -121,5 +121,8 @@
         <argument
             android:name="sls"
             app:argType="bps.sumsel.st2023.room.entity.SlsEntity" />
+        <argument
+            android:name="user"
+            app:argType="bps.sumsel.st2023.datastore.UserStore" />
     </fragment>
 </navigation>

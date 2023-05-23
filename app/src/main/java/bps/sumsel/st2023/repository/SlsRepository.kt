@@ -94,9 +94,10 @@ class SlsRepository private constructor(
                                     item.kodePml ?: "",
                                     item.kodeKoseka ?: "",
                                     item.statusSls ?: 0,
-                                    item.nama_desa ?: "",
-                                    item.nama_kec ?: "",
-                                    item.pendampingan ?: "",
+                                    item.namaDesa ?: "",
+                                    item.namaKec ?: "",
+                                    item.pendampinganPml ?: "",
+                                    item.pendampinganKoseka ?: ""
                                 )
                             )
 
@@ -409,6 +410,8 @@ class SlsRepository private constructor(
     val resultUploadSls: LiveData<ResultData<Int>> = _resultUploadSls
     private fun updateSlsProgress() {
         CoroutineScope(Dispatchers.IO).launch {
+            val dataUser = runBlocking { pref.getUser().first() }
+
             val sls = slsDao.findAll()
 
             val slsList = mutableListOf<RequestSlsProgress>()
@@ -420,15 +423,15 @@ class SlsRepository private constructor(
                     it.jml_dok_ke_pml,
                     it.jml_dok_ke_koseka,
                     it.status_sls,
-                    it.pendampingan
+                    it.pendampingan_pml,
+                    it.pendampingan_koseka,
+                    dataUser.jabatan
                 )
 
                 slsList.add(requestSlsProgress)
             }
 
             val requestSlsMany = RequestSlsMany(slsList)
-
-            val dataUser = runBlocking { pref.getUser().first() }
 
             val client = apiService.updateSlsProgress("Bearer " + dataUser.token, requestSlsMany)
 

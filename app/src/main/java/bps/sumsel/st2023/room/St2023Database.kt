@@ -14,7 +14,7 @@ import bps.sumsel.st2023.room.entity.SlsEntity
 
 @Database(
     entities = [SlsEntity::class, RutaEntity::class],
-    version = 5,
+    version = 6,
 //    autoMigrations = [
 //        AutoMigration(from = 4, to = 5),
 //    ],
@@ -37,6 +37,7 @@ abstract class St2023Database: RoomDatabase() {
                 .addMigrations(MIGRATION_2_3)
                 .addMigrations(MIGRATION_3_4)
                 .addMigrations(MIGRATION_4_5)
+                .addMigrations(MIGRATION_5_6)
                 .build()
             }
     }
@@ -74,6 +75,19 @@ val MIGRATION_4_5: Migration = object : Migration(4, 5) {
         database.execSQL(
             "ALTER TABLE sls "
                     + " ADD COLUMN pendampingan TEXT NOT NULL DEFAULT ''"
+        )
+    }
+}
+
+val MIGRATION_5_6: Migration = object : Migration(5, 6) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "ALTER TABLE sls "
+                    + " RENAME COLUMN pendampingan TO pendampingan_pml"
+        )
+        database.execSQL(
+            "ALTER TABLE sls "
+                    + " ADD COLUMN pendampingan_koseka TEXT NOT NULL DEFAULT ''"
         )
     }
 }

@@ -27,6 +27,12 @@ data class RequestSlsProgress(
     @field:SerializedName("status_sls")
     val statusSls: Int? = 1,
 
-    @field:SerializedName("pendampingan")
-    val pendampingan: String? = "",
+    @field:SerializedName("pendampingan_pml")
+    val pendampinganPml: String? = "",
+
+    @field:SerializedName("pendampingan_koseka")
+    val pendampinganKoseka: String? = "",
+
+    @field:SerializedName("jabatan")
+    val jabatan: Int? = 1,
 ) : Parcelable

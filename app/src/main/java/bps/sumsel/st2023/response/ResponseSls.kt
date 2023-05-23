@@ -176,13 +176,16 @@ data class SlsItem(
 	val kodeKoseka: String? = null,
 
 	@field:SerializedName("nama_desa")
-	val nama_desa: String? = null,
+	val namaDesa: String? = null,
 
 	@field:SerializedName("nama_kec")
-	val nama_kec: String? = null,
+	val namaKec: String? = null,
 
-	@field:SerializedName("pendampingan")
-	val pendampingan: String? = null,
+	@field:SerializedName("pendampingan_pml")
+	val pendampinganPml: String? = null,
+
+	@field:SerializedName("pendampingan_koseka")
+	val pendampinganKoseka: String? = null,
 
 	@field:SerializedName("daftar_ruta")
 	val daftar_ruta: List<ResponseRuta>? = null,

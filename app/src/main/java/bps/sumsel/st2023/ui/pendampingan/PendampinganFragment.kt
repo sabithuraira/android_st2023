@@ -21,11 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.R
 import bps.sumsel.st2023.databinding.FragmentPendampinganBinding
+import bps.sumsel.st2023.datastore.UserStore
+import bps.sumsel.st2023.enum.EnumJabatan
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.repository.ViewModelFactory
 import bps.sumsel.st2023.room.entity.PendampinganEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
-import bps.sumsel.st2023.ui.edit_sls.EditSlsFragmentArgs
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.gson.Gson
@@ -40,6 +41,7 @@ class PendampinganFragment : Fragment() {
     private lateinit var parentActivity: MainActivity
     private lateinit var pendampinganViewModel: PendampinganViewModel
     private var sls: SlsEntity? = null
+    private var user: UserStore? = null
     private val gson = Gson()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -71,7 +73,8 @@ class PendampinganFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvPendampingan.layoutManager = layoutManager
 
-        sls = EditSlsFragmentArgs.fromBundle(arguments as Bundle).sls
+        sls = PendampinganFragmentArgs.fromBundle(arguments as Bundle).sls
+        user = PendampinganFragmentArgs.fromBundle(arguments as Bundle).user
 
         sls?.let {
             parentActivity.setActionBarTitle(it.nama_sls)
@@ -93,23 +96,47 @@ class PendampinganFragment : Fragment() {
                         parentActivity.setLoading(false)
                         val data = result.data
 
-                        val pendampinganList = stringToJson(data?.pendampingan)
+                        if (user!!.jabatan == EnumJabatan.PML.kode) {
+                            val pendampinganList = stringToJson(data?.pendampingan_pml)
 
-                        pendampinganList?.let {
-                            val pendampinganAdapter = PendampinganAdapter(ArrayList(it))
-                            pendampinganAdapter.setOnClickCallBack(object :
-                                PendampinganAdapter.OnClickCallBack {
-                                override fun onItemDelete(position: Int) {
-                                    deletePendampingan(position)
+                            pendampinganList?.let {
+                                val pendampinganAdapter = PendampinganAdapter(ArrayList(it))
+
+                                pendampinganAdapter.setOnClickCallBack(object :
+                                    PendampinganAdapter.OnClickCallBack {
+                                    override fun onItemDelete(position: Int) {
+                                        deletePendampingan(position, user!!.jabatan)
+                                    }
+                                })
+
+                                binding.rvPendampingan.apply {
+                                    adapter = pendampinganAdapter
                                 }
-                            })
-
-                            binding.rvPendampingan.apply {
-                                adapter = pendampinganAdapter
+                            } ?: run {
+                                binding.rvPendampingan.apply {
+                                    adapter = null
+                                }
                             }
-                        } ?: run {
-                            binding.rvPendampingan.apply {
-                                adapter = null
+                        } else if (user!!.jabatan == EnumJabatan.KOSEKA.kode) {
+                            val pendampinganList = stringToJson(data?.pendampingan_koseka)
+
+                            pendampinganList?.let {
+                                val pendampinganAdapter = PendampinganAdapter(ArrayList(it))
+
+                                pendampinganAdapter.setOnClickCallBack(object :
+                                    PendampinganAdapter.OnClickCallBack {
+                                    override fun onItemDelete(position: Int) {
+                                        deletePendampingan(position, user!!.jabatan)
+                                    }
+                                })
+
+                                binding.rvPendampingan.apply {
+                                    adapter = pendampinganAdapter
+                                }
+                            } ?: run {
+                                binding.rvPendampingan.apply {
+                                    adapter = null
+                                }
                             }
                         }
                     }
@@ -130,7 +157,7 @@ class PendampinganFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_add -> {
-                addPendampingan()
+                addPendampingan(user!!.jabatan)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -144,7 +171,7 @@ class PendampinganFragment : Fragment() {
         return pendampinganData
     }
 
-    private fun addPendampingan() {
+    private fun addPendampingan(jabatan: Int) {
         val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
 
         builder.setTitle("Pendampingan")
@@ -153,11 +180,6 @@ class PendampinganFragment : Fragment() {
         builder.setPositiveButton("Ya") { dialog, _ ->
             sls?.let {
                 val pendampinganList = mutableListOf<PendampinganEntity>()
-                val pendampinganListOriginal = stringToJson(it.pendampingan)
-
-                pendampinganListOriginal?.forEach { p ->
-                    pendampinganList.add(p)
-                }
 
                 val currentTime: Date = Calendar.getInstance().time
                 val currentTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -168,9 +190,30 @@ class PendampinganFragment : Fragment() {
                     curLocation!!.longitude
                 )
 
-                pendampinganList.add(pendampingan)
+                when (jabatan) {
+                    EnumJabatan.PML.kode -> {
+                        val pendampinganListOriginal = stringToJson(it.pendampingan_pml)
 
-                it.pendampingan = gson.toJson(pendampinganList)
+                        pendampinganListOriginal?.forEach { p ->
+                            pendampinganList.add(p)
+                        }
+
+                        pendampinganList.add(pendampingan)
+
+                        it.pendampingan_pml = gson.toJson(pendampinganList)
+                    }
+                    EnumJabatan.KOSEKA.kode -> {
+                        val pendampinganListOriginal = stringToJson(it.pendampingan_koseka)
+
+                        pendampinganListOriginal?.forEach { p ->
+                            pendampinganList.add(p)
+                        }
+
+                        pendampinganList.add(pendampingan)
+
+                        it.pendampingan_koseka = gson.toJson(pendampinganList)
+                    }
+                }
 
                 pendampinganViewModel.updateSls(it)
                 pendampinganViewModel.setSingleData(it)
@@ -189,7 +232,7 @@ class PendampinganFragment : Fragment() {
         builder.show()
     }
 
-    private fun deletePendampingan(position: Int) {
+    private fun deletePendampingan(position: Int, jabatan: Int) {
         val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
 
         builder.setTitle("Hapus Pendampingan")
@@ -198,15 +241,31 @@ class PendampinganFragment : Fragment() {
         builder.setPositiveButton("Ya") { dialog, _ ->
             sls?.let {
                 val pendampinganList = mutableListOf<PendampinganEntity>()
-                val pendampinganListOriginal = stringToJson(it.pendampingan)
 
-                pendampinganListOriginal?.forEach { p ->
-                    pendampinganList.add(p)
+                when (jabatan) {
+                    EnumJabatan.PML.kode -> {
+                        val pendampinganListOriginal = stringToJson(it.pendampingan_pml)
+
+                        pendampinganListOriginal?.forEach { p ->
+                            pendampinganList.add(p)
+                        }
+
+                        pendampinganList.removeAt(position)
+
+                        it.pendampingan_pml = gson.toJson(pendampinganList)
+                    }
+                    EnumJabatan.KOSEKA.kode -> {
+                        val pendampinganListOriginal = stringToJson(it.pendampingan_koseka)
+
+                        pendampinganListOriginal?.forEach { p ->
+                            pendampinganList.add(p)
+                        }
+
+                        pendampinganList.removeAt(position)
+
+                        it.pendampingan_koseka = gson.toJson(pendampinganList)
+                    }
                 }
-
-                pendampinganList.removeAt(position)
-
-                it.pendampingan = gson.toJson(pendampinganList)
 
                 pendampinganViewModel.updateSls(it)
                 pendampinganViewModel.setSingleData(it)
@@ -354,5 +413,16 @@ class PendampinganFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        stopLocationUpdates()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
     }
 }
