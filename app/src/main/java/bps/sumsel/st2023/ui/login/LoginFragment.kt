@@ -14,6 +14,7 @@ import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.databinding.FragmentLoginBinding
 import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.repository.ResultData
+import bps.sumsel.st2023.ui.setting.SettingFragment
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -38,6 +39,8 @@ class LoginFragment : Fragment() {
         val viewModel: LoginViewModel by viewModels {
             factory
         }
+
+        binding.txtVersi.text = "Versi " + SettingFragment().getAppVersion(context!!)
 
         binding.btnLogin.setOnClickListener {
             val email = binding.edtUsername.text.toString()
