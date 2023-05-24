@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
-import bps.sumsel.st2023.MainActivity
 import bps.sumsel.st2023.databinding.RowSlsDashboardBinding
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.room.entity.RekapRutaEntity
@@ -18,7 +17,6 @@ class SlsHomeAdapter(
     private val resultRekapRuta: LiveData<ResultData<List<RekapRutaEntity>?>>,
     private val context: Context?,
     private val lifecycleOwner: LifecycleOwner,
-    private val parentActivity: MainActivity
 ) :
     RecyclerView.Adapter<SlsHomeAdapter.DataViewHolder>() {
     private lateinit var onClickCallBack: OnClickCallBack
@@ -56,13 +54,9 @@ class SlsHomeAdapter(
         resultRekapRuta.observe(lifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
-                    is ResultData.Loading -> {
-                        parentActivity.setLoading(true)
-                    }
+                    is ResultData.Loading -> {}
 
                     is ResultData.Success -> {
-                        parentActivity.setLoading(false)
-
                         result.data?.let { d ->
                             d.forEach {
                                 if (it.kode_kab == curData.kode_kab &&
@@ -78,8 +72,6 @@ class SlsHomeAdapter(
                     }
 
                     is ResultData.Error -> {
-                        parentActivity.setLoading(false)
-
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }

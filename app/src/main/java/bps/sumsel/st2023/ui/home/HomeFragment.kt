@@ -86,13 +86,9 @@ class HomeFragment : Fragment() {
         viewModel.resultRekapSls.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
-                    is ResultData.Loading -> {
-                        parentActivity.setLoading(true)
-                    }
+                    is ResultData.Loading -> {}
 
                     is ResultData.Success -> {
-                        parentActivity.setLoading(false)
-
                         result.data?.let {
                             if (it.isNotEmpty()) {
                                 binding.txtJumlahSls.text = it.first().jumlah.toString()
@@ -103,7 +99,6 @@ class HomeFragment : Fragment() {
                     }
 
                     is ResultData.Error -> {
-                        parentActivity.setLoading(false)
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -113,13 +108,9 @@ class HomeFragment : Fragment() {
         viewModel.resultRekapRuta.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
-                    is ResultData.Loading -> {
-                        parentActivity.setLoading(true)
-                    }
+                    is ResultData.Loading -> {}
 
                     is ResultData.Success -> {
-                        parentActivity.setLoading(false)
-
                         result.data?.let { d ->
                             if (d.isNotEmpty()) {
                                 val jumlah: List<Int> = d.map { m -> m.jumlah }
@@ -131,7 +122,6 @@ class HomeFragment : Fragment() {
                     }
 
                     is ResultData.Error -> {
-                        parentActivity.setLoading(false)
                         Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -169,7 +159,6 @@ class HomeFragment : Fragment() {
                 viewModel.resultRekapRuta,
                 context,
                 viewLifecycleOwner,
-                parentActivity
             )
             slsAdapter.setOnClickCallBack(object : SlsHomeAdapter.OnClickCallBack {
                 override fun onItemClicked(data: SlsEntity) {

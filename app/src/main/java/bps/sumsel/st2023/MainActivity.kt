@@ -1,6 +1,5 @@
 package bps.sumsel.st2023
 
-//import bps.sumsel.st2023.room.MIGRATION_1_2
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
