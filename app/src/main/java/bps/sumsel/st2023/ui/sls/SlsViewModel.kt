@@ -20,6 +20,8 @@ class SlsViewModel(private val pref: AuthDataStore, private val slsRepository: S
 
     val resultData = slsRepository.resultData
 
+    fun getSlsByName(keyword: String) = slsRepository.getSlsByName(keyword)
+
     fun upload() = slsRepository.upload()
 
     val resultUploadRuta = slsRepository.resultUploadRuta

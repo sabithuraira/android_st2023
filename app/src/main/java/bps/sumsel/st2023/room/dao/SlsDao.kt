@@ -2,6 +2,7 @@ package bps.sumsel.st2023.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import bps.sumsel.st2023.room.entity.RekapSlsEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 
@@ -18,6 +19,9 @@ interface SlsDao {
 
     @Query("SELECT * from sls ORDER BY id ASC")
     fun findAll(): List<SlsEntity>
+
+    @RawQuery(observedEntities = [SlsEntity::class])
+    fun findWithCondition(query: SupportSQLiteQuery): List<SlsEntity>
 
     @Query("SELECT * from sls WHERE kode_pcl= :kode OR kode_pml= :kode OR kode_koseka= :kode ORDER BY id ASC")
     fun findByPetugas(kode: String): LiveData<List<SlsEntity>>

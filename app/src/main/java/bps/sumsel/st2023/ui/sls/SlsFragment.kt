@@ -3,6 +3,8 @@ package bps.sumsel.st2023.ui.sls
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,6 +101,18 @@ class SlsFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.getSlsByName(binding.edtSearch.text.toString())
+
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                viewModel.getSlsByName(binding.edtSearch.text.toString())
+            }
+        })
 
         binding.btnUpload.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)

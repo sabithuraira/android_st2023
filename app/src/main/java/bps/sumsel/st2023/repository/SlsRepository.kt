@@ -218,6 +218,24 @@ class SlsRepository private constructor(
         }
     }
 
+    fun getSlsByName(keyword: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val query = StringBuilder().append("SELECT * from sls")
+
+            if (keyword.isNotEmpty()) {
+                query.append(" WHERE nama_sls LIKE '%$keyword%'")
+            }
+
+            query.append(" ORDER BY id ASC")
+
+            val sqlQuery = SimpleSQLiteQuery(query.toString())
+
+            val localData = slsDao.findWithCondition(sqlQuery)
+
+            _resultData.postValue(ResultData.Success(localData))
+        }
+    }
+
     private val _resultSingleData = MutableLiveData<ResultData<SlsEntity?>>()
     val resultSingleData: LiveData<ResultData<SlsEntity?>> = _resultSingleData
 
