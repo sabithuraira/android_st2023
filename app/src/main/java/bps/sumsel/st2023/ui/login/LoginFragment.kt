@@ -65,7 +65,7 @@ class LoginFragment : Fragment() {
                     }
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
-                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Tidak ada internet", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
