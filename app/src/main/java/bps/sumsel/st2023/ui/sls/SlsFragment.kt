@@ -96,7 +96,7 @@ class SlsFragment : Fragment() {
 
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
-                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -136,7 +136,7 @@ class SlsFragment : Fragment() {
 
                             is ResultData.Error -> {
                                 parentActivity.setLoading(false)
-                                Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT)
+                                Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT)
                                     .show()
                             }
                         }
@@ -156,7 +156,7 @@ class SlsFragment : Fragment() {
 
                             is ResultData.Error -> {
                                 parentActivity.setLoading(false)
-                                Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT)
+                                Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT)
                                     .show()
                             }
                         }

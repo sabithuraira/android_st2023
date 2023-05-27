@@ -59,10 +59,6 @@ val MIGRATION_2_3: Migration = object : Migration(2, 3) {
 
 val MIGRATION_3_4: Migration = object : Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
-//        database.execSQL(
-//            "ALTER TABLE sls "
-//                    + " ADD COLUMN nama_desa TEXT NOT NULL DEFAULT ''"
-//        )
         database.execSQL(
             "ALTER TABLE sls "
                     + " ADD COLUMN nama_kec TEXT NOT NULL DEFAULT ''"
@@ -91,24 +87,3 @@ val MIGRATION_5_6: Migration = object : Migration(5, 6) {
         )
     }
 }
-
-//val MIGRATION_6_7: Migration = object : Migration(6, 7) {
-//    override fun migrate(database: SupportSQLiteDatabase) {
-//        database.execSQL(
-//            "ALTER TABLE ruta "
-//                    + " ADD COLUMN jml_308_tanaman_tahunan INTEGER NOT NULL DEFAULT(0)"
-//        )
-//        database.execSQL(
-//            "ALTER TABLE ruta "
-//                    + " ADD COLUMN status_data INTEGER NOT NULL DEFAULT(0)"
-//        )
-//        database.execSQL(
-//            "ALTER TABLE ruta "
-//                    + " ADD COLUMN apakah_menggunakan_lahan INTEGER NOT NULL DEFAULT(0)"
-//        )
-//        database.execSQL(
-//            "ALTER TABLE ruta "
-//                    + " RENAME COLUMN is_upload TO status_upload"
-//        )
-//    }
-//}

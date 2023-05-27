@@ -192,7 +192,8 @@ class SlsRepository private constructor(
             }
 
             override fun onFailure(call: Call<ResponseSlsPetugas>, t: Throwable) {
-                _resultData.value = ResultData.Error(t.message.toString())
+                _resultData.value = ResultData.Error("Cek internet Anda!")
+//                _resultData.value = ResultData.Error(t.message.toString())
             }
         })
     }
@@ -418,7 +419,8 @@ class SlsRepository private constructor(
                 }
 
                 override fun onFailure(call: Call<ResponseStringStatus>, t: Throwable) {
-                    _resultUploadRuta.value = ResultData.Error(t.message.toString())
+                    _resultUploadRuta.value = ResultData.Error("Cek internet Anda!")
+//                    _resultUploadRuta.value = ResultData.Error(t.message.toString())
                 }
             })
         }
@@ -464,7 +466,8 @@ class SlsRepository private constructor(
                 }
 
                 override fun onFailure(call: Call<ResponseStringStatus>, t: Throwable) {
-                    _resultUploadSls.value = ResultData.Error(t.message.toString())
+                    _resultUploadSls.value = ResultData.Error("Cek internet Anda!")
+//                    _resultUploadSls.value = ResultData.Error(t.message.toString())
                 }
             })
         }

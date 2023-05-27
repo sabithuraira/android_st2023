@@ -21,7 +21,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="45dp"
                 android:paddingRight="40dp"
-                android:hint="Cari Rumah Tangga"
+                android:hint="Cari Rumah Tangga Pertanian"
                 android:background="@drawable/bg_edittext"
                 android:text=""
                 android:maxLines="1"

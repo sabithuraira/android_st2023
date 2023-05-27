@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
 
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
-                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -99,7 +99,7 @@ class HomeFragment : Fragment() {
                     }
 
                     is ResultData.Error -> {
-                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -122,7 +122,7 @@ class HomeFragment : Fragment() {
                     }
 
                     is ResultData.Error -> {
-                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

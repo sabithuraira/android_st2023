@@ -71,7 +71,8 @@ class AuthRepository private constructor(
                 }
 
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                    _resultData.value = ResultData.Error(t.message.toString())
+                    _resultData.value = ResultData.Error("Cek internet Anda!")
+//                    _resultData.value = ResultData.Error(t.message.toString())
                 }
             })
         }
@@ -130,7 +131,8 @@ class AuthRepository private constructor(
             }
 
             override fun onFailure(call: Call<ResponseStringStatus>, t: Throwable) {
-                _resultStatus.value = ResultData.Error(t.message.toString())
+                _resultStatus.value = ResultData.Error("Cek internet Anda!")
+//                _resultStatus.value = ResultData.Error(t.message.toString())
             }
         })
     }

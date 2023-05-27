@@ -72,7 +72,7 @@ class SlsHomeAdapter(
                     }
 
                     is ResultData.Error -> {
-                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

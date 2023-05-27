@@ -87,7 +87,7 @@ class SettingFragment : Fragment() {
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
 
-                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -111,7 +111,7 @@ class SettingFragment : Fragment() {
                     is ResultData.Error -> {
                         parentActivity.setLoading(false)
 
-                        Toast.makeText(context, "Error" + result.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

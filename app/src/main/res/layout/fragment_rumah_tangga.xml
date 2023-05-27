@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:textColor="@color/black_300"
-                        android:text="Nomor Urut Rumah Tangga" />
+                        android:text="Nomor Urut Rumah Tangga Pertanian" />
 
                     <EditText
                         android:id="@+id/edt_nurt"
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:textColor="@color/black_300"
-                        android:text="Jumlah Anggota Rumah Tangga" />
+                        android:text="Jumlah Anggota Rumah Tangga Pertanian" />
 
                     <EditText
                         android:id="@+id/edt_jml_art"
