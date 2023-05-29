@@ -14,7 +14,7 @@ android {
         applicationId "bps.sumsel.st2023"
         minSdk 22
         targetSdk 33
-        versionCode 4
+        versionCode 5
         versionName "1.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
