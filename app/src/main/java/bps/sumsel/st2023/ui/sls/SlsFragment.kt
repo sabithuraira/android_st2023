@@ -74,7 +74,8 @@ class SlsFragment : Fragment() {
                         parentActivity.setLoading(false)
                         val data = result.data
 
-                        val slsAdapter = SlsAdapter(ArrayList(data), viewModel.getAuthUser(), viewLifecycleOwner)
+                        val slsAdapter =
+                            SlsAdapter(ArrayList(data), viewModel.getAuthUser(), viewLifecycleOwner)
                         slsAdapter.setOnClickCallBack(object : SlsAdapter.OnClickCallBack {
                             override fun onItemPendampingan(data: SlsEntity, userStore: UserStore) {
                                 pendampinganData(view, data, userStore)
@@ -86,6 +87,10 @@ class SlsFragment : Fragment() {
 
                             override fun onItemProgress(data: SlsEntity) {
                                 progressData(view, data)
+                            }
+
+                            override fun onItemUpload(data: SlsEntity) {
+                                uploadData(viewModel, data)
                             }
                         })
 
@@ -99,6 +104,64 @@ class SlsFragment : Fragment() {
                         Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+        }
+
+        viewModel.resultUploadRuta.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultData.Loading -> {
+                        parentActivity.setLoading(true)
+                    }
+
+                    is ResultData.Success -> {
+                        parentActivity.setLoading(false)
+                    }
+
+                    is ResultData.Error -> {
+                        parentActivity.setLoading(false)
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+        }
+
+        viewModel.resultUploadSls.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultData.Loading -> {
+                        parentActivity.setLoading(true)
+                    }
+
+                    is ResultData.Success -> {
+                        parentActivity.setLoading(false)
+                    }
+
+                    is ResultData.Error -> {
+                        parentActivity.setLoading(false)
+                        Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+        }
+
+        viewModel.resultUpload.observe(viewLifecycleOwner) { result ->
+            if (result.first == 2) {
+                parentActivity.setLoading(false)
+
+                result.second?.let {
+                    viewModel.syncSls(it)
+                } ?: run {
+                    viewModel.syncSls()
+                }
+                viewModel.resultUpload.value = Pair(0, null)
+
+//                viewModel.syncSls()
+
+                Toast.makeText(context, "Upload data berhasil", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -122,57 +185,6 @@ class SlsFragment : Fragment() {
 
             builder.setPositiveButton("Ya") { dialog, _ ->
                 viewModel.upload()
-
-                viewModel.resultUploadRuta.observe(viewLifecycleOwner) { result ->
-                    if (result != null) {
-                        when (result) {
-                            is ResultData.Loading -> {
-                                parentActivity.setLoading(true)
-                            }
-
-                            is ResultData.Success -> {
-                                parentActivity.setLoading(false)
-                            }
-
-                            is ResultData.Error -> {
-                                parentActivity.setLoading(false)
-                                Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        }
-                    }
-                }
-
-                viewModel.resultUploadSls.observe(viewLifecycleOwner) { result ->
-                    if (result != null) {
-                        when (result) {
-                            is ResultData.Loading -> {
-                                parentActivity.setLoading(true)
-                            }
-
-                            is ResultData.Success -> {
-                                parentActivity.setLoading(false)
-                            }
-
-                            is ResultData.Error -> {
-                                parentActivity.setLoading(false)
-                                Toast.makeText(context, "Error " + result.error, Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        }
-                    }
-                }
-
-                viewModel.resultUpload.observe(viewLifecycleOwner) { result ->
-                    if (result == 2) {
-                        parentActivity.setLoading(false)
-
-                        viewModel.syncSls()
-
-                        Toast.makeText(context, "Upload data berhasil", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
             }
 
             builder.setNegativeButton("Batal") { dialog, _ ->
@@ -199,5 +211,22 @@ class SlsFragment : Fragment() {
         view.findNavController().navigate(
             SlsFragmentDirections.actionNavigationSlsToEditSlsFragment(data)
         )
+    }
+
+    private fun uploadData(viewModel: SlsViewModel, data: SlsEntity) {
+        val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
+
+        builder.setTitle("Upload Data")
+        builder.setMessage("Anda yakin ingin mengupload data?")
+
+        builder.setPositiveButton("Ya") { dialog, _ ->
+            viewModel.upload(data)
+        }
+
+        builder.setNegativeButton("Batal") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.show()
     }
 }

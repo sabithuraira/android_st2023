@@ -198,6 +198,205 @@ class SlsRepository private constructor(
         })
     }
 
+    fun syncSls(data: SlsEntity) {
+        _resultData.value = ResultData.Loading
+
+        val client = apiService.listSls(
+            data.kode_prov + data.kode_kab + data.kode_kec + data.kode_desa + data.id_sls + data.id_sub_sls
+        )
+
+        client.enqueue(object : Callback<ResponseSlsPetugas> {
+            override fun onResponse(
+                call: Call<ResponseSlsPetugas>,
+                response: Response<ResponseSlsPetugas>
+            ) {
+                if (response.isSuccessful) {
+                    val sls = response.body()?.datas
+
+                    val slsList = mutableListOf<SlsEntity>()
+                    val rutasList = mutableListOf<RutaEntity>()
+
+                    sls?.let {
+                        for (item in sls) {
+                            slsList.add(
+                                SlsEntity(
+                                    item.id ?: 0,
+                                    item.encId ?: "",
+                                    item.kodeProv ?: "",
+                                    item.kodeKab ?: "",
+                                    item.kodeKec ?: "",
+                                    item.kodeDesa ?: "",
+                                    item.idSls ?: "",
+                                    item.idSubSls ?: "",
+                                    item.namaSls ?: "",
+                                    item.slsOp ?: 0,
+                                    item.jenisSls ?: 0,
+                                    item.jmlArtTani ?: 0,
+                                    item.jmlKeluargaTani ?: 0,
+                                    item.sektor1 ?: 0,
+                                    item.sektor2 ?: 0,
+                                    item.sektor3 ?: 0,
+                                    item.sektor4 ?: 0,
+                                    item.sektor5 ?: 0,
+                                    item.sektor6 ?: 0,
+                                    item.jmlKeluargaTaniSt2023 ?: 0,
+                                    item.jmlNr ?: 0,
+                                    item.jmlDokKePml ?: 0,
+                                    item.jmlDokKeKoseka ?: 0,
+                                    item.jmlDokKeBps ?: 0,
+                                    item.statusSelesaiPcl ?: 0,
+                                    item.kodePcl ?: "",
+                                    item.kodePml ?: "",
+                                    item.kodeKoseka ?: "",
+                                    item.statusSls ?: 0,
+                                    item.namaDesa ?: "",
+                                    item.namaKec ?: "",
+                                    item.pendampinganPml ?: "",
+                                    item.pendampinganKoseka ?: ""
+                                )
+                            )
+
+                            val rutas = item.daftar_ruta
+                            rutas?.let {
+                                for (itemRuta in rutas) {
+                                    val ruta = RutaEntity(
+                                        itemRuta.id ?: 0,
+                                        itemRuta.encId ?: "",
+                                        itemRuta.kodeProv ?: "",
+                                        itemRuta.kodeKab ?: "",
+                                        itemRuta.kodeKec ?: "",
+                                        itemRuta.kodeDesa ?: "",
+                                        itemRuta.idSls ?: "",
+                                        itemRuta.idSubSls ?: "",
+
+                                        itemRuta.nurt ?: 0,
+                                        itemRuta.kepalaRuta ?: "",
+                                        itemRuta.jumlahArt ?: 0,
+                                        itemRuta.jumlahUnitUsaha ?: 0,
+
+                                        itemRuta.subsektor1A ?: 0,
+                                        itemRuta.subsektor1B ?: 0,
+                                        itemRuta.subsektor2A ?: 0,
+                                        itemRuta.subsektor2B ?: 0,
+                                        itemRuta.subsektor3A ?: 0,
+                                        itemRuta.subsektor3B ?: 0,
+                                        itemRuta.subsektor4A ?: 0,
+                                        itemRuta.subsektor4B ?: 0,
+                                        itemRuta.subsektor4C ?: 0,
+                                        itemRuta.subsektor5A ?: 0,
+                                        itemRuta.subsektor5B ?: 0,
+                                        itemRuta.subsektor5C ?: 0,
+                                        itemRuta.subsektor6A ?: 0,
+                                        itemRuta.subsektor6B ?: 0,
+                                        itemRuta.subsektor6C ?: 0,
+                                        itemRuta.subsektor7A ?: 0,
+
+                                        itemRuta.apakahMenggunakanLahan ?: 0,
+                                        itemRuta.jml308Sawah ?: 0,
+                                        itemRuta.jml308BukanSawah ?: 0,
+                                        itemRuta.jml308RumputSementara ?: 0,
+                                        itemRuta.jml308RumputPermanen ?: 0,
+                                        itemRuta.jml308BelumTanam ?: 0,
+                                        itemRuta.jml308TernakBangunanLain ?: 0,
+                                        itemRuta.jml308Kehutanan ?: 0,
+                                        itemRuta.jml308Budidaya ?: 0,
+                                        itemRuta.jml308LahanLainnya ?: 0,
+                                        itemRuta.jml308TanamanTahunan ?: 0,
+
+                                        itemRuta.statusData ?: 0,
+
+                                        itemRuta.daftarKomoditas ?: "",
+                                        itemRuta.startTime ?: "",
+                                        itemRuta.endTime ?: "",
+                                        itemRuta.startLatitude ?: 0.0,
+                                        itemRuta.endLatitude ?: 0.0,
+                                        itemRuta.startLongitude ?: 0.0,
+                                        itemRuta.endLongitude ?: 0.0,
+
+                                        EnumStatusUpload.UPLOADED.kode,
+
+                                        itemRuta.createdBy ?: 0,
+                                        itemRuta.updatedBy ?: 0,
+                                        itemRuta.createdAt ?: "",
+                                        itemRuta.updatedAt ?: "",
+                                    )
+                                    rutasList.add(ruta)
+                                }
+                            }
+                        }
+                    }
+
+                    runBlocking {
+                        data.let {
+                            it.id = slsList.first().id
+                            it.encId = slsList.first().encId
+                            it.kode_prov = slsList.first().kode_prov
+                            it.kode_kab = slsList.first().kode_kab
+                            it.kode_kec = slsList.first().kode_kec
+                            it.kode_desa = slsList.first().kode_desa
+                            it.id_sls = slsList.first().id_sls
+                            it.id_sub_sls = slsList.first().id_sub_sls
+                            it.nama_sls = slsList.first().nama_sls
+                            it.sls_op = slsList.first().sls_op
+                            it.jenis_sls = slsList.first().jenis_sls
+                            it.jml_art_tani = slsList.first().jml_art_tani
+                            it.jml_keluarga_tani = slsList.first().jml_keluarga_tani
+                            it.sektor1 = slsList.first().sektor1
+                            it.sektor2 = slsList.first().sektor2
+                            it.sektor3 = slsList.first().sektor3
+                            it.sektor4 = slsList.first().sektor4
+                            it.sektor5 = slsList.first().sektor5
+                            it.sektor6 = slsList.first().sektor6
+                            it.jml_keluarga_tani = slsList.first().jml_keluarga_tani
+                            it.jml_nr = slsList.first().jml_nr
+                            it.jml_dok_ke_pml = slsList.first().jml_dok_ke_pml
+                            it.jml_dok_ke_koseka = slsList.first().jml_dok_ke_koseka
+                            it.jml_dok_ke_bps = slsList.first().jml_dok_ke_bps
+                            it.status_selesai_pcl = slsList.first().status_selesai_pcl
+                            it.kode_pcl = slsList.first().kode_pcl
+                            it.kode_pml = slsList.first().kode_pml
+                            it.kode_koseka = slsList.first().kode_koseka
+                            it.status_sls = slsList.first().status_sls
+                            it.nama_desa = slsList.first().nama_desa
+                            it.nama_kec = slsList.first().nama_kec
+                            it.pendampingan_pml = slsList.first().pendampingan_pml
+                            it.pendampingan_koseka = slsList.first().pendampingan_koseka
+
+                            slsDao.update(it)
+
+                            rutaDao.deleteBySLS(
+                                it.kode_prov,
+                                it.kode_kab,
+                                it.kode_kec,
+                                it.kode_desa,
+                                it.id_sls,
+                                it.id_sub_sls
+                            )
+
+                            rutaDao.insert(rutasList)
+                        }
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val localData = slsDao.findAll()
+                            _resultData.postValue(ResultData.Success(localData))
+                        }
+                    }
+                } else {
+                    val errorMessage: ResponseStringData = Gson().fromJson(
+                        response.errorBody()!!.charStream(),
+                        ResponseStringData::class.java
+                    )
+                    _resultData.value = ResultData.Error(errorMessage.datas ?: "")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseSlsPetugas>, t: Throwable) {
+                _resultData.value = ResultData.Error("Cek internet Anda!")
+//                _resultData.value = ResultData.Error(t.message.toString())
+            }
+        })
+    }
+
     fun emptyData() {
         runBlocking {
             slsDao.deleteAll()
@@ -338,17 +537,30 @@ class SlsRepository private constructor(
         }
     }
 
-    private val _resultUploadRuta = MutableLiveData<ResultData<Int>>()
-    val resultUploadRuta: LiveData<ResultData<Int>> = _resultUploadRuta
-    private fun storeRutaMany() {
+    private val _resultUploadRuta = MutableLiveData<ResultData<Pair<Int, SlsEntity?>>>()
+    val resultUploadRuta: LiveData<ResultData<Pair<Int, SlsEntity?>>> = _resultUploadRuta
+    private fun storeRutaMany(sls: SlsEntity? = null) {
         _resultUploadRuta.value = ResultData.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
-            val rutaToUpload = rutaDao.findAllToUpload()
+            var rutaToUpload: List<RutaEntity>? = null
+
+            sls?.let {
+                rutaToUpload = rutaDao.findBySlsToUpload(
+                    it.kode_prov,
+                    it.kode_kab,
+                    it.kode_kec,
+                    it.kode_desa,
+                    it.id_sls,
+                    it.id_sub_sls
+                )
+            } ?: run {
+                rutaToUpload = rutaDao.findAllToUpload()
+            }
 
             val rutaList = mutableListOf<RequestRuta>()
 
-            rutaToUpload.forEach {
+            rutaToUpload?.forEach {
                 val requestRuta = RequestRuta(
                     it.encId,
                     it.kode_prov,
@@ -414,7 +626,11 @@ class SlsRepository private constructor(
                     response: Response<ResponseStringStatus>
                 ) {
                     if (response.isSuccessful) {
-                        _resultUploadRuta.postValue(ResultData.Success(1))
+                        sls?.let {
+                            _resultUploadRuta.postValue(ResultData.Success(Pair(1, it)))
+                        } ?: run {
+                            _resultUploadRuta.postValue(ResultData.Success(Pair(1, null)))
+                        }
                     }
                 }
 
@@ -426,17 +642,23 @@ class SlsRepository private constructor(
         }
     }
 
-    private val _resultUploadSls = MutableLiveData<ResultData<Int>>()
-    val resultUploadSls: LiveData<ResultData<Int>> = _resultUploadSls
-    private fun updateSlsProgress() {
+    private val _resultUploadSls = MutableLiveData<ResultData<Pair<Int, SlsEntity?>>>()
+    val resultUploadSls: LiveData<ResultData<Pair<Int, SlsEntity?>>> = _resultUploadSls
+    private fun updateSlsProgress(data: SlsEntity? = null) {
         CoroutineScope(Dispatchers.IO).launch {
             val dataUser = runBlocking { pref.getUser().first() }
 
-            val sls = slsDao.findAll()
+            var sls: List<SlsEntity>? = null
+
+            data?.let {
+                sls = listOf(it)
+            } ?: run {
+                sls = slsDao.findAll()
+            }
 
             val slsList = mutableListOf<RequestSlsProgress>()
 
-            sls.forEach {
+            sls?.forEach {
                 val requestSlsProgress = RequestSlsProgress(
                     it.encId,
                     it.status_selesai_pcl,
@@ -461,7 +683,11 @@ class SlsRepository private constructor(
                     response: Response<ResponseStringStatus>
                 ) {
                     if (response.isSuccessful) {
-                        _resultUploadSls.postValue(ResultData.Success(1))
+                        data?.let {
+                            _resultUploadSls.postValue(ResultData.Success(Pair(1, it)))
+                        } ?: run {
+                            _resultUploadSls.postValue(ResultData.Success(Pair(1, null)))
+                        }
                     }
                 }
 
@@ -480,7 +706,15 @@ class SlsRepository private constructor(
         }
     }
 
-    val resultUpload = MediatorLiveData<Int>()
+    fun upload(sls: SlsEntity) {
+        runBlocking {
+            storeRutaMany(sls)
+            updateSlsProgress(sls)
+        }
+    }
+
+
+    val resultUpload = MediatorLiveData<Pair<Int, SlsEntity?>>()
 
     init {
         resultUpload.addSource(
@@ -488,15 +722,20 @@ class SlsRepository private constructor(
         ) { value ->
             when (value) {
                 is ResultData.Loading -> {
-                    resultUpload.value = 0
+                    resultUpload.value = Pair(0, null)
                 }
 
                 is ResultData.Success -> {
-                    resultUpload.value = resultUpload.value!! + value.data
+                    value.data.second?.let {
+                        resultUpload.value = Pair(resultUpload.value!!.first + value.data.first, it)
+                    } ?: run {
+                        resultUpload.value =
+                            Pair(resultUpload.value!!.first + value.data.first, null)
+                    }
                 }
 
                 is ResultData.Error -> {
-                    resultUpload.value = 0
+                    resultUpload.value = Pair(-1, null)
                 }
             }
         }
@@ -506,15 +745,20 @@ class SlsRepository private constructor(
         ) { value ->
             when (value) {
                 is ResultData.Loading -> {
-                    resultUpload.value = 0
+                    resultUpload.value = Pair(0, null)
                 }
 
                 is ResultData.Success -> {
-                    resultUpload.value = resultUpload.value!! + value.data
+                    value.data.second?.let {
+                        resultUpload.value = Pair(resultUpload.value!!.first + value.data.first, it)
+                    } ?: run {
+                        resultUpload.value =
+                            Pair(resultUpload.value!!.first + value.data.first, null)
+                    }
                 }
 
                 is ResultData.Error -> {
-                    resultUpload.value = -1
+                    resultUpload.value = Pair(-1, null)
                 }
             }
         }

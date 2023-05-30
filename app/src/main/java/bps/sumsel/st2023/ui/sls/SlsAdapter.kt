@@ -26,6 +26,8 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>, private val user: L
         fun onItemChoose(data: SlsEntity)
 
         fun onItemProgress(data: SlsEntity)
+
+        fun onItemUpload(data: SlsEntity)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
@@ -71,6 +73,10 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>, private val user: L
 
         holder.binding.btnProgress.setOnClickListener {
             onClickCallBack.onItemProgress(listData[holder.adapterPosition])
+        }
+
+        holder.binding.btnUpload.setOnClickListener {
+            onClickCallBack.onItemUpload(listData[holder.adapterPosition])
         }
     }
 

@@ -22,6 +22,11 @@ interface ApiInterface {
         @Path("kode_petugas") kode_petugas: String,
     ): Call<ResponseSlsPetugas>
 
+    @GET("sls/{kode_sls}/sls")
+    fun listSls(
+        @Path("kode_sls") kode_sls: String,
+    ): Call<ResponseSlsPetugas>
+
     @POST("sls")
     fun storeSls(@Body params: RequestBody): Call<ResponseSingleSls>
 

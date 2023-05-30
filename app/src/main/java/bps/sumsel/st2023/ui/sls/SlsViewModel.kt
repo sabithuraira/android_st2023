@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.repository.SlsRepository
+import bps.sumsel.st2023.room.entity.SlsEntity
 
 class SlsViewModel(private val pref: AuthDataStore, private val slsRepository: SlsRepository) :
     ViewModel() {
@@ -23,12 +24,15 @@ class SlsViewModel(private val pref: AuthDataStore, private val slsRepository: S
     fun getSlsByName(keyword: String) = slsRepository.getSlsByName(keyword)
 
     fun upload() = slsRepository.upload()
+    fun upload(sls: SlsEntity) = slsRepository.upload(sls)
 
     val resultUploadRuta = slsRepository.resultUploadRuta
     val resultUploadSls = slsRepository.resultUploadSls
     val resultUpload = slsRepository.resultUpload
 
     fun syncSls() = slsRepository.syncSls()
+
+    fun syncSls(sls: SlsEntity) = slsRepository.syncSls(sls)
 
     fun getAuthUser(): LiveData<UserStore> {
         return pref.getUser().asLiveData()
