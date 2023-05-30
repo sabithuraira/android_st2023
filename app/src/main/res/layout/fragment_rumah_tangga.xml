@@ -87,9 +87,18 @@
                         android:id="@+id/edt_nama_kk"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         style="@style/NormalEditText"
                         android:inputType="text" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 109)" />
 
                     <TextView
                         android:id="@+id/lbl_jml_art"
@@ -103,9 +112,18 @@
                         android:id="@+id/edt_jml_art"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         style="@style/NormalEditText"
                         android:inputType="number" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 201)" />
 
                     <TextView
                         android:id="@+id/lbl_jml_unit_usaha"
@@ -143,10 +161,17 @@
                     <CheckBox android:id="@+id/cb_apakah_menggunaakan_lahan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="Apakah Usaha Tani Menggunakan Lahan Pertanian? (tidak termasuk budidaya di laut atau perairan umum)" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="Apakah Usaha Tani Menggunakan Lahan?" />
-
-
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Rincian 308)" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
