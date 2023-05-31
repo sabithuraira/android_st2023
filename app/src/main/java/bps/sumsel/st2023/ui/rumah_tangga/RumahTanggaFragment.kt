@@ -142,16 +142,16 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtJmlArt.isEnabled = false
                 binding.edtJmlUnitUsaha.isEnabled = false
 
-                binding.edtLuasSawah.isEnabled = false
-                binding.edtLuasBukanSawah.isEnabled = false
-                binding.edtLuasRumputSementara.isEnabled = false
-                binding.edtLuasRumputPermanen.isEnabled = false
-                binding.edtLuasBelumTanam.isEnabled = false
-                binding.edtLuasTanamanTahunan.isEnabled = false
-                binding.edtLuasTernakBangunanLain.isEnabled = false
-                binding.edtLuasKehutanan.isEnabled = false
-                binding.edtLuasBudidaya.isEnabled = false
-                binding.edtLuasLahanLainnya.isEnabled = false
+//                binding.edtLuasSawah.isEnabled = false
+//                binding.edtLuasBukanSawah.isEnabled = false
+//                binding.edtLuasRumputSementara.isEnabled = false
+//                binding.edtLuasRumputPermanen.isEnabled = false
+//                binding.edtLuasBelumTanam.isEnabled = false
+//                binding.edtLuasTanamanTahunan.isEnabled = false
+//                binding.edtLuasTernakBangunanLain.isEnabled = false
+//                binding.edtLuasKehutanan.isEnabled = false
+//                binding.edtLuasBudidaya.isEnabled = false
+//                binding.edtLuasLahanLainnya.isEnabled = false
             }
         }
 
@@ -218,25 +218,25 @@ class RumahTanggaFragment : Fragment() {
                         it.jumlah_unit_usaha =
                             binding.edtJmlUnitUsaha.text.toString().toIntOrNull() ?: 0
 
-                        it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_bukan_sawah =
-                            binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_rumput_sementara =
-                            binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_rumput_permanen =
-                            binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_belum_tanam =
-                            binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_tanaman_tahunan =
-                            binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_ternak_bangunan_lain =
-                            binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_kehutanan =
-                            binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_budidaya =
-                            binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
-                        it.jml_308_lahan_lainnya =
-                            binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_bukan_sawah =
+//                            binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_rumput_sementara =
+//                            binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_rumput_permanen =
+//                            binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_belum_tanam =
+//                            binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_tanaman_tahunan =
+//                            binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_ternak_bangunan_lain =
+//                            binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_kehutanan =
+//                            binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_budidaya =
+//                            binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
+//                        it.jml_308_lahan_lainnya =
+//                            binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
 
                         it.status_upload =
                             if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
@@ -269,24 +269,24 @@ class RumahTanggaFragment : Fragment() {
                     it.jumlah_unit_usaha =
                         binding.edtJmlUnitUsaha.text.toString().toIntOrNull() ?: 0
 
-                    it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_bukan_sawah =
-                        binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_rumput_sementara =
-                        binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_rumput_permanen =
-                        binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_belum_tanam =
-                        binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_tanaman_tahunan =
-                        binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_ternak_bangunan_lain =
-                        binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_kehutanan =
-                        binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_budidaya = binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
-                    it.jml_308_lahan_lainnya =
-                        binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_sawah = binding.edtLuasSawah.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_bukan_sawah =
+//                        binding.edtLuasBukanSawah.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_rumput_sementara =
+//                        binding.edtLuasRumputSementara.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_rumput_permanen =
+//                        binding.edtLuasRumputPermanen.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_belum_tanam =
+//                        binding.edtLuasBelumTanam.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_tanaman_tahunan =
+//                        binding.edtLuasTanamanTahunan.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_ternak_bangunan_lain =
+//                        binding.edtLuasTernakBangunanLain.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_kehutanan =
+//                        binding.edtLuasKehutanan.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_budidaya = binding.edtLuasBudidaya.text.toString().toIntOrNull() ?: 0
+//                    it.jml_308_lahan_lainnya =
+//                        binding.edtLuasLahanLainnya.text.toString().toIntOrNull() ?: 0
 
                     it.status_upload =
                         if (it.status_upload == EnumStatusUpload.UPLOADED.kode) EnumStatusUpload.CHANGED_AFTER_UPLOADED.kode else EnumStatusUpload.NOT_UPLOADED.kode
@@ -413,6 +413,8 @@ class RumahTanggaFragment : Fragment() {
             14 -> if (ruta?.subsektor6_b?.toInt() == 1) curChip.isChecked = true
             15 -> if (ruta?.subsektor6_c?.toInt() == 1) curChip.isChecked = true
             16 -> if (ruta?.subsektor7_a?.toInt() == 1) curChip.isChecked = true
+
+            17 -> if (ruta?.jml_308_sawah == 1) curChip.isChecked = true
         }
 
         curChip.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, result ->
@@ -438,6 +440,8 @@ class RumahTanggaFragment : Fragment() {
                 14 -> ruta?.subsektor6_b = if (result) 1 else 0
                 15 -> ruta?.subsektor6_c = if (result) 1 else 0
                 16 -> ruta?.subsektor7_a = if (result) 1 else 0
+
+                17 -> ruta?.jml_308_sawah = if (result) 1 else 0
             }
         })
 
@@ -489,6 +493,7 @@ class RumahTanggaFragment : Fragment() {
         totalSubsektor += ruta?.subsektor6_b?.toInt() ?: 0
         totalSubsektor += ruta?.subsektor6_c?.toInt() ?: 0
         totalSubsektor += ruta?.subsektor7_a?.toInt() ?: 0
+        totalSubsektor += ruta?.jml_308_sawah ?: 0
 
         if (totalSubsektor == 0) {
             binding.edtJmlUnitUsaha.error = "Minimal memilih 1 subsektor"
@@ -514,7 +519,7 @@ class RumahTanggaFragment : Fragment() {
     }
 
     private fun checkErrorEmpty(edt: EditText, errMsg: String) {
-        if (edt.text.toString().isBlank()) {
+        if (edt.text.toString().isBlank() || edt.text.toString().toIntOrNull() == 0) {
             edt.error = errMsg
             listError.add(errMsg)
         } else {
@@ -535,16 +540,16 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtJmlArt.setText("")
                 binding.edtJmlUnitUsaha.setText("")
 
-                binding.edtLuasSawah.setText("")
-                binding.edtLuasBukanSawah.setText("")
-                binding.edtLuasRumputSementara.setText("")
-                binding.edtLuasRumputPermanen.setText("")
-                binding.edtLuasBelumTanam.setText("")
-                binding.edtLuasTanamanTahunan.setText("")
-                binding.edtLuasTernakBangunanLain.setText("")
-                binding.edtLuasKehutanan.setText("")
-                binding.edtLuasBudidaya.setText("")
-                binding.edtLuasLahanLainnya.setText("")
+//                binding.edtLuasSawah.setText("")
+//                binding.edtLuasBukanSawah.setText("")
+//                binding.edtLuasRumputSementara.setText("")
+//                binding.edtLuasRumputPermanen.setText("")
+//                binding.edtLuasBelumTanam.setText("")
+//                binding.edtLuasTanamanTahunan.setText("")
+//                binding.edtLuasTernakBangunanLain.setText("")
+//                binding.edtLuasKehutanan.setText("")
+//                binding.edtLuasBudidaya.setText("")
+//                binding.edtLuasLahanLainnya.setText("")
             } else {
                 binding.btnDelete.visibility = View.VISIBLE
 
@@ -554,16 +559,16 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtJmlArt.setText(it.jumlah_art.toString())
                 binding.edtJmlUnitUsaha.setText(it.jumlah_unit_usaha.toString())
 
-                binding.edtLuasSawah.setText(it.jml_308_sawah.toString())
-                binding.edtLuasBukanSawah.setText(it.jml_308_bukan_sawah.toString())
-                binding.edtLuasRumputSementara.setText(it.jml_308_rumput_sementara.toString())
-                binding.edtLuasRumputPermanen.setText(it.jml_308_rumput_permanen.toString())
-                binding.edtLuasBelumTanam.setText(it.jml_308_belum_tanam.toString())
-                binding.edtLuasTanamanTahunan.setText(it.jml_308_tanaman_tahunan.toString())
-                binding.edtLuasTernakBangunanLain.setText(it.jml_308_ternak_bangunan_lain.toString())
-                binding.edtLuasKehutanan.setText(it.jml_308_kehutanan.toString())
-                binding.edtLuasBudidaya.setText(it.jml_308_budidaya.toString())
-                binding.edtLuasLahanLainnya.setText(it.jml_308_lahan_lainnya.toString())
+//                binding.edtLuasSawah.setText(it.jml_308_sawah.toString())
+//                binding.edtLuasBukanSawah.setText(it.jml_308_bukan_sawah.toString())
+//                binding.edtLuasRumputSementara.setText(it.jml_308_rumput_sementara.toString())
+//                binding.edtLuasRumputPermanen.setText(it.jml_308_rumput_permanen.toString())
+//                binding.edtLuasBelumTanam.setText(it.jml_308_belum_tanam.toString())
+//                binding.edtLuasTanamanTahunan.setText(it.jml_308_tanaman_tahunan.toString())
+//                binding.edtLuasTernakBangunanLain.setText(it.jml_308_ternak_bangunan_lain.toString())
+//                binding.edtLuasKehutanan.setText(it.jml_308_kehutanan.toString())
+//                binding.edtLuasBudidaya.setText(it.jml_308_budidaya.toString())
+//                binding.edtLuasLahanLainnya.setText(it.jml_308_lahan_lainnya.toString())
                 binding.cbApakahMenggunaakanLahan.isChecked = it.apakah_menggunakan_lahan == 1
                 //////
 

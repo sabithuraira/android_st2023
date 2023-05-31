@@ -7,14 +7,15 @@ enum class EnumSubsektor(val label: String,  val code: Int) {
     HortikulturaSemusim("Hortikultura Semusim", 4),
     PerkebunanTahunan("Perkebunan Tahunan", 5),
     PerkebunanSemusim("Perkebunan Semusim", 6),
-    PeternakanBesar("Peternakan Besar", 7),
+    PeternakanKecil("Peternakan Kecil", 7),
     PeternakanSedang("Peternakan Sedang", 8),
     PeternakanUnggas("Peternakan Unggas", 9),
     PerikananBudidaya("Perikanan Budidaya", 10),
     PerikananTangkapUmum("Perikanan Tangkap Umum", 11),
     PerikananTangkapLaut("Perikanan Tangkap Laut", 12),
     KehutananBudidaya("Kehutanan Budidaya", 13),
-    KehutananTangkapUmum("Kehutanan Tangkap Umum", 14),
-    KehutananPemungutanatauPenangkaran("Kehutanan Pemungutan atau Penangkaran", 15),
-    JasaPertanian("Jasa Pertanian", 16)
+    PenangkapanSatwaTanamanLiar("Penangkapan Satwa Liar / Tanaman Liar", 14),
+    PemungutanHasilHutanDanPenangkapanSatwaLiar("Pemungutan Hasil Hutan dan Penangkapan Satwa Liar", 15),
+    JasaPertanian("Jasa Pertanian", 16),
+    TernakLainnya("Ternak Lainnya", 17)
 }
