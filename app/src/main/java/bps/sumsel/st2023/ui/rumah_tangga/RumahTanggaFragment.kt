@@ -529,7 +529,6 @@ class RumahTanggaFragment : Fragment() {
             binding.edtNurt.isEnabled = false
             if (data.end_time == "") {
                 binding.btnDelete.visibility = View.GONE
-                binding.linearUsahaTani.visibility = View.GONE
 
                 binding.edtNurt.setText("")
                 binding.edtNamaKk.setText("")
@@ -548,7 +547,6 @@ class RumahTanggaFragment : Fragment() {
                 binding.edtLuasLahanLainnya.setText("")
             } else {
                 binding.btnDelete.visibility = View.VISIBLE
-                binding.linearUsahaTani.visibility = View.VISIBLE
 
                 /////////
                 binding.edtNurt.setText(it.nurt.toString())
