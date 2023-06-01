@@ -531,7 +531,7 @@ class RumahTanggaFragment : Fragment() {
         data?.let {
             binding.linearLuas.visibility = View.GONE
 
-            binding.edtNurt.isEnabled = false
+//            binding.edtNurt.isEnabled = false
             if (data.end_time == "") {
                 binding.btnDelete.visibility = View.GONE
 
