@@ -21,6 +21,7 @@ import bps.sumsel.st2023.datastore.AuthDataStore
 import bps.sumsel.st2023.datastore.UserStore
 import bps.sumsel.st2023.helper.Injection
 import bps.sumsel.st2023.repository.ResultData
+import bps.sumsel.st2023.room.entity.RekapRutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
@@ -72,7 +73,6 @@ class HomeFragment : Fragment() {
 
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
-                        loadSls(view, result.data, viewModel)
                     }
 
                     is ResultData.Error -> {
@@ -128,6 +128,12 @@ class HomeFragment : Fragment() {
             }
         }
 
+        viewModel.resultRekap.observe(viewLifecycleOwner) { result ->
+            if (result.first != null && result.second != null) {
+                loadSls(view, result.first, result.second)
+            }
+        }
+
         //synchronize
         binding.linearSync.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext(), R.style.AlertDialogStyle)
@@ -151,15 +157,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadSls(view: View, data: List<SlsEntity>?, viewModel: HomeViewModel) {
+    private fun loadSls(view: View, data: List<SlsEntity>?, rekap: List<RekapRutaEntity>?) {
         data?.let {
 
-            val slsAdapter = SlsHomeAdapter(
-                ArrayList(data),
-                viewModel.resultRekapRuta,
-                context,
-                viewLifecycleOwner,
-            )
+            val slsAdapter = SlsHomeAdapter(ArrayList(data), ArrayList(rekap))
             slsAdapter.setOnClickCallBack(object : SlsHomeAdapter.OnClickCallBack {
                 override fun onItemClicked(data: SlsEntity) {
                     editData(view, data)

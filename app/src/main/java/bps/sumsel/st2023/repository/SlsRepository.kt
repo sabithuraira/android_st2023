@@ -1,5 +1,6 @@
 package bps.sumsel.st2023.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -626,6 +627,7 @@ class SlsRepository private constructor(
                     response: Response<ResponseStringStatus>
                 ) {
                     if (response.isSuccessful) {
+                        Log.d("REPSON", response.message().toString())
                         sls?.let {
                             _resultUploadRuta.postValue(ResultData.Success(Pair(1, it)))
                         } ?: run {
