@@ -626,10 +626,23 @@ class SlsRepository private constructor(
                     response: Response<ResponseStringStatus>
                 ) {
                     if (response.isSuccessful) {
-                        sls?.let {
-                            _resultUploadRuta.postValue(ResultData.Success(Pair(1, it)))
-                        } ?: run {
-                            _resultUploadRuta.postValue(ResultData.Success(Pair(1, null)))
+                        response.body().let {
+                            it?.status.let { s ->
+                                if (s == "success") {
+                                    sls?.let {
+                                        _resultUploadRuta.postValue(ResultData.Success(Pair(1, it)))
+                                    } ?: run {
+                                        _resultUploadRuta.postValue(
+                                            ResultData.Success(
+                                                Pair(
+                                                    1,
+                                                    null
+                                                )
+                                            )
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -683,10 +696,23 @@ class SlsRepository private constructor(
                     response: Response<ResponseStringStatus>
                 ) {
                     if (response.isSuccessful) {
-                        data?.let {
-                            _resultUploadSls.postValue(ResultData.Success(Pair(1, it)))
-                        } ?: run {
-                            _resultUploadSls.postValue(ResultData.Success(Pair(1, null)))
+                        response.body().let {
+                            it?.status.let { s ->
+                                if (s == "success") {
+                                    data?.let {
+                                        _resultUploadSls.postValue(ResultData.Success(Pair(1, it)))
+                                    } ?: run {
+                                        _resultUploadSls.postValue(
+                                            ResultData.Success(
+                                                Pair(
+                                                    1,
+                                                    null
+                                                )
+                                            )
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
