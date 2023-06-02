@@ -626,11 +626,19 @@ class SlsRepository private constructor(
                     response: Response<ResponseStringStatus>
                 ) {
                     if (response.isSuccessful) {
-                        sls?.let {
-                            _resultUploadRuta.postValue(ResultData.Success(Pair(1, it)))
-                        } ?: run {
-                            _resultUploadRuta.postValue(ResultData.Success(Pair(1, null)))
+                        if(response.body()?.status=="success"){
+                            sls?.let {
+                                _resultUploadRuta.postValue(ResultData.Success(Pair(1, it)))
+                            } ?: run {
+                                _resultUploadRuta.postValue(ResultData.Success(Pair(1, null)))
+                            }
                         }
+                        else{
+                            _resultUploadRuta.value = ResultData.Error("Cek internet Anda!")
+                        }
+                    }
+                    else{
+                        _resultUploadRuta.value = ResultData.Error("Cek internet Anda!")
                     }
                 }
 
