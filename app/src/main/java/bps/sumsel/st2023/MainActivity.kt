@@ -2,6 +2,7 @@ package bps.sumsel.st2023
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -66,6 +67,12 @@ class MainActivity : AppCompatActivity() {
 
     fun setLoading(data: Boolean) {
         binding.progressBar.visibility = if (data) View.VISIBLE else View.GONE
+
+        if (data) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
     }
 
     fun setActionBarTitle(title: String) {
