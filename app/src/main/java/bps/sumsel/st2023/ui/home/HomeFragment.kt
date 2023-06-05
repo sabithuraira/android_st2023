@@ -23,6 +23,7 @@ import bps.sumsel.st2023.helper.Injection
 import bps.sumsel.st2023.repository.ResultData
 import bps.sumsel.st2023.room.entity.RekapRutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
+import bps.sumsel.st2023.ui.setting.SettingFragment
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth")
 
@@ -54,9 +55,23 @@ class HomeFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvProgresSls.layoutManager = layoutManager
 
+        binding.txtVersi.text = "Versi " + SettingFragment().getAppVersion(context!!)
+
         viewModel.getAuthUser().observe(this) { user: UserStore ->
+            var jabatan = ""
             if (user.name != "") {
-                binding.txtHalo.text = "Halo ${user.name}"
+                when (user.jabatan) {
+                    1 -> {
+                        jabatan = "PCL"
+                    }
+                    2 -> {
+                        jabatan = "PML"
+                    }
+                    3 -> {
+                        jabatan = "KOSEKA"
+                    }
+                }
+                binding.txtHalo.text = "Halo ${user.name} (${jabatan})"
             }
         }
 

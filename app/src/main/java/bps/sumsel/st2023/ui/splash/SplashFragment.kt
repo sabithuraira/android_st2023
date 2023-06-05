@@ -2,6 +2,7 @@ package bps.sumsel.st2023.ui.splash
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ class SplashFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -26,11 +27,20 @@ class SplashFragment : Fragment() {
 
         binding.txtVersi.text = "Versi " + SettingFragment().getAppVersion(context!!)
 
-        val handler = Handler()
-        handler.postDelayed(Runnable {
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            try {
+                Navigation.findNavController(view).navigate(
+                    SplashFragmentDirections.actionSplashFragmentToLoginFragment()
+                )
+            } catch (e: Exception) {
+            }
+        }, 2000)
+
+        binding.layout.setOnClickListener {
             Navigation.findNavController(view).navigate(
                 SplashFragmentDirections.actionSplashFragmentToLoginFragment()
             )
-        }, 2000)
+        }
     }
 }

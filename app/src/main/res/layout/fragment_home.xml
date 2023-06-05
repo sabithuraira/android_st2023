@@ -19,10 +19,20 @@
                 android:id="@+id/txt_halo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/black_300"
                 android:text="@string/label_halo" />
+
+            <TextView
+                android:id="@+id/txt_versi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/green_700"
+                android:text="Versi Aplikasi" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_sync"
@@ -53,8 +63,9 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
+                        android:textStyle="bold"
                         android:text="Untuk mengunduh data SLS tugas anda, lakukan sinkronisasi. Hati-hati dalam melakukan sinkronisasi karena akan menghapus data pencacahan progres anda, pastikan telah melakukan upload data sebelum menjalankan proses ini."
-                        android:textColor="@color/black_3" />
+                        android:textColor="@color/red_900" />
                     <LinearLayout
                         android:id="@+id/linear_sync"
                         android:layout_width="match_parent"
