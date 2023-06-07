@@ -139,6 +139,16 @@
                         android:layout_marginBottom="8dp"
                         style="@style/NormalEditText"
                         android:inputType="number"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="11sp"
+                        android:textStyle="italic"
+                        android:gravity="right"
+                        android:textColor="@color/black_200"
+                        android:text="(Nomor Urut Terbesar Rincian 215)" />
                 </LinearLayout>
 
                 <LinearLayout
