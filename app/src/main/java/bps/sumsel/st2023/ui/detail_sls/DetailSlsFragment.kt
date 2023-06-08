@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -30,12 +32,13 @@ class DetailSlsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var parentActivity: MainActivity
     private var sls: SlsEntity? = null
+    private var sortBy = ""
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         setHasOptionsMenu(true)
 
         _binding = FragmentDetailSlsBinding.inflate(inflater, container, false)
@@ -59,7 +62,7 @@ class DetailSlsFragment : Fragment() {
 
         sls?.let {
             parentActivity.setActionBarTitle(it.nama_sls)
-            viewModel.getRuta(it, binding.edtSearch.text.toString())
+            viewModel.getRuta(it, binding.edtSearch.text.toString(), sortBy)
         }
 
         binding.edtSearch.addTextChangedListener(object : TextWatcher {
@@ -70,10 +73,49 @@ class DetailSlsFragment : Fragment() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 sls?.let {
-                    viewModel.getRuta(it, binding.edtSearch.text.toString())
+                    viewModel.getRuta(it, binding.edtSearch.text.toString(), sortBy)
                 }
             }
         })
+
+        ArrayAdapter.createFromResource(
+            context!!,
+            R.array.urut,
+            android.R.layout.simple_spinner_item
+        )
+            .also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinnerUrut.adapter = adapter
+                binding.spinnerUrut.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        when (position) {
+                            0 -> {
+                                sortBy = ""
+                                sls?.let {
+                                    viewModel.getRuta(it, binding.edtSearch.text.toString(), sortBy)
+                                }
+                            }
+                            1 -> {
+                                sortBy = "nurt"
+                                sls?.let {
+                                    viewModel.getRuta(it, binding.edtSearch.text.toString(), sortBy)
+                                }
+                            }
+                            2 -> {
+                                sortBy = "kepala_ruta"
+                                sls?.let {
+                                    viewModel.getRuta(it, binding.edtSearch.text.toString(), sortBy)
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                    }
+
+                }
+            }
 
         viewModel.resultDataRuta.observe(viewLifecycleOwner){ result ->
             if (result != null) {

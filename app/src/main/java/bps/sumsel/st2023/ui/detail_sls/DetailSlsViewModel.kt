@@ -1,7 +1,6 @@
 package bps.sumsel.st2023.ui.detail_sls
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import bps.sumsel.st2023.datastore.AuthDataStore
@@ -13,7 +12,7 @@ class DetailSlsViewModel(
     private val pref: AuthDataStore,
     private val slsRepository: SlsRepository
     ) : ViewModel() {
-    fun getRuta(data: SlsEntity, keyword: String) = slsRepository.getRuta(data, keyword)
+    fun getRuta(data: SlsEntity, keyword: String, sortBy: String) = slsRepository.getRuta(data, keyword, sortBy)
 
     val resultDataRuta = slsRepository.resultDataRuta
 

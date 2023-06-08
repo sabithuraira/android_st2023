@@ -467,9 +467,9 @@ class SlsRepository private constructor(
         }
     }
 
-    fun getRuta(data: SlsEntity, keyword: String) {
+    fun getRuta(data: SlsEntity, keyword: String, sortBy: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val query = StringBuilder().append("SELECT * from ruta ")
+            val query = StringBuilder().append("SELECT * FROM ruta ")
             query.append(" WHERE kode_prov='${data.kode_prov}'")
             query.append(" AND kode_kab='${data.kode_kab}'")
             query.append(" AND kode_kec='${data.kode_kec}'")
@@ -482,7 +482,11 @@ class SlsRepository private constructor(
                 query.append(" OR nurt LIKE '%$keyword%')")
             }
 
-            query.append(" ORDER BY id ASC")
+            if (sortBy.isNotEmpty()) {
+                query.append(" ORDER BY $sortBy ASC")
+            } else {
+                query.append(" ORDER BY id ASC")
+            }
 
             val sqlQuery = SimpleSQLiteQuery(query.toString())
 

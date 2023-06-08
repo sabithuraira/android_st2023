@@ -40,4 +40,9 @@
     <string name="label_finish">Selesai</string>
     <string name="label_add_ruta">Tambah Ruta</string>
     <string name="label_save_finish">Simpan dan Nyatakan Selesai</string>
+    <string-array name="urut">
+        <item>Tidak Ada</item>
+        <item>Nomor Urut Rumah Tangga Pertanian</item>
+        <item>Nama Kepala Rumah Tangga Pertanian</item>
+    </string-array>
 </resources>
