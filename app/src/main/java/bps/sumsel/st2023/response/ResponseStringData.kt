@@ -18,3 +18,12 @@ data class ResponseStringStatus(
     @field:SerializedName("status")
     val status: String? = null
 ) : Parcelable
+
+@Parcelize
+data class ResponseUploadStatus(
+    @field:SerializedName("status")
+    val status: String? = null,
+
+    @field:SerializedName("data")
+    val data: String? = null
+) : Parcelable

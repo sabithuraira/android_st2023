@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -149,7 +148,6 @@ class SlsFragment : Fragment() {
         }
 
         viewModel.resultUpload.observe(viewLifecycleOwner) { result ->
-            Log.d("RESULT", result.first.toString())
             if (result.first == 2) {
                 parentActivity.setLoading(false)
 
@@ -159,8 +157,6 @@ class SlsFragment : Fragment() {
                     viewModel.syncSls()
                 }
                 viewModel.resultUpload.value = Pair(0, null)
-
-//                viewModel.syncSls()
 
                 Toast.makeText(context, "Upload data berhasil", Toast.LENGTH_SHORT)
                     .show()
@@ -186,7 +182,8 @@ class SlsFragment : Fragment() {
             builder.setMessage("Anda yakin ingin mengupload data?")
 
             builder.setPositiveButton("Ya") { dialog, _ ->
-                viewModel.upload()
+                dialog.dismiss()
+                viewModel.upload(context!!)
             }
 
             builder.setNegativeButton("Batal") { dialog, _ ->
@@ -222,7 +219,8 @@ class SlsFragment : Fragment() {
         builder.setMessage("Anda yakin ingin mengupload data?")
 
         builder.setPositiveButton("Ya") { dialog, _ ->
-            viewModel.upload(data)
+            dialog.dismiss()
+            viewModel.upload(data, context!!)
         }
 
         builder.setNegativeButton("Batal") { dialog, _ ->

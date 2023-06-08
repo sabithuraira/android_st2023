@@ -1,5 +1,6 @@
 package bps.sumsel.st2023.ui.sls
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,8 +24,8 @@ class SlsViewModel(private val pref: AuthDataStore, private val slsRepository: S
 
     fun getSlsByName(keyword: String) = slsRepository.getSlsByName(keyword)
 
-    fun upload() = slsRepository.upload()
-    fun upload(sls: SlsEntity) = slsRepository.upload(sls)
+    fun upload(context: Context) = slsRepository.upload(context)
+    fun upload(sls: SlsEntity, context: Context) = slsRepository.upload(sls, context)
 
     val resultUploadRuta = slsRepository.resultUploadRuta
     val resultUploadSls = slsRepository.resultUploadSls

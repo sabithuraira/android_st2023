@@ -40,11 +40,11 @@ interface ApiInterface {
     fun storeRutaMany(
         @Header("Authorization") token: String,
         @Body params: RequestRutaMany
-    ): Call<ResponseStringStatus>
+    ): Call<ResponseUploadStatus>
 
     @POST("sls/update_progress")
     fun updateSlsProgress(
         @Header("Authorization") token: String,
         @Body params: RequestSlsMany
-    ): Call<ResponseStringStatus>
+    ): Call<ResponseUploadStatus>
 }

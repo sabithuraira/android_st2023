@@ -53,6 +53,7 @@ class RumahTanggaFragment : Fragment() {
     private var _binding: FragmentRumahTanggaBinding? = null
     private val binding get() = _binding!!
     private lateinit var parentActivity: MainActivity
+    private lateinit var rumahTanggaViewModel: RumahTanggaViewModel
     private var sls: SlsEntity? = null
     private var ruta: RutaEntity? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -79,6 +80,8 @@ class RumahTanggaFragment : Fragment() {
         val factory: ViewModelAuthFactory =
             ViewModelAuthFactory.getInstance(requireActivity(), pref)
         val viewModel: RumahTanggaViewModel by viewModels { factory }
+
+        rumahTanggaViewModel = viewModel
 
         sls = RumahTanggaFragmentArgs.fromBundle(arguments as Bundle).sls
         ruta = RumahTanggaFragmentArgs.fromBundle(arguments as Bundle).ruta
@@ -119,8 +122,12 @@ class RumahTanggaFragment : Fragment() {
 
                     is ResultData.Success -> {
                         parentActivity.setLoading(false)
-                        lastPlusOne = result.data + 1
-                        binding.edtNurt.setText(lastPlusOne.toString())
+                        ruta?.let {
+                            if (it.nurt == 0) {
+                                lastPlusOne = result.data + 1
+                                binding.edtNurt.setText(lastPlusOne.toString())
+                            }
+                        }
                     }
 
                     is ResultData.Error -> {
@@ -182,6 +189,12 @@ class RumahTanggaFragment : Fragment() {
                 it.status_data = EnumStatusData.ERROR.kode
 
                 it.start_time = currentTimeFormat.format(currentTime).toString()
+            }
+
+            if (it.end_time == "") {
+                createLocationRequest()
+                createLocationCallback()
+                startLocationUpdates()
             }
         } ?: run {
             Toast.makeText(
@@ -532,10 +545,10 @@ class RumahTanggaFragment : Fragment() {
             binding.linearLuas.visibility = View.GONE
 
 //            binding.edtNurt.isEnabled = false
-            if (data.end_time == "") {
+            if (it.end_time == "") {
                 binding.btnDelete.visibility = View.GONE
 
-                binding.edtNurt.setText("")
+                binding.edtNurt.setText(it.nurt.toString())
                 binding.edtNamaKk.setText("")
                 binding.edtJmlArt.setText("")
                 binding.edtJmlUnitUsaha.setText("")
@@ -571,9 +584,9 @@ class RumahTanggaFragment : Fragment() {
 //                binding.edtLuasLahanLainnya.setText(it.jml_308_lahan_lainnya.toString())
                 binding.cbApakahMenggunaakanLahan.isChecked = it.apakah_menggunakan_lahan == 1
                 //////
-
-                validation()
             }
+
+            validation()
         } ?: run {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -624,9 +637,13 @@ class RumahTanggaFragment : Fragment() {
                     curLocation = location
 
                     ruta?.let {
-                        if (it.start_latitude==0.0 || it.start_longitude==0.0) {
+                        if (it.start_latitude == 0.0 || it.start_longitude == 0.0) {
                             it.start_latitude = curLocation?.latitude.toString().toDoubleOrNull() ?: 0.0
                             it.start_longitude = curLocation?.longitude.toString().toDoubleOrNull() ?: 0.0
+
+                            it.nurt = binding.edtNurt.text.toString().toIntOrNull() ?: 0
+
+                            rumahTanggaViewModel.updateRuta(it, false)
                         }
                     }
                 }

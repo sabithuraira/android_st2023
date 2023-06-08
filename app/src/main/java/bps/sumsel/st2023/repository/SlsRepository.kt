@@ -1,5 +1,6 @@
 package bps.sumsel.st2023.repository
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,13 +15,14 @@ import bps.sumsel.st2023.request.RequestSlsMany
 import bps.sumsel.st2023.request.RequestSlsProgress
 import bps.sumsel.st2023.response.ResponseSlsPetugas
 import bps.sumsel.st2023.response.ResponseStringData
-import bps.sumsel.st2023.response.ResponseStringStatus
+import bps.sumsel.st2023.response.ResponseUploadStatus
 import bps.sumsel.st2023.room.dao.RutaDao
 import bps.sumsel.st2023.room.dao.SlsDao
 import bps.sumsel.st2023.room.entity.RekapRutaEntity
 import bps.sumsel.st2023.room.entity.RekapSlsEntity
 import bps.sumsel.st2023.room.entity.RutaEntity
 import bps.sumsel.st2023.room.entity.SlsEntity
+import bps.sumsel.st2023.ui.setting.SettingFragment
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -539,7 +541,7 @@ class SlsRepository private constructor(
 
     private val _resultUploadRuta = MutableLiveData<ResultData<Pair<Int, SlsEntity?>>>()
     val resultUploadRuta: LiveData<ResultData<Pair<Int, SlsEntity?>>> = _resultUploadRuta
-    private fun storeRutaMany(sls: SlsEntity? = null) {
+    private fun storeRutaMany(sls: SlsEntity? = null, context: Context) {
         _resultUploadRuta.value = ResultData.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -559,6 +561,8 @@ class SlsRepository private constructor(
             }
 
             val rutaList = mutableListOf<RequestRuta>()
+
+            val version = SettingFragment().getAppVersion(context)!!.replace(".", "").toInt()
 
             rutaToUpload?.forEach {
                 val requestRuta = RequestRuta(
@@ -591,7 +595,7 @@ class SlsRepository private constructor(
                     it.subsektor7_a,
                     it.apakah_menggunakan_lahan,
                     it.jml_308_sawah,
-                    it.jml_308_bukan_sawah,
+                    version,
                     it.jml_308_rumput_sementara,
                     it.jml_308_rumput_permanen,
                     it.jml_308_belum_tanam,
@@ -620,34 +624,29 @@ class SlsRepository private constructor(
 
             val client = apiService.storeRutaMany("Bearer " + dataUser.token, requestRutaMany)
 
-            client.enqueue(object : Callback<ResponseStringStatus> {
+            client.enqueue(object : Callback<ResponseUploadStatus> {
                 override fun onResponse(
-                    call: Call<ResponseStringStatus>,
-                    response: Response<ResponseStringStatus>
+                    call: Call<ResponseUploadStatus>,
+                    response: Response<ResponseUploadStatus>
                 ) {
                     if (response.isSuccessful) {
-                        response.body().let {
-                            it?.status.let { s ->
-                                if (s == "success") {
-                                    sls?.let {
-                                        _resultUploadRuta.postValue(ResultData.Success(Pair(1, it)))
-                                    } ?: run {
-                                        _resultUploadRuta.postValue(
-                                            ResultData.Success(
-                                                Pair(
-                                                    1,
-                                                    null
-                                                )
-                                            )
-                                        )
-                                    }
-                                }
+                        if (response.body()?.status == "success") {
+                            sls?.let {
+                                _resultUploadRuta.postValue(ResultData.Success(Pair(1, it)))
+                            } ?: run {
+                                _resultUploadRuta.postValue(
+                                    ResultData.Success(Pair(1, null))
+                                )
+                            }
+                        } else {
+                            response.body()?.data?.let {
+                                _resultUploadRuta.value = ResultData.Error(it)
                             }
                         }
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseStringStatus>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseUploadStatus>, t: Throwable) {
                     _resultUploadRuta.value = ResultData.Error("Cek internet Anda!")
 //                    _resultUploadRuta.value = ResultData.Error(t.message.toString())
                 }
@@ -690,34 +689,29 @@ class SlsRepository private constructor(
 
             val client = apiService.updateSlsProgress("Bearer " + dataUser.token, requestSlsMany)
 
-            client.enqueue(object : Callback<ResponseStringStatus> {
+            client.enqueue(object : Callback<ResponseUploadStatus> {
                 override fun onResponse(
-                    call: Call<ResponseStringStatus>,
-                    response: Response<ResponseStringStatus>
+                    call: Call<ResponseUploadStatus>,
+                    response: Response<ResponseUploadStatus>
                 ) {
                     if (response.isSuccessful) {
-                        response.body().let {
-                            it?.status.let { s ->
-                                if (s == "success") {
-                                    data?.let {
-                                        _resultUploadSls.postValue(ResultData.Success(Pair(1, it)))
-                                    } ?: run {
-                                        _resultUploadSls.postValue(
-                                            ResultData.Success(
-                                                Pair(
-                                                    1,
-                                                    null
-                                                )
-                                            )
-                                        )
-                                    }
-                                }
+                        if (response.body()?.status == "success") {
+                            data?.let {
+                                _resultUploadSls.postValue(ResultData.Success(Pair(1, it)))
+                            } ?: run {
+                                _resultUploadSls.postValue(
+                                    ResultData.Success(Pair(1, null))
+                                )
+                            }
+                        } else {
+                            response.body()?.data?.let {
+                                _resultUploadSls.value = ResultData.Error(it)
                             }
                         }
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseStringStatus>, t: Throwable) {
+                override fun onFailure(call: Call<ResponseUploadStatus>, t: Throwable) {
                     _resultUploadSls.value = ResultData.Error("Cek internet Anda!")
 //                    _resultUploadSls.value = ResultData.Error(t.message.toString())
                 }
@@ -725,16 +719,16 @@ class SlsRepository private constructor(
         }
     }
 
-    fun upload() {
+    fun upload(context: Context) {
         runBlocking {
-            storeRutaMany()
+            storeRutaMany(null, context)
             updateSlsProgress()
         }
     }
 
-    fun upload(sls: SlsEntity) {
+    fun upload(sls: SlsEntity, context: Context) {
         runBlocking {
-            storeRutaMany(sls)
+            storeRutaMany(sls, context)
             updateSlsProgress(sls)
         }
     }
