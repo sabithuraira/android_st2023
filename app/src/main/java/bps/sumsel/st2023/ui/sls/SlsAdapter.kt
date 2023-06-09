@@ -52,7 +52,7 @@ class SlsAdapter(private val listData: ArrayList<SlsEntity>, private val user: L
 
         val curData = listData[position]
 
-        holder.binding.txtTitle.text = "[" + curData.id_sls + "] " + curData.nama_sls
+        holder.binding.txtTitle.text = "[" + curData.id_sls + curData.id_sub_sls + "] " + curData.nama_sls
         holder.binding.txtDescription.text = curData.nama_desa + ", " + curData.nama_kec
 
         if (curData.status_selesai_pcl == 0) {

@@ -45,7 +45,7 @@ class EditSlsFragment : Fragment() {
         sls = EditSlsFragmentArgs.fromBundle(arguments as Bundle).sls
 
         sls?.let {
-            parentActivity.setActionBarTitle(it.nama_sls)
+            parentActivity.setActionBarTitle("[" + it.id_sls + it.id_sub_sls + "] " + it.nama_sls)
             viewModel.setSingleData(it)
         }
 
@@ -164,10 +164,10 @@ class EditSlsFragment : Fragment() {
     private fun setView(view: View, data: SlsEntity?, viewModel: EditSlsViewModel) {
         data?.let {
             binding.edtNamaSls.setText(it.nama_sls)
-            binding.edtIdDesa.setText(it.kode_prov + it.kode_kab + it.kode_kec + it.kode_desa)
+            binding.edtNamaDesa.setText(it.nama_desa + ", " + it.nama_kec)
 
             binding.edtNamaSls.isEnabled = false
-            binding.edtIdDesa.isEnabled = false
+            binding.edtNamaDesa.isEnabled = false
 
             viewModel.getRekapRuta()
 

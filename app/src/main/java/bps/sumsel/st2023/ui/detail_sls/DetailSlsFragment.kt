@@ -61,7 +61,7 @@ class DetailSlsFragment : Fragment() {
         binding.rvRuta.layoutManager = layoutManager
 
         sls?.let {
-            parentActivity.setActionBarTitle(it.nama_sls)
+            parentActivity.setActionBarTitle("[" + it.id_sls + it.id_sub_sls + "] " + it.nama_sls)
             viewModel.getRuta(it, binding.edtSearch.text.toString(), sortBy)
         }
 

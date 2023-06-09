@@ -58,10 +58,10 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:textColor="@color/black_300"
-                android:text="Kode Desa/Kelurahan" />
+                android:text="Nama Desa/Kelurahan" />
 
             <EditText
-                android:id="@+id/edt_id_desa"
+                android:id="@+id/edt_nama_desa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
