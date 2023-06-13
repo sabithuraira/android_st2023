@@ -85,23 +85,10 @@ interface RutaDao {
 
     @Query(
         "SELECT * from ruta " +
-                "WHERE kode_prov=:kode_prov" +
-                " AND kode_kab=:kode_kab" +
-                " AND kode_kec=:kode_kec" +
-                " AND kode_desa=:kode_desa" +
-                " AND id_sls=:id_sls" +
-                " AND id_sub_sls=:id_sub_sls" +
-                " AND nurt=:nurt" +
-                " ORDER BY id ASC LIMIT 1"
+                "WHERE id=:id"
     )
     fun findDetail(
-        kode_prov: String,
-        kode_kab: String,
-        kode_kec: String,
-        kode_desa: String,
-        id_sls: String,
-        id_sub_sls: String,
-        nurt: Int
+        id: Int
     ): RutaEntity
 
     @Query("SELECT COUNT(status_upload) AS jumlah, kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls FROM ruta WHERE status_upload = 1 GROUP BY kode_prov, kode_kab, kode_kec, kode_desa, id_sls, id_sub_sls")
@@ -124,4 +111,10 @@ interface RutaDao {
         id_sls: String,
         id_sub_sls: String
     ): Int
+
+    @Query(
+        "SELECT id from ruta " +
+                "ORDER BY id DESC LIMIT 1"
+    )
+    fun getLastId(): Int
 }

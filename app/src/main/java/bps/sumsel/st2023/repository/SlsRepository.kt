@@ -507,13 +507,16 @@ class SlsRepository private constructor(
         _resultSingleRuta.value = ResultData.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
-            if (data.id == 0) rutaDao.insert(listOf(data))
-            else rutaDao.update(data)
+            var id = data.id
 
-            val localData = rutaDao.findDetail(
-                data.kode_prov, data.kode_kab, data.kode_kec, data.kode_desa,
-                data.id_sls, data.id_sub_sls, data.nurt
-            )
+            if (id == 0) {
+                rutaDao.insert(listOf(data))
+                id = rutaDao.getLastId()
+            } else {
+                rutaDao.update(data)
+            }
+
+            val localData = rutaDao.findDetail(id)
 
             if (isFinish) _resultSingleRuta.postValue(ResultData.Success(null))
             else _resultSingleRuta.postValue(ResultData.Success(localData))
