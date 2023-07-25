@@ -45,4 +45,7 @@
         <item>Nomor Urut Rumah Tangga Pertanian</item>
         <item>Nama Kepala Rumah Tangga Pertanian</item>
     </string-array>
+
+    <string name="alert_username_exist">Email harus diisi dengan format email</string>
+    <string name="alert_password_minimal">Password minimal 6 karakter </string>
 </resources>
